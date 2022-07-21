@@ -1,5 +1,4 @@
 const axios = require('axios')
-// const request = require('request')
 const crypto = require('crypto')
 const config = require('../config')
 const httpSignature = require('http-signature')
@@ -7,6 +6,7 @@ const APUser = require('../api/models/ap_user')
 const Instance = require('../api/models/instance')
 const url = require('url')
 const settingsController = require('../api/controller/settings')
+const agent = require('../agent')
 const log = require('../log')
 
 const Helpers = {
@@ -118,7 +118,7 @@ const Helpers = {
       }
     }
 
-    fedi_user = await axios.get(URL, { headers: { Accept: 'application/jrd+json, application/json' } })
+    fedi_user = await axios.get(URL, { agent, headers: { Accept: 'application/jrd+json, application/json' } })
       .then(res => {
         if (res.status !== 200) {
           log.warn(`Actor ${URL} => ${res.statusText}`)
@@ -150,7 +150,7 @@ const Helpers = {
     }
 
     // TODO: is this a standard? don't think so
-    instance = await axios.get(`${instance_url}/api/v1/instance`, { headers: { Accept: 'application/json' } })
+    instance = await axios.get(`${instance_url}/api/v1/instance`, { agent, headers: { Accept: 'application/json' } })
       .then(res => res.data)
       .then(instance => {
         const data = {

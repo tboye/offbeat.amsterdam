@@ -21,6 +21,7 @@ const { window } = new JSDOM('<!DOCTYPE html>')
 const domPurify = DOMPurify(window)
 const url = require('url')
 const locales = require('../locales')
+const agent = require('../agent')
 
 domPurify.addHook('beforeSanitizeElements', node => {
   if (node.hasAttribute && node.hasAttribute('href')) {
@@ -129,7 +130,7 @@ module.exports = {
       sharpStream.clone().resize(1200, null, { withoutEnlargement: true } ).jpeg({ quality: 95, effort: 6, mozjpeg: true}).toFile(path.resolve(config.upload_path, filename + '.jpg')),
     ]
 
-    const response = await axios({ method: 'GET', url: encodeURI(url), responseType: 'stream' })
+    const response = await axios({ agent, method: 'GET', url: encodeURI(url), responseType: 'stream' })
 
     response.data.pipe(sharpStream)
     return Promise.all(promises)
@@ -158,7 +159,7 @@ module.exports = {
   async importURL (req, res) {
     const URL = req.query.URL
     try {
-      const response = await axios.get(URL)
+      const response = await axios.get(URL, { agent })
       const contentType = response.headers['content-type']
 
       if (contentType.includes('text/html')) {
