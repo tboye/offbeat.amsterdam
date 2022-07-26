@@ -165,7 +165,8 @@
         "alt_text_description": "Description for people with visual impairments",
         "choose_focal_point": "Choose the focal point",
         "remove_media_confirmation": "Do you confirm the image removal?",
-        "download_flyer": "Download flyer"
+        "download_flyer": "Download flyer",
+        "address_description": "What is the address of the event?"
     },
     "admin": {
         "place_description": "If you have gotten the place or address wrong, you can change it.<br/>All current and past events associated with this place will change address.",

@@ -164,7 +164,8 @@
         "alt_text_description": "Descrizione per persone con disabilità visive",
         "choose_focal_point": "Scegli il punto centrale cliccando",
         "remove_media_confirmation": "Confermi l'eliminazione dell'immagine?",
-        "download_flyer": "Scarica volantino"
+        "download_flyer": "Scarica volantino",
+        "address_description": "Quale è l'indirizzo dell'evento?"
     },
     "admin": {
         "place_description": "Nel caso in cui un luogo sia errato o cambi indirizzo, puoi modificarlo.<br/>Considera che tutti gli eventi associati a questo luogo cambieranno indirizzo (anche quelli passati).",

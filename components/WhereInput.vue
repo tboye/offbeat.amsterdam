@@ -1,43 +1,56 @@
 <template lang="pug">
-v-row
-  v-col(cols=12 md=6)
-    v-combobox(ref='place'
-      :rules="[$validators.required('common.where')]"
-      :label="$t('common.where')"
-      :hint="$t('event.where_description')"
-      :prepend-icon='mdiMapMarker'
-      no-filter
-      :value='value.name'
-      hide-no-data
-      @input.native='search'
-      persistent-hint
-      :items="places"
-      @focus='search'
-      @change='selectPlace')
-      template(v-slot:item="{ item, attrs, on }")
-        v-list-item(v-bind='attrs' v-on='on')
-          v-list-item-content(two-line v-if='item.create')
-            v-list-item-title <v-icon color='primary' v-text='mdiPlus' :aria-label='$t("common.add")'></v-icon> {{$t('common.add')}} <strong>{{item.name}}</strong>
-          v-list-item-content(two-line v-else)
-            v-list-item-title(v-text='item.name')
-            v-list-item-subtitle(v-text='item.address')
+v-col(cols=12)
+  v-combobox(ref='place'
+    :rules="[$validators.required('common.where')]"
+    :label="$t('common.where')"
+    :hint="$t('event.where_description')"
+    :prepend-icon='mdiMapMarker'
+    no-filter
+    :value='value.name'
+    hide-no-data
+    @input.native='search'
+    persistent-hint
+    :items="places"
+    @focus='search'
+    @change='selectPlace')
+    template(v-slot:item="{ item, attrs, on }")
+      v-list-item(v-bind='attrs' v-on='on')
+        v-list-item-content(two-line v-if='item.create')
+          v-list-item-title <v-icon color='primary' v-text='mdiPlus' :aria-label='$t("common.add")'></v-icon> {{$t('common.add')}} <strong>{{item.name}}</strong>
+        v-list-item-content(two-line v-else)
+          v-list-item-title(v-text='item.name')
+          v-list-item-subtitle(v-text='item.address')
 
-  v-col(cols=12 md=6)
-    v-text-field(ref='address'
+  <map-component></map-component>
+
+  v-combobox(ref='address'
+      persistent-hint hide-no-data clearable no-filter
       :prepend-icon='mdiMap'
-      :disabled='disableAddress'
+      @input.native='searchAddress'
+      :items="indirizzi.features"
+      :hint="$t('event.address_description')"
       :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
       :label="$t('common.address')"
-      @change="changeAddress"
-      :value="value.address")
+      :value='value.address'
+      :loading='loading'
+      @change='selectAddress')
+      template(v-slot:item="{ item, attrs, on  }")
+        v-list-item(v-bind='attrs' v-on='on')
+          v-list-item-content(two-line v-if='item')
+            v-list-item-title(v-text='item.properties.geocoding.name')
+            v-list-item-subtitle(v-text='item.properties.geocoding.label')
 
 </template>
 <script>
 import { mdiMap, mdiMapMarker, mdiPlus } from '@mdi/js'
 import debounce from 'lodash/debounce'
+import MapComponent from './MapComponent'
 
 export default {
   name: 'WhereInput',
+  components: {
+    MapComponent: () => import(/* webpackChunkName: "add" */'@/components/MapComponent.vue')
+  },
   props: {
     value: { type: Object, default: () => ({}) }
   },
@@ -47,7 +60,10 @@ export default {
       place: { },
       placeName: '',
       places: [],
-      disableAddress: true
+      disableAddress: true,
+      address_length: 0,
+      indirizzi: [],
+      loading: false,
     }
   },
   computed: {
@@ -71,6 +87,49 @@ export default {
     }
   },
   methods: {
+    searchAddress: debounce(async function(ev) {
+        if (!ev) { return }
+        if (ev.target.value.length < this.address_length) {
+          // Update Counter
+          this.address_length = ev.target.value.length
+          return
+        } else {
+          // Update Counter
+          this.address_length = ev.target.value.length
+        }
+
+        // Stop if search is less than 4 characters
+        if (ev.target.value && ev.target.value.length < 4) { return }
+        this.loading = true
+
+        const search_a = ev.target.value.trim().toLowerCase();
+
+        try {
+          this.indirizzi = await this.$axios.$get(`https://nominatim.openstreetmap.org/search?limit=3&format=geocodejson&accept-language=it&addressdetails=1&namedetails=1&q=${search_a}` )
+
+          if (this.indirizzi) {
+          this.$refs.address.focus();
+          this.loading = false;
+          }
+        }
+        catch (error) {
+          console.log(error)
+        }
+      }, 100),
+      selectAddress (a) {
+        if (!a) { return }
+        if (typeof a === 'object') {
+          this.place.address = a.properties.geocoding.label
+          // Store full Nominatim data under place.details
+          this.place.details = JSON.stringify(a)
+          this.place.details = JSON.parse(this.place.details)
+          this.place.details = JSON.stringify(this.place.details)
+
+          // Set point on map
+          this.$root.$emit('addMarker', a)
+        }
+        this.$emit('input', { ...this.place })
+    },
     search: debounce(async function(ev) {
       const search = ev.target.value.trim().toLowerCase()
       this.places = await this.$axios.$get(`place?search=${search}`)
@@ -85,6 +144,7 @@ export default {
       if (typeof p === 'object' && !p.create) {
         this.place.name = p.name.trim()
         this.place.address = p.address
+        this.place.details = p.details
         this.place.id = p.id
         this.disableAddress = true
       } else { // this is a new place
@@ -96,6 +156,7 @@ export default {
           this.place.name = place.name
           this.place.id = place.id
           this.place.address = place.address
+          this.place.details = place.details
           this.disableAddress = true
         } else {
           delete this.place.id

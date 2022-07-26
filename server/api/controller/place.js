@@ -60,7 +60,7 @@ module.exports = {
           { address: where(fn('LOWER', col('address')), 'LIKE', '%' + search + '%')},
         ]
       },
-      attributes: ['name', 'address', 'id'],
+      attributes: ['name', 'address', 'details', 'id'],
       include: [{ model: Event, where: { is_visible: true }, required: true, attributes: [] }],
       group: ['place.id'],
       raw: true,
@@ -70,6 +70,6 @@ module.exports = {
 
     // TOFIX: don't know why limit does not work
     return res.json(places.slice(0, 10))
-  }  
+  }
 
 }

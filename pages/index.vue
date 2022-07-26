@@ -17,6 +17,13 @@ v-container.pa-0
       //- v-btn(to='/search' color='primary' ) {{$t('common.search')}}
       v-form(to='/search' action='/search' method='GET')
         v-text-field(name='search' :label='$t("common.search")' outlined rounded hide-details :append-icon='mdiMagnify')
+        v-btn.ma-4(@click="displayMap") Show map
+
+  //- Map optional
+  v-row.ma-2
+    .col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0
+        client-only(placeholder='Loading...' v-if="showMap")
+          Map
 
   //- Events
   #events.mb-2.mt-1.pl-1.pl-sm-2
@@ -33,7 +40,9 @@ import { mdiMagnify } from '@mdi/js'
 
 export default {
   name: 'Index',
-  components: { Event, Announcement, Calendar },
+  components: { Event, Announcement, Calendar,
+    Map: () => import('@/components/Map.vue')
+  },
   middleware: 'setup',
   async asyncData ({ $api }) {
     const events = await $api.getEvents({
@@ -53,7 +62,8 @@ export default {
       events: [],
       start: dayjs().startOf('month').unix(),
       end: null,
-      selectedDay: null
+      selectedDay: null,
+      showMap: false,
     }
   },
   head () {
@@ -130,6 +140,9 @@ export default {
     },
     dayChange (day) {
       this.selectedDay = day ? dayjs.tz(day).format('YYYY-MM-DD') : null
+    },
+    displayMap () {
+      this.showMap = !this.showMap;
     }
   }
 }

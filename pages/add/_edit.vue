@@ -28,12 +28,15 @@ v-container.container.pa-0.pa-md-3
                 autofocus
                 ref='title')
 
-            //- Where
-            v-col(cols=12)
-              WhereInput(ref='where' v-model='event.place')
+            v-row
+              //- Where
+              v-col(cols=12 md=6)
+                  WhereInput(ref='where' v-model='event.place')
 
-            //- When
-            DateInput(v-model='date' :event='event')
+              //- When
+              v-col(cols=12 md=6)
+                DateInput(v-model='date' :event='event')
+
             //- Description
             v-col.px-0(cols='12')
               Editor.px-3.ma-0(
@@ -136,7 +139,7 @@ export default {
       valid: false,
       openImportDialog: false,
       event: {
-        place: { name: '', address: '' },
+        place: { name: '', address: '', details: {} },
         title: '',
         description: '',
         tags: [],
@@ -213,6 +216,7 @@ export default {
       }
       formData.append('place_name', this.event.place.name)
       formData.append('place_address', this.event.place.address)
+      formData.append('place_details', this.event.place.details)
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
       formData.append('start_datetime', dayjs(this.date.from).unix())

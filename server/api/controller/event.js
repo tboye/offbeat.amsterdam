@@ -44,7 +44,7 @@ const eventController = {
       order: [[Sequelize.col('w'), 'DESC']],
       where: {
         tag: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('tag')), 'LIKE', '%' + search + '%'),
-      },      
+      },
       attributes: [['tag','label'], [Sequelize.cast(Sequelize.fn('COUNT', Sequelize.col('tag.tag')), 'INTEGER'), 'w']],
       include: [{ model: Event, where: { is_visible: true }, attributes: [], through: { attributes: [] }, required: true }],
       group: ['tag.tag'],
@@ -110,7 +110,7 @@ const eventController = {
           attributes: ['tag'],
           through: { attributes: [] }
         },
-        { model: Place, required: true, attributes: ['id', 'name', 'address'] }
+        { model: Place, required: true, attributes: ['id', 'name', 'address', 'details'] }
       ],
       replacements,
       limit: 30,
@@ -192,7 +192,7 @@ const eventController = {
         },
         include: [
           { model: Tag, required: false, attributes: ['tag'], through: { attributes: [] } },
-          { model: Place, attributes: ['name', 'address', 'id'] },
+          { model: Place, attributes: ['name', 'address', 'details', 'id'] },
           {
             model: Resource,
             where: !is_admin && { hidden: false },
@@ -222,7 +222,7 @@ const eventController = {
         recurrent: null,
         [Op.or]: [
           { start_datetime: { [Op.gt]: event.start_datetime } },
-          { 
+          {
             start_datetime: event.start_datetime,
             id: { [Op.gt]: event.id }
           }
@@ -239,7 +239,7 @@ const eventController = {
         recurrent: null,
         [Op.or]: [
           { start_datetime: { [Op.lt]: event.start_datetime } },
-          { 
+          {
             start_datetime: event.start_datetime,
             id: { [Op.lt]: event.id }
           }
@@ -399,7 +399,8 @@ const eventController = {
           }
           place = await Place.create({
             name: body.place_name,
-            address: body.place_address
+            address: body.place_address,
+            details: body.place_details
           })
         }
       }
@@ -540,7 +541,7 @@ const eventController = {
       })
 
       await event.setPlace(place)
-      
+
       // create/assign tags
       let tags = []
       if (body.tags) {
@@ -596,7 +597,7 @@ const eventController = {
 
   /**
    * Method to search for events with pagination and filtering
-   * @returns 
+   * @returns
    */
   async _select ({
     start = dayjs().unix(),
@@ -637,7 +638,7 @@ const eventController = {
 
     const replacements = []
     if (tags && places) {
-      where[Op.and] = [ 
+      where[Op.and] = [
         { placeId: places ? places.split(',') : []},
         Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=event.id AND LOWER(${Col('tagTag')}) in (?)`))
       ]
@@ -651,10 +652,10 @@ const eventController = {
 
     let pagination = {}
     if (limit) {
-      pagination = { 
+      pagination = {
         limit,
         offset: limit * page,
-      } 
+      }
     }
 
     const events = await Event.findAll({
@@ -670,7 +671,7 @@ const eventController = {
           attributes: ['tag'],
           through: { attributes: [] }
         },
-        { model: Place, required: true, attributes: ['id', 'name', 'address'] }
+        { model: Place, required: true, attributes: ['id', 'name', 'address', 'details'] }
       ],
       ...pagination,
       replacements
