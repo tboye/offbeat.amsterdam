@@ -28,14 +28,25 @@ v-container.container.pa-0.pa-md-3
                 autofocus
                 ref='title')
 
-            v-row
+            v-row(v-if="settings.allow_geolocalization")
               //- Where
               v-col(cols=12 md=6)
-                  WhereInput(ref='where' v-model='event.place')
+                WhereInput(ref='where' v-model='event.place')
 
               //- When
               v-col(cols=12 md=6)
                 DateInput(v-model='date' :event='event')
+
+            v-row(v-else)
+              //- Where
+              v-col(cols=12)
+                WhereInput(ref='where' v-model='event.place')
+
+              //- When
+              v-col(cols=12)
+                DateInput(v-model='date' :event='event')
+
+
 
             //- Description
             v-col.px-0(cols='12')
@@ -93,7 +104,9 @@ export default {
     ImportDialog,
     MediaInput,
     WhereInput,
-    DateInput
+    DateInput,
+    Map: () => import('~/components/Map')
+
   },
   validate ({ store }) {
     return (store.state.auth.loggedIn || store.state.settings.allow_anon_event)

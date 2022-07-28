@@ -48,6 +48,37 @@ v-container
       inset
       :label="$t('admin.recurrent_event_visible')")
 
+    v-switch.mt-1(v-model='allow_geolocalization'
+      inset
+      :label="$t('admin.allow_geolocalization')")
+
+    v-switch.mt-1(v-if='allow_geolocalization'
+      v-model='map_home_visible'
+      inset
+      :label="$t('admin.map_home_visible')")
+
+    v-row
+      v-card-actions(v-if='map_home_visible')
+        v-btn(text @click='showMap=true')
+          <v-icon color='info' v-text='mdiArrowRight'></v-icon> {{$t('admin.center_map')}}
+
+      v-dialog(v-model='showMap' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
+        v-card
+          Map
+        v-card-actions
+          v-spacer
+          v-btn(@click='showMap=false' color='error') {{$t('common.cancel')}}
+          v-btn(@click='centerMap' color='primary' ) {{$t('common.save')}}
+
+      v-col(md=3)
+        v-text-field(v-model='map_center'
+          :label="$t('common.center')")
+
+      v-col(md=3)
+        v-text-field(v-model='map_zoom'
+          type="number"
+          :label="$t('common.zoom')")
+
   v-dialog(v-model='showSMTP' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
     SMTP(@close='showSMTP = false')
 
@@ -70,7 +101,7 @@ export default {
   props: {
     setup: { type: Boolean, default: false }
   },
-  components: { SMTP },
+  components: { SMTP, Map: () => import('@/components/Map') },
   name: 'Settings',
   data ({ $store }) {
     return {
@@ -79,7 +110,13 @@ export default {
       description: $store.state.settings.description,
       locales: Object.keys(locales).map(locale => ({ value: locale, text: locales[locale] })),
       showSMTP: false,
+      showMap: false,
     }
+  },
+  mounted () {
+    this.$root.$on('newCenter', (center, zoom) => {
+      this.newCenter(center, zoom)
+    });
   },
   computed: {
     ...mapState(['settings']),
@@ -107,6 +144,24 @@ export default {
       get () { return this.settings.recurrent_event_visible },
       set (value) { this.setSetting({ key: 'recurrent_event_visible', value }) }
     },
+    allow_geolocalization: {
+      get () { return this.settings.allow_geolocalization },
+      set (value) { this.setSetting({ key: 'allow_geolocalization', value });
+        if (value == false) { this.setSetting({ key: 'map_home_visible', value }); }
+      },
+    },
+    map_home_visible: {
+      get () { return this.settings.map_home_visible },
+      set (value) { this.setSetting({ key: 'map_home_visible', value }) }
+    },
+    map_center: {
+      get () { return this.settings.map_center },
+      set (value) { this.setSetting({ key: 'map_center', value }) }
+    },
+    map_zoom: {
+      get () { return this.settings.map_zoom },
+      set (value) { this.setSetting({ key: 'map_zoom', value }) }
+    },
     filteredTimezones () {
       const current_timezone = moment.tz.guess()
       tzNames.unshift(current_timezone)
@@ -119,7 +174,22 @@ export default {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
       }
-    }
+    },
+    async centerMap() {
+      console.log('centered')
+      this.$root.$emit('centerMap')
+      // console.log(center)
+
+      // this.map_center = center
+    },
+    newCenter(center, zoom) {
+      console.log('newcenter')
+      console.log(center)
+      console.log(zoom)
+
+      this.setSetting({ key: 'map_center', value: center })
+      this.setSetting({ key: 'map_zoom', value: zoom })
+    },
   }
 }
 </script>

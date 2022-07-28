@@ -88,7 +88,8 @@
         "max_events": "N. max events",
         "label": "Label",
         "collections": "Collections",
-        "close": "Close"
+        "close": "Close",
+        "details": "Details"
     },
     "login": {
         "description": "By logging in you can publish new events.",
@@ -166,7 +167,8 @@
         "choose_focal_point": "Choose the focal point",
         "remove_media_confirmation": "Do you confirm the image removal?",
         "download_flyer": "Download flyer",
-        "address_description": "What is the address of the event?"
+        "address_description": "What is the address of the event?",
+        "address_placeholder": "123 placeholder street"
     },
     "admin": {
         "place_description": "If you have gotten the place or address wrong, you can change it.<br/>All current and past events associated with this place will change address.",
@@ -183,6 +185,9 @@
         "allow_registration_description": "Allow open registrations?",
         "allow_anon_event": "Allow anonymous events (has to be confirmed)?",
         "allow_recurrent_event": "Allow recurring events",
+        "allow_geolocalization": "Allow geolocalization of events",
+        "map_home_visible": "Show the map in home",
+        "center_map": "Center the map",
         "recurrent_event_visible": "Show recurring events by default",
         "federation": "Federation / ActivityPub",
         "enable_federation": "Turn on federation",

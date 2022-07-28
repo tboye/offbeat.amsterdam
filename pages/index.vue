@@ -17,11 +17,11 @@ v-container.pa-0
       //- v-btn(to='/search' color='primary' ) {{$t('common.search')}}
       v-form(to='/search' action='/search' method='GET')
         v-text-field(name='search' :label='$t("common.search")' outlined rounded hide-details :append-icon='mdiMagnify')
-        v-btn.ma-4(@click="displayMap") Show map
+        v-btn.ma-4(@click="displayMap" v-if='settings.map_home_visible') Show map
 
   //- Map optional
-  v-row.ma-2
-    .col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0
+  v-row.ma-2(v-if='settings.map_home_visible')
+    #map.col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0
         client-only(placeholder='Loading...' v-if="showMap")
           Map
 
@@ -147,3 +147,20 @@ export default {
   }
 }
 </script>
+
+<style>
+
+  #map #leaflet-map {
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    #map #leaflet-map {
+      width:calc(100% - 4rem);
+      margin:0 auto;
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 <template lang="pug">
 v-col(cols=12)
-  v-combobox(ref='place'
+  v-combobox.mb-5.mt-0(ref='place'
     :rules="[$validators.required('common.where')]"
     :label="$t('common.where')"
     :hint="$t('event.where_description')"
@@ -21,9 +21,11 @@ v-col(cols=12)
           v-list-item-title(v-text='item.name')
           v-list-item-subtitle(v-text='item.address')
 
-  <map-component></map-component>
+  #map-form.v-row.mb-14(v-if='settings.allow_geolocalization')
+    client-only
+      Map
 
-  v-combobox(ref='address'
+  v-combobox(ref='address' v-if='settings.allow_geolocalization'
       persistent-hint hide-no-data clearable no-filter
       :prepend-icon='mdiMap'
       @input.native='searchAddress'
@@ -31,6 +33,7 @@ v-col(cols=12)
       :hint="$t('event.address_description')"
       :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
       :label="$t('common.address')"
+      :placeholder="$t('event.address_placeholder')"
       :value='value.address'
       :loading='loading'
       @change='selectAddress')
@@ -40,16 +43,26 @@ v-col(cols=12)
             v-list-item-title(v-text='item.properties.geocoding.name')
             v-list-item-subtitle(v-text='item.properties.geocoding.label')
 
+  v-col(cols=12 md=6 v-else)
+    v-text-field(ref='address'
+      :prepend-icon='mdiMap'
+      :disabled='disableAddress'
+      :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
+      :label="$t('common.address')"
+      @change="changeAddress"
+      :value="value.address")
+
+
 </template>
 <script>
 import { mdiMap, mdiMapMarker, mdiPlus } from '@mdi/js'
 import debounce from 'lodash/debounce'
-import MapComponent from './MapComponent'
+import { mapState } from 'vuex'
 
 export default {
   name: 'WhereInput',
   components: {
-    MapComponent: () => import(/* webpackChunkName: "add" */'@/components/MapComponent.vue')
+    Map: () => import('@/components/Map')
   },
   props: {
     value: { type: Object, default: () => ({}) }
@@ -67,6 +80,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['settings']),
     filteredPlaces () {
       if (!this.placeName) { return this.places }
       const placeName = this.placeName.trim().toLowerCase()
@@ -90,11 +104,9 @@ export default {
     searchAddress: debounce(async function(ev) {
         if (!ev) { return }
         if (ev.target.value.length < this.address_length) {
-          // Update Counter
           this.address_length = ev.target.value.length
           return
         } else {
-          // Update Counter
           this.address_length = ev.target.value.length
         }
 
@@ -175,3 +187,19 @@ export default {
   }
 }
 </script>
+
+<style>
+  #map-form #leaflet-map {
+    height: 266px;
+    width: 100%;
+    max-width: 498px;
+    margin: 1.25rem auto;
+  }
+
+
+ @media (max-width: 600px) {
+   #map-form #leaflet-map {
+     padding: 0;
+   }
+  }
+</style>
