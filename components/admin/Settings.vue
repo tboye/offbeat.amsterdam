@@ -64,17 +64,18 @@ v-container
 
       v-dialog(v-model='showMap' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
         v-card
-          Map
+          client-only
+            Map
         v-card-actions
           v-spacer
           v-btn(@click='showMap=false' color='error') {{$t('common.cancel')}}
           v-btn(@click='centerMap' color='primary' ) {{$t('common.save')}}
 
-      v-col(md=3)
+      v-col(md=3 v-if='map_home_visible')
         v-text-field(v-model='map_center'
           :label="$t('common.center')")
 
-      v-col(md=3)
+      v-col(md=3 v-if='map_home_visible')
         v-text-field(v-model='map_zoom'
           type="number"
           :label="$t('common.zoom')")
@@ -155,7 +156,7 @@ export default {
       set (value) { this.setSetting({ key: 'map_home_visible', value }) }
     },
     map_center: {
-      get () { return this.settings.map_center },
+      get () { return JSON.stringify(this.settings.map_center)  },
       set (value) { this.setSetting({ key: 'map_center', value }) }
     },
     map_zoom: {
@@ -175,18 +176,10 @@ export default {
         this.setSetting({ key, value })
       }
     },
-    async centerMap() {
-      console.log('centered')
+    centerMap() {
       this.$root.$emit('centerMap')
-      // console.log(center)
-
-      // this.map_center = center
     },
     newCenter(center, zoom) {
-      console.log('newcenter')
-      console.log(center)
-      console.log(zoom)
-
       this.setSetting({ key: 'map_center', value: center })
       this.setSetting({ key: 'map_zoom', value: zoom })
     },

@@ -23,7 +23,7 @@ v-col(cols=12)
 
   #map-form.v-row.mb-14(v-if='settings.allow_geolocalization')
     client-only
-      Map
+      MapInput
 
   v-combobox(ref='address' v-if='settings.allow_geolocalization'
       persistent-hint hide-no-data clearable no-filter
@@ -62,7 +62,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'WhereInput',
   components: {
-    Map: () => import('@/components/Map')
+    MapInput: () => import('@/components/MapInput')
   },
   props: {
     value: { type: Object, default: () => ({}) }
@@ -78,6 +78,11 @@ export default {
       indirizzi: [],
       loading: false,
     }
+  },
+  mounted() {
+    this.$root.$on('inputPlace', (a) => {
+      this.selectPlace(a)
+    });
   },
   computed: {
     ...mapState(['settings']),
@@ -138,6 +143,7 @@ export default {
           this.place.details = JSON.stringify(this.place.details)
 
           // Set point on map
+          console.log(a)
           this.$root.$emit('addMarker', a)
         }
         this.$emit('input', { ...this.place })

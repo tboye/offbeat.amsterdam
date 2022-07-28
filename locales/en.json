@@ -89,7 +89,9 @@
         "label": "Label",
         "collections": "Collections",
         "close": "Close",
-        "details": "Details"
+        "details": "Details",
+        "zoom": "Zoom",
+        "center": "Center"
     },
     "login": {
         "description": "By logging in you can publish new events.",

@@ -1,8 +1,6 @@
 <template >
   <client-only>
-    <l-map ref="map" id="leaflet-map" :zoom="zoom" :center="center"
-      @update:center="centerUpdated"
-      @update:zoom="zoomUpdated">
+    <l-map ref="map_input" id="leaflet-map-input" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
       <l-marker
@@ -11,8 +9,10 @@
         :lat-lng="item.position"
         :visible="item.visible"
         :draggable="item.draggable"
-        @click="filterPlace(item)"
+        @click="usePlace(item)"
       >
+        <l-popup :content="item.id">
+        </l-popup>
       </l-marker>
     </l-map>
 
@@ -21,16 +21,16 @@
 <script>
 
 import 'leaflet/dist/leaflet.css';
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 import dayjs from 'dayjs';
 import { mapState } from 'vuex'
-
 
 export default {
    components: {
      LMap,
      LTileLayer,
-     LMarker
+     LMarker,
+     LPopup,
    },
    data ({ $store }) {
      return {
@@ -45,20 +45,14 @@ export default {
    },
    mounted() {
      this.getEvents();
-     this.$root.$on('centerMap', () => {
-       this.centerMap()
+     this.$root.$on('addMarker', (a) => {
+       this.addMarker(a)
      });
-     setTimeout(() => {
-       this.$refs.map.mapObject.invalidateSize();
-     }, 200);
    },
    computed: {
      ...mapState(['settings']),
    },
    methods: {
-     centerMap () {
-       this.$root.$emit('newCenter', this.center, this.zoom)
-     },
      zoomUpdated (zoom) {
        this.zoom = zoom;
      },
@@ -78,6 +72,16 @@ export default {
          }
        });
 
+     },
+     addMarker(d) {
+       let newMarker = [{
+         id: d.properties.geocoding.osm_id,
+         position: { lat: d.geometry.coordinates[1], lng: d.geometry.coordinates[0] },
+         draggable: false,
+         visible: true
+       }]
+       this.markers.push.apply(this.markers, newMarker)
+       this.$refs.map_input.mapObject.panTo({lat: d.geometry.coordinates[1], lng: d.geometry.coordinates[0]})
      },
      addMarkers(d) {
        this.event = JSON.stringify(d);
@@ -99,15 +103,15 @@ export default {
 
        this.markers.push.apply(this.markers, newMarker)
      },
-     filterPlace(item) {
-       this.$router.push("/place/"+item.place.name);
+     usePlace(item) {
+       this.$root.$emit('inputPlace', { ...item.place })
      }
    }
 }
 </script>
 
 <style>
-  #leaflet-map {
+  #leaflet-map-input {
     height: 300px;
     border-radius: .5rem;
     border: 1px solid #fff;
