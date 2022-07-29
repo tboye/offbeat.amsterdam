@@ -1,6 +1,6 @@
 <template lang="pug">
 v-col(cols=12)
-  v-combobox.mb-5.mt-0(ref='place'
+  v-combobox.mb-4.mt-0(ref='place'
     :rules="[$validators.required('common.where')]"
     :label="$t('common.where')"
     :hint="$t('event.where_description')"
@@ -143,7 +143,6 @@ export default {
           this.place.details = JSON.stringify(this.place.details)
 
           // Set point on map
-          console.log(a)
           this.$root.$emit('addMarker', a)
         }
         this.$emit('input', { ...this.place })
@@ -195,16 +194,15 @@ export default {
 </script>
 
 <style>
-  #map-form #leaflet-map {
+  #map-form #leaflet-map-input {
     height: 266px;
     width: 100%;
     max-width: 498px;
-    margin: 1.25rem auto;
+    margin: 1rem auto;
   }
 
-
  @media (max-width: 600px) {
-   #map-form #leaflet-map {
+   #map-form #leaflet-map-input {
      padding: 0;
    }
   }

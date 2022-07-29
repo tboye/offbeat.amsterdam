@@ -1,6 +1,6 @@
 <template >
   <client-only>
-    <l-map ref="map_input" id="leaflet-map-input" :zoom="zoom" :center="center">
+    <l-map ref="mapinput" id="leaflet-map-input" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
       <l-marker
@@ -81,7 +81,7 @@ export default {
          visible: true
        }]
        this.markers.push.apply(this.markers, newMarker)
-       this.$refs.map_input.mapObject.panTo({lat: d.geometry.coordinates[1], lng: d.geometry.coordinates[0]})
+       this.$refs.mapinput.mapObject.panTo({lat: d.geometry.coordinates[1], lng: d.geometry.coordinates[0]})
      },
      addMarkers(d) {
        this.event = JSON.stringify(d);

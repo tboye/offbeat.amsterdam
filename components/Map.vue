@@ -20,11 +20,10 @@
 </template>
 <script>
 
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import dayjs from 'dayjs';
-import { mapState } from 'vuex'
-
+import { mapActions, mapState } from 'vuex'
 
 export default {
    components: {
@@ -56,8 +55,11 @@ export default {
      ...mapState(['settings']),
    },
    methods: {
-     centerMap () {
-       this.$root.$emit('newCenter', this.center, this.zoom)
+     ...mapActions(['setSetting']),
+     async centerMap () {
+       await this.setSetting({ key: 'map_center', value: this.center })
+       await this.setSetting({ key: 'map_zoom', value: this.zoom })
+       return
      },
      zoomUpdated (zoom) {
        this.zoom = zoom;

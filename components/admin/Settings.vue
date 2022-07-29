@@ -57,28 +57,26 @@ v-container
       inset
       :label="$t('admin.map_home_visible')")
 
-    v-row
-      v-card-actions(v-if='map_home_visible')
-        v-btn(text @click='showMap=true')
-          <v-icon color='info' v-text='mdiArrowRight'></v-icon> {{$t('admin.center_map')}}
+    v-card-actions(v-if='map_home_visible')
+      v-btn(text @click='showMap=true')
+        <v-icon color='primary' v-text='mdiMap'></v-icon> {{$t('admin.center_map')}}
 
-      v-dialog(v-model='showMap' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
-        v-card
-          client-only
-            Map
-        v-card-actions
-          v-spacer
-          v-btn(@click='showMap=false' color='error') {{$t('common.cancel')}}
-          v-btn(@click='centerMap' color='primary' ) {{$t('common.save')}}
-
-      v-col(md=3 v-if='map_home_visible')
-        v-text-field(v-model='map_center'
-          :label="$t('common.center')")
-
-      v-col(md=3 v-if='map_home_visible')
-        v-text-field(v-model='map_zoom'
-          type="number"
-          :label="$t('common.zoom')")
+    v-dialog(v-model='showMap' destroy-on-close min-height="500px" max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
+      v-card
+        client-only
+          Map
+      v-card-actions
+        v-spacer
+        v-btn(@click='showMap=false' color='error') {{$t('common.cancel')}}
+        v-btn(@click='centerMap' color='primary' ) {{$t('common.save')}}
+      v-row.mx-auto
+        v-col(cols=12 md=9)
+          v-text-field(v-model='map_center'
+            :label="$t('common.center')")
+        v-col(cols=12 md=3)
+          v-text-field(v-model='map_zoom'
+            type="number"
+            :label="$t('common.zoom')")
 
   v-dialog(v-model='showSMTP' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
     SMTP(@close='showSMTP = false')
@@ -96,7 +94,7 @@ import { mapActions, mapState } from 'vuex'
 import moment from 'dayjs'
 import tzNames from './tz.json'
 import locales from '../../locales/esm'
-import { mdiAlert, mdiArrowRight } from '@mdi/js'
+import { mdiAlert, mdiArrowRight, mdiMap } from '@mdi/js'
 
 export default {
   props: {
@@ -106,18 +104,13 @@ export default {
   name: 'Settings',
   data ({ $store }) {
     return {
-      mdiAlert, mdiArrowRight,
+      mdiAlert, mdiArrowRight, mdiMap,
       title: $store.state.settings.title,
       description: $store.state.settings.description,
       locales: Object.keys(locales).map(locale => ({ value: locale, text: locales[locale] })),
       showSMTP: false,
       showMap: false,
     }
-  },
-  mounted () {
-    this.$root.$on('newCenter', (center, zoom) => {
-      this.newCenter(center, zoom)
-    });
   },
   computed: {
     ...mapState(['settings']),
@@ -178,11 +171,7 @@ export default {
     },
     centerMap() {
       this.$root.$emit('centerMap')
-    },
-    newCenter(center, zoom) {
-      this.setSetting({ key: 'map_center', value: center })
-      this.setSetting({ key: 'map_zoom', value: zoom })
-    },
+    }
   }
 }
 </script>

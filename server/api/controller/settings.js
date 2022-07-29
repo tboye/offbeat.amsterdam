@@ -31,6 +31,8 @@ const defaultSettings = {
   recurrent_event_visible: false,
   allow_geolocalization: false,
   map_home_visible: false,
+  map_center: {lat: 42, lng: 12},
+  map_zoom: 5,
   enable_federation: true,
   enable_resources: false,
   hide_boosts: true,
