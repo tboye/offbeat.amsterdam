@@ -81,7 +81,7 @@ export default {
   },
   mounted() {
     this.$root.$on('inputPlace', (a) => {
-      this.selectPlace(a)
+      this.selectPlace(a);
     });
   },
   computed: {
@@ -139,9 +139,6 @@ export default {
           this.place.address = a.properties.geocoding.label
           // Store full Nominatim data under place.details
           this.place.details = JSON.stringify(a)
-          this.place.details = JSON.parse(this.place.details)
-          this.place.details = JSON.stringify(this.place.details)
-
           // Set point on map
           this.$root.$emit('addMarker', a)
         }
@@ -164,6 +161,14 @@ export default {
         this.place.details = p.details
         this.place.id = p.id
         this.disableAddress = true
+
+        if (this.settings.allow_geolocalization) {
+          let a = p.details
+          if (typeof a !== 'object') {
+            a = JSON.parse(JSON.parse(p.details))
+          }
+          this.$root.$emit('panTo', a.geometry.coordinates)
+        }
       } else { // this is a new place
         this.place.name = p.name || p
         const tmpPlace = this.place.name.trim().toLocaleLowerCase()

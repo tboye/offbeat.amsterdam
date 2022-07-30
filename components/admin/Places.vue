@@ -84,7 +84,7 @@ export default {
       this.place.name = item.name
       this.place.address = item.address
       if (this.settings.allow_geolocalization) {
-        this.place.details = item.details
+        this.place.details = JSON.parse(item.details)
       }
       this.place.id = item.id
       this.dialog = true

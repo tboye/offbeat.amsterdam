@@ -9,9 +9,10 @@
         :lat-lng="item.position"
         :visible="item.visible"
         :draggable="item.draggable"
-        @click="usePlace(item)"
+        @click="item.place && usePlace(item)"
       >
-        <l-popup :content="item.id">
+        <l-popup >
+          <p>{{item.place && item.place.name }}</p>
         </l-popup>
       </l-marker>
     </l-map>
@@ -25,14 +26,6 @@ import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 import dayjs from 'dayjs';
 import { mapState } from 'vuex'
 import { Icon } from 'leaflet';
-
-delete Icon.Default.prototype._getIconUrl;
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
-
 
 export default {
    components: {
@@ -53,15 +46,28 @@ export default {
      }
    },
    mounted() {
+     delete Icon.Default.prototype._getIconUrl;
+     Icon.Default.mergeOptions({
+       iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+       iconUrl: require('leaflet/dist/images/marker-icon.png'),
+       shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+     });
+
      this.getEvents();
      this.$root.$on('addMarker', (a) => {
        this.addMarker(a)
+     });
+     this.$root.$on('panTo', (a) => {
+       this.panTo(a)
      });
    },
    computed: {
      ...mapState(['settings']),
    },
    methods: {
+     panTo (center) {
+       this.$refs.mapinput.mapObject.panTo({lat: center[1], lng: center[0]})
+     },
      zoomUpdated (zoom) {
        this.zoom = zoom;
      },
