@@ -18,8 +18,8 @@ const db = {
     }
   },
   connect (dbConf = config.db) {
-    log.debug(`Connecting to DB: ${JSON.stringify(dbConf)}`)
     dbConf.dialectOptions = { autoJsonMap: true }
+    log.debug(`Connecting to DB: ${JSON.stringify(dbConf)}`)
     if (dbConf.dialect === 'sqlite') {
       dbConf.retry = {
         match: [
@@ -62,7 +62,7 @@ const db = {
     return umzug.up()    
   },
   async initialize () {
-    if (config.status === 'READY') {
+    if (config.status === 'CONFIGURED') {
       try {
         await db.connect()
         log.debug('Running migrations')
