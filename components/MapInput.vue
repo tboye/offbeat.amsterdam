@@ -55,10 +55,14 @@ export default {
 
      this.getEvents();
      this.$root.$on('addMarker', (a) => {
-       this.addMarker(a)
+       if (this.$refs.mapinput) {
+         this.addMarker(a)
+       }
      });
      this.$root.$on('panTo', (a) => {
-       this.panTo(a)
+       if (this.$refs.mapinput) {
+         this.panTo(a)
+       }
      });
    },
    computed: {

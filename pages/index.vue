@@ -41,7 +41,7 @@ import { mdiMagnify } from '@mdi/js'
 export default {
   name: 'Index',
   components: { Event, Announcement, Calendar,
-    Map: () => import('@/components/Map.vue')
+    [process.client && 'Map']: () => import('@/components/Map.vue')
   },
   middleware: 'setup',
   async asyncData ({ $api }) {

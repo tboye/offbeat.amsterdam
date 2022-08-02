@@ -62,7 +62,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'WhereInput',
   components: {
-    MapInput: () => import('@/components/MapInput')
+    [process.client && 'MapInput']: () => import('@/components/MapInput')
   },
   props: {
     value: { type: Object, default: () => ({}) }
