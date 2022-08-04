@@ -11,8 +11,11 @@
         :lat-lng="item.position"
         :visible="item.visible"
         :draggable="item.draggable"
-        @click="filterPlace(item)"
+
       >
+      <l-popup >
+        <a @click="filterPlace(item)">{{item.place && item.place.name }}</a>
+      </l-popup>
       </l-marker>
     </l-map>
 
@@ -21,7 +24,7 @@
 <script>
 
 import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 import dayjs from 'dayjs';
 import { mapActions, mapState } from 'vuex'
 import { Icon } from 'leaflet';
@@ -30,7 +33,8 @@ export default {
    components: {
      LMap,
      LTileLayer,
-     LMarker
+     LMarker,
+     LPopup
    },
    data ({ $store }) {
      return {

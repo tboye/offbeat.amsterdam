@@ -7,23 +7,21 @@ v-container.pa-0
 
   //- Calendar and search bar
   v-row.ma-2
-    #calh.col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0
+    #calh.col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0(v-if='!showMap')
       //- this is needed as v-calendar does not support SSR
       //- https://github.com/nathanreyes/v-calendar/issues/336
       client-only(placeholder='Loading...')
         Calendar(@dayclick='dayChange' @monthchange='monthChange' :events='events')
+    //- Map optional
+    #map.col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0(v-if='settings.map_home_visible && showMap')
+        client-only(placeholder='Loading...' )
+          Map
 
     .col.pt-0.pt-md-2.mt-4.ma-md-0.pb-0
       //- v-btn(to='/search' color='primary' ) {{$t('common.search')}}
       v-form(to='/search' action='/search' method='GET')
         v-text-field(name='search' :label='$t("common.search")' outlined rounded hide-details :append-icon='mdiMagnify')
-        v-btn.ma-4(@click="displayMap" v-if='settings.map_home_visible') Show map
-
-  //- Map optional
-  v-row.ma-2(v-if='settings.map_home_visible')
-    #map.col-xl-5.col-lg-5.col-md-7.col-sm-12.col-xs-12.pa-0.ma-0
-        client-only(placeholder='Loading...' v-if="showMap")
-          Map
+      v-btn.mt-4(min-width="13em" @click="displayMap" v-if='settings.map_home_visible') {{ !showMap && 'Show map' || 'Show calendar' }}
 
   //- Events
   #events.mb-2.mt-1.pl-1.pl-sm-2
@@ -153,14 +151,8 @@ export default {
   #map #leaflet-map {
     width: 100%;
     max-width: 100%;
-    height: 300px;
+    height: 268px;
     margin: 0;
   }
 
-  @media (max-width: 600px) {
-    #map #leaflet-map {
-      width:calc(100% - 4rem);
-      margin:0 auto;
-    }
-  }
 </style>

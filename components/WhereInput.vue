@@ -1,6 +1,6 @@
 <template lang="pug">
-v-col(cols=12)
-  v-combobox.mb-4.mt-0(ref='place'
+.d-flex(v-bind:class="flexClass")
+  v-combobox.mb-3.mt-0.mr-4(ref='place'
     :rules="[$validators.required('common.where')]"
     :label="$t('common.where')"
     :hint="$t('event.where_description')"
@@ -21,12 +21,13 @@ v-col(cols=12)
           v-list-item-title(v-text='item.name')
           v-list-item-subtitle(v-text='item.address')
 
-  #map-form.v-row.mb-14(v-if='settings.allow_geolocalization')
+  #map-form.v-row.mt-05.mb-11(v-if='settings.allow_geolocalization')
     client-only
       MapInput
 
-  v-combobox(ref='address' v-if='settings.allow_geolocalization'
+  v-combobox.mr-4(ref='address' v-if='settings.allow_geolocalization'
       persistent-hint hide-no-data clearable no-filter
+      :disabled='disableAddress'
       :prepend-icon='mdiMap'
       @input.native='searchAddress'
       :items="indirizzi.features"
@@ -43,8 +44,7 @@ v-col(cols=12)
             v-list-item-title(v-text='item.properties.geocoding.name')
             v-list-item-subtitle(v-text='item.properties.geocoding.label')
 
-  v-col(cols=12 md=6 v-else)
-    v-text-field(ref='address'
+  v-text-field.mt-0(ref='address' v-if='!settings.allow_geolocalization'
       :prepend-icon='mdiMap'
       :disabled='disableAddress'
       :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
@@ -103,6 +103,9 @@ export default {
         matches.unshift({ create: true, name: this.placeName })
       }
       return matches
+    },
+    flexClass() {
+      if (this.settings.allow_geolocalization) { return 'flex-column' } else { return 'col col-12'}
     }
   },
   methods: {

@@ -28,16 +28,16 @@ v-container.container.pa-0.pa-md-3
                 autofocus
                 ref='title')
 
-            v-row(v-if="settings.allow_geolocalization")
-              //- Where
-              v-col(cols=12 md=6)
-                WhereInput(ref='where' v-model='event.place')
-
+            v-row.mt-2(v-if="settings.allow_geolocalization")
               //- When
               v-col(cols=12 md=6)
                 DateInput(v-model='date' :event='event')
 
-            v-row(v-else)
+              //- Where
+              v-col(cols=12 md=6)
+                WhereInput(ref='where' v-model='event.place')
+
+            v-row.mt-2(v-else)
               //- Where
               v-col(cols=12)
                 WhereInput(ref='where' v-model='event.place')
