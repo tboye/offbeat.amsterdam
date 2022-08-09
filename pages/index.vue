@@ -86,9 +86,9 @@ export default {
     visibleEvents () {
       const now = dayjs().unix()
       if (this.selectedDay) {
-        const min = dayjs(this.selectedDay).startOf('day').unix()
-        const max = dayjs(this.selectedDay).endOf('day').unix()
-        return this.events.filter(e => (e.start_datetime <= max && e.start_datetime >= min))
+        const min = dayjs.tz(this.selectedDay).startOf('day').unix()
+        const max = dayjs.tz(this.selectedDay).endOf('day').unix()
+        return this.events.filter(e => (e.start_datetime <= max && e.end_datetime >= min))
       } else if (this.isCurrentMonth) {
         return this.events.filter(e => e.end_datetime ? e.end_datetime > now : e.start_datetime + 2 * 60 * 60 > now)
       } else {
