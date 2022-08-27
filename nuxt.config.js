@@ -1,10 +1,15 @@
 const config = require('./server/config.js')
 const minifyTheme = require('minify-css-string').default
 
-const isDev = (process.env.NODE_ENV !== 'production')
+const isGenerate = (process.env.NODE_ENV === 'generate')
+const isDev = (process.env.NODE_ENV !== 'production' && !isGenerate)
+
+
 module.exports = {
   telemetry: false,
   modern: (process.env.NODE_ENV === 'production') && 'client',
+
+  target: isGenerate ? 'static' : 'server',
   /*
    ** Headers of the page
    */
@@ -35,7 +40,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/i18n.js',
+    // '@/plugins/i18n.js',
     '@/plugins/filters', // text filters, datetime filters, generic transformation helpers etc.
     '@/plugins/axios', // axios baseurl configuration
     '@/plugins/validators', // inject validators
@@ -48,10 +53,21 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/i18n',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/sitemap'
   ],
+
+  i18n: {
+    locales: [
+      { code: 'en', file: 'en.json' },
+      { code: 'it', file: 'it.json' }
+    ],
+    lazy: true,
+    langDir: 'locales/',
+    defaultLocale: 'en'
+  },
 
   sitemap: {
     hostname: config.baseurl,
