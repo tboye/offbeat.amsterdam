@@ -7,13 +7,23 @@ process.env.cwd = process.env.GANCIO_DATA || path.resolve('./')
 
 process.chdir(path.resolve(__dirname, '..'))
 
-async function start () {
+async function start() {
   require('@nuxt/cli-edge').run(['start', '--modern'])
     .catch((error) => {
       console.error(error)
       process.exit(2)
     })
 }
+
+async function generate() {
+  process.env.NODE_ENV = 'generate'
+  require('@nuxt/cli-edge').run(['generate', '--modern'])
+    .catch((error) => {
+      console.error(error)
+      process.exit(2)
+    })
+}
+
 
 console.info(`📅 ${pkg.name} - v${pkg.version} - ${pkg.description} (nodejs: ${process.version})`)
 
@@ -27,8 +37,10 @@ require('yargs')
       const absolute_config_path = path.resolve(process.env.cwd, config_path)
       process.env.config_path = absolute_config_path
       return absolute_config_path
-    }})
+    }
+  })
   .command(['start', 'run', '$0'], 'Start gancio', {}, start)
+  .command(['generate'], 'Generate static gancio', {}, generate)
   .command(['accounts'], 'Manage accounts', accountsCLI)
   .help('h')
   .alias('h', 'help')
