@@ -73,14 +73,31 @@ module.exports = {
 
   async initSettings(_req, res, next) {
     // initialize settings
-    res.locals.settings = cloneDeep(settingsController.settings)
-    delete res.locals.settings.smtp
-    delete res.locals.settings.publicKey
-    res.locals.settings.baseurl = config.baseurl
-    res.locals.settings.hostname = config.hostname
-    res.locals.settings.title = res.locals.settings.title || config.title
-    res.locals.settings.description = res.locals.settings.description || config.description
-    res.locals.settings.version = pkg.version
+    // res.locals.settings = cloneDeep(settingsController.settings)
+    const settings = settingsController.settings
+    res.locals.settings = {
+      title: settings.title || config.title,
+      description: settings.description || config.description,
+      baseurl: config.baseurl,
+      hostname: config.hostname,
+      version: pkg.version,
+      instance_timezone: settings.instance_timezone,
+      instance_locale: settings.instance_locale,
+      instance_name: settings.instance_name,
+      instance_place: settings.instance_place,
+      allow_registration: settings.allow_registration,
+      allow_anon_event: settings.allow_anon_event,
+      allow_recurrent_event: settings.allow_recurrent_event,
+      recurrent_event_visible: settings.recurrent_event_visible,
+      enable_federation: settings.enable_federation,
+      enable_resources: settings.enable_resources,
+      hide_boosts: settings.hide_boosts,
+      enable_trusted_instances: settings.enable_trusted_instances,
+      trusted_instances: settings.trusted_instances,
+      'theme.is_dark': settings['theme.is_dark'],
+      'theme.primary': settings['theme.primary'],
+      footerLinks: settings.footerLinks
+    }
     // set user locale
     res.locals.user_locale = settingsController.user_locale[res.locals.acceptedLocale]
     dayjs.tz.setDefault(res.locals.settings.instance_timezone)
