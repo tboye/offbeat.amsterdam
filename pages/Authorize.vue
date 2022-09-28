@@ -1,18 +1,19 @@
 <template lang='pug'>
-.d-flex.justify-space-around
+v-form.d-flex.justify-space-around(method='post' action='/oauth/authorize')
   v-card.mt-5(max-width='600px')
     v-card-title {{settings.title}} - {{$t('common.authorize')}}
     v-card-text
+      input(name='transaction_id' :value='transactionID')
       u {{$auth.user.email}}
       div
         p(v-html="$t('oauth.authorization_request', { app: client.name, instance_name: settings.title })")
-        ul.mb-2
-          li(v-for="s in scope.split(' ')") {{$t(`oauth.scopes.${scope}`)}}
+        //- ul.mb-2
+          //- li(v-for="s in scope.split(' ')") {{$t(`oauth.scopes.${scope}`)}}
         span(v-html="$t('oauth.redirected_to', {url: $route.query.redirect_uri})")
     v-card-actions
       v-spacer
-      v-btn(color='error' to='/') {{$t('common.cancel')}}
-      v-btn(:href='authorizeURL' color='success') {{$t('common.authorize')}}
+      v-btn(color='error' to='/' outlined) {{$t('common.cancel')}}
+      v-btn(type='submit' color='success' outlined) {{$t('common.authorize')}}
 </template>
 
 <script>
@@ -23,34 +24,36 @@ export default {
   layout: 'modal',
   middleware: ['auth'],
   async asyncData ({ $axios, query, error, req }) {
-    const { client_id, redirect_uri, scope, response_type } = query
-    let err = ''
-    if (!client_id) {
-      err = 'client_id is missing'
-    }
-    if (!redirect_uri) {
-      err = 'redirect_uri is missing'
-    }
-    if (!scope || scope !== 'event:write') {
-      err = 'scope is missing or wrong'
-    }
-    if (!response_type || response_type !== 'code') {
-      err = 'response_type is missing or wrong'
-    }
+    const { transactionID } = query
+    // const { client_id, redirect_uri, scope, response_type } = query
+    // let err = ''
+    // if (!client_id) {
+    //   err = 'client_id is missing'
+    // }
+    // if (!redirect_uri) {
+    //   err = 'redirect_uri is missing'
+    // }
+    // if (!scope || scope !== 'event:write') {
+    //   err = 'scope is missing or wrong'
+    // }
+    // if (!response_type || response_type !== 'code') {
+    //   err = 'response_type is missing or wrong'
+    // }
 
     // retrieve client validity
-    try {
-      const client = await $axios.$get(`/client/${client_id}`)
-      if (!client) {
-        err = 'client not found'
-      }
-      if (err) {
-        return error({ statusCode: 404, message: err })
-      }
-      return { client, redirect_uri, scope, response_type }
-    } catch (e) {
-      error({ statusCode: 400, message: 'Something goes wrong with OAuth authorization' })
-    }
+    // try {
+      // const client = await $axios.$get(`/client/${client_id}`)
+      // if (!client) {
+      //   err = 'client not found'
+      // }
+      // if (err) {
+      //   return error({ statusCode: 404, message: err })
+      // }
+      // return { client, redirect_uri, scope, response_type }
+      return { transactionID }
+    // } catch (e) {
+    //   error({ statusCode: 400, message: 'Something goes wrong with OAuth authorization' })
+    // }
   },
   data () {
     return {

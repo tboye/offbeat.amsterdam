@@ -27,7 +27,7 @@ function wpgancio_update_options ($old_value, $instance_url) {
     'client_id=' . get_option('wpgancio_client_id'),
   ));
 
-  wp_redirect("${instance_url}/authorize?${query}");
+  wp_redirect("${instance_url}/oauth/authorize?${query}");
   exit;
 }
 
