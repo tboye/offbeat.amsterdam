@@ -60,7 +60,6 @@ async function verifyPublicClient (client_id, done) {
   try {
 
     const client = await OAuthClient.findByPk(client_id, { raw: true })
-    console.error('ritorno ', client)
     done(null, client)
   } catch (e) {
     done(null, { message: e.message })
@@ -193,7 +192,6 @@ oauthServer.exchange(oauth2orize.exchange.code(async (client, code, redirect_uri
 oauthServer.exchange(oauth2orize.exchange.password(async (client, username, password, scope, done) => {
   // Validate the client
   const oauthClient = await OAuthClient.findByPk(client.id)
-  console.error('sono qui dovrei validare il client ', oauthClient, username, password)
   if (!oauthClient) { // || oauthClient.client_secret !== client.clientSecret) {
     return done(null, false)
   }
@@ -297,13 +295,14 @@ const oauthController = {
 
       // Auto-approve
       if (client.isTrusted) return done(null, true);
-
+      if (!user) {
+        return done(null, false)
+      }
       const token = await OAuthToken.findOne({ where: { clientId: client.id, userId: user.id }})
       // Auto-approve
       if (token) {
         return done(null, true)
       }
-      console.error('sono qui e devo fare ask user ?!')
       // Otherwise ask user
       return done(null, false)
 
