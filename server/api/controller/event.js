@@ -400,8 +400,6 @@ const eventController = {
       return res.status(400).json(req.err.toString())
     }
 
-    console.error('dentro add di un event', req.user)
-
     try {
       const body = req.body
       const recurrent = body.recurrent ? JSON.parse(body.recurrent) : null
@@ -499,8 +497,6 @@ const eventController = {
       log.warn(req.err)
       return res.status(400).json(req.err.toString())
     }
-
-    console.error('dentro add di un event', req.user)
 
     try {
       const body = req.body
