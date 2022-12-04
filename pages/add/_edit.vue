@@ -129,11 +129,9 @@ export default {
       const due = event.end_datetime && dayjs.unix(event.end_datetime)
       data.date = {
         recurrent: event.recurrent,
-        from: from.toDate(),
-        due: due && due.toDate(),
-        multidate: event.multidate,
-        fromHour: from.format('HH:mm'),
-        dueHour: due && due.format('HH:mm')
+        from,
+        due,
+        multidate: event.multidate
       }
 
       data.event.title = event.title
@@ -190,17 +188,16 @@ export default {
     }, 100),
     eventImported(event) {
       this.event = Object.assign(this.event, event)
+      console.error(event)
 
       this.$refs.where.selectPlace({ name: event.place.name || event.place, address: event.place.address })
       const from = dayjs.unix(this.event.start_datetime)
       const due = this.event.end_datetime && dayjs.unix(this.event.end_datetime)
       this.date = {
         recurrent: this.event.recurrent || null,
-        from: from.toDate(),
-        due: due && due.toDate(),
+        from,
+        due,
         multidate: event.multidate,
-        fromHour: from.format('HH:mm'),
-        dueHour: due && due.format('HH:mm')
       }
       this.openImportDialog = false
     },
@@ -239,11 +236,9 @@ export default {
       formData.append('place_longitude', this.event.place.longitude)
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
-      let [hour, minute] = this.date.fromHour.split(':')
-      formData.append('start_datetime', dayjs(this.date.from).hour(Number(hour)).minute(Number(minute)).second(0).unix())
-      if (this.date.dueHour) {
-        [hour, minute] = this.date.dueHour.split(':')
-        formData.append('end_datetime', dayjs(this.date.due).hour(Number(hour)).minute(Number(minute)).second(0).unix())
+      formData.append('start_datetime', this.date.from.unix())
+      if (this.date.due) {
+        formData.append('end_datetime', this.date.due.unix())
       }
 
       if (this.edit) {
