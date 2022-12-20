@@ -50,7 +50,8 @@ Event.init({
   is_visible: DataTypes.BOOLEAN,
   recurrent: DataTypes.JSON,
   likes: { type: DataTypes.JSON, defaultValue: [] },
-  boost: { type: DataTypes.JSON, defaultValue: [] }
+  boost: { type: DataTypes.JSON, defaultValue: [] },
+  locations: { type: DataTypes.JSON, defaultValue: [] }
 }, { sequelize, modelName: 'event' })
 
 Event.belongsTo(Place)
@@ -107,8 +108,10 @@ Event.prototype.toAP = function (username, locale, to = []) {
       name: this.place.name,
       address: this.place.address,
       latitude: this.place.latitude,
-      longitude: this.place.longitude
+      longitude: this.place.longitude,
+      url: this.place.url
     },
+    locations: this.event.locations,
     attachment,
     tag: tags && tags.map(tag => ({
       type: 'Hashtag',

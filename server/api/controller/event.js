@@ -36,14 +36,14 @@ const eventController = {
     const place_address = body.place_address && body.place_address.trim()
     if (!place_address || !place_name) {
       throw new Error(`place_id or place_name and place_address are required`)
-    }    
+    }
     let place = await Place.findOne({ where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), Sequelize.Op.eq, place_name.toLocaleLowerCase()) })
     if (!place) {
       place = await Place.create({
         name: place_name,
         address: place_address,
         latitude: body.place_latitude,
-        longitude: body.place_longitude        
+        longitude: body.place_longitude
       })
     }
     return place
@@ -404,6 +404,10 @@ const eventController = {
 
     try {
       const body = req.body
+
+      console.log('mostra body')
+      console.log(body)
+
       const recurrent = body.recurrent ? JSON.parse(body.recurrent) : null
 
       const required_fields = ['title', 'start_datetime']
@@ -432,6 +436,7 @@ const eventController = {
         multidate: body.multidate,
         start_datetime: body.start_datetime,
         end_datetime: body.end_datetime,
+        locations: body.locations,
         recurrent,
         // publish this event only if authenticated
         is_visible: !!req.user
@@ -516,6 +521,7 @@ const eventController = {
         multidate: body.multidate,
         start_datetime: body.start_datetime || event.start_datetime,
         end_datetime: body.end_datetime || null,
+        locations: body.locations,
         recurrent
       }
 

@@ -29,7 +29,16 @@ v-container#event.pa-0.pa-sm-2
               .text-h6.p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
                 v-icon(v-text='mdiMapMarker' small)
                 nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-button(itemprop="name" :to='`/place/${encodeURIComponent(event.place.name)}`') {{event.place && event.place.name}}
-                .text-caption.p-street-address(itemprop='address') {{event.place && event.place.address}}
+                .text-caption.p-street-address(itemprop='address') {{event.place && (event.place.address !== 'online' ? event.place.address : '') }}
+
+            //- online events
+            v-divider(v-if='event.locations.length')
+            v-list-item(v-if='event.locations.length' :href='`${event.locations[0]}`')
+              v-list-item-icon
+                v-icon.my-auto(v-text='mdiMonitorAccount')
+              v-list-item-content
+                v-list-item-title.mt-2.mb-2(v-text="event.place.name === 'online' && $t('event.online_event_only') || $t('event.online_event_too') ")
+                v-chip.mb-2(v-for='location in event.locations' small label v-text="location" dense color='color')
 
             //- tags, hashtags
             v-card-text.pt-0(v-if='event.tags && event.tags.length')
@@ -63,7 +72,7 @@ v-container#event.pa-0.pa-sm-2
                     v-icon(v-text='mdiCodeTags')
                   v-list-item-content
                     v-list-item-title(v-text="$t('common.embed')")
-                
+
                 //- calendar
                 v-list-item(:href='`/api/event/${event.slug || event.id}.ics`')
                   v-list-item-icon
@@ -154,9 +163,9 @@ v-container#event.pa-0.pa-sm-2
 
       v-dialog(v-model='showEmbed' width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
         EmbedEvent(:event='event' @close='showEmbed=false')
-      
+
       v-dialog(v-show='settings.allow_geolocation && event.place.latitude && event.place.longitude' v-model='mapModal' :fullscreen='$vuetify.breakpoint.xsOnly' destroy-on-close)
-        Map(:event='event' @close='mapModal=false')        
+        Map(:event='event' @close='mapModal=false')
 
 </template>
 <script>
@@ -172,7 +181,7 @@ const { htmlToText } = require('html-to-text')
 
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp } from '@mdi/js'
+  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount } from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -194,7 +203,7 @@ export default {
   data () {
     return {
       mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline,
-      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiLock, mdiMap, mdiChevronUp,
+      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiLock, mdiMap, mdiChevronUp, mdiMonitorAccount,
       currentAttachment: 0,
       event: {},
       diocane: '',
@@ -370,5 +379,3 @@ export default {
   }
 }
 </script>
-
-

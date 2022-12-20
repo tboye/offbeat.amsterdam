@@ -30,7 +30,7 @@ v-container.container.pa-0.pa-md-3
 
             //- Where
             v-col(cols=12)
-              WhereInput(ref='where' v-model='event.place')
+              WhereInput(ref='where' v-model='event.place' :event='event')
 
             //- When
             DateInput(ref='when' v-model='date' :event='event')
@@ -125,6 +125,10 @@ export default {
 
       data.event.place.name = event.place.name
       data.event.place.address = event.place.address || ''
+      data.event.place.latitude = event.place.latitude || ''
+      data.event.place.longitude = event.place.longitude || ''
+      data.event.place.url = event.place.url || ''
+      data.event.locations = event.locations || []
       const from = dayjs.unix(event.start_datetime)
       const due = event.end_datetime && dayjs.unix(event.end_datetime)
       data.date = {
@@ -154,6 +158,7 @@ export default {
       openImportDialog: false,
       event: {
         place: { name: '', address: '', latitude: null, longitude: null },
+        locations: [],
         title: '',
         description: '',
         tags: [],
@@ -238,6 +243,18 @@ export default {
       formData.append('place_address', this.event.place.address)
       formData.append('place_latitude', this.event.place.latitude)
       formData.append('place_longitude', this.event.place.longitude)
+      formData.append('place_url', this.event.place.url)
+
+      // console.log('append')
+      // console.log(this.event.locations)
+      if (this.event.locations.length) {
+        this.event.locations.forEach(location => formData.append('locations[]', location.url))
+      } else {
+        // delete
+        this.event.locations = []
+        formData.append('locations', this.event.locations )
+      }
+
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
       let [hour, minute] = this.date.fromHour.split(':')

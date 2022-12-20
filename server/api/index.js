@@ -90,6 +90,7 @@ if (config.status !== 'READY') {
    * @param {integer} [end] - end timestamp (optional)
    * @param {array} [tags] - List of tags
    * @param {array} [places] - List of places id
+   * @param {array} [locations] - List of locations
    * @param {integer} [max] - Limit events
    * @param {boolean} [show_recurrent] - Show also recurrent events (default: as choosen in admin settings)
    * @param {integer} [page] - Pagination
@@ -116,6 +117,7 @@ if (config.status !== 'READY') {
    * @param {integer} start_datetime - start timestamp
    * @param {integer} multidate - is a multidate event?
    * @param {array} tags - List of tags
+   * @param {array} [locations] - List of locations url
    * @param {object} [recurrent] - Recurrent event details
    * @param {string} [recurrent.frequency] - could be `1w` or `2w`
    * @param {array} [recurrent.days] - array of days

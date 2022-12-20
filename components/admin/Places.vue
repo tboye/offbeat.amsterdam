@@ -109,7 +109,7 @@ export default {
       if (!this.$refs.form.validate()) return
       this.loading = true
       await this.$axios.$put('/place', this.place)
-      await this.$fetch()
+      // await this.$fetch()
       this.loading = false
       this.dialog = false
     },

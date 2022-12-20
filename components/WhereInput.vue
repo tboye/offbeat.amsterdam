@@ -22,72 +22,90 @@ v-row.mb-4
             v-list-item-title(v-text='item.name')
             v-list-item-subtitle(v-text='item.address')
 
-
   v-col(cols=12 md=6)
-    v-text-field(v-if="!settings.allow_geolocation"
-        ref='address'
-        :prepend-icon='mdiMap'
-        :disabled='disableAddress'
-        :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
-        :label="$t('common.address')"
-        :hint="$t('event.address_description')"
-        persistent-hint
-        @change="changeAddress"
-        :value="value.address")
-    v-combobox(ref='address' v-else
-      :prepend-icon='mdiMapSearch'
-      :disabled='disableAddress'
-      @input.native='searchAddress'
-      :label="$t('common.address')"
-      :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
-      :value='value.address'
-      item-text='address'
-      persistent-hint hide-no-data clearable no-filter
-      :loading='loading'
-      @change='selectAddress'
-      @focus='searchAddress'
-      :items="addressList"
-      :hint="$t('event.address_description_osm')")
-      template(v-slot:message="{message, key}")
-        span(v-html='message' :key="key")
-      template(v-slot:item="{ item, attrs, on  }")
-        v-list-item(v-bind='attrs' v-on='on')
-          v-icon.pr-4(v-text='loadCoordinatesResultIcon(item)')
-          v-list-item-content(two-line v-if='item')
-            v-list-item-title(v-text='item.name')
-            v-list-item-subtitle(v-text='`${item.address}`')
-  //- v-col(cols=12 md=3 v-if='settings.allow_geolocation')
-  //-   v-text-field(ref='latitude' :value='value.latitude'
-  //-         :prepend-icon='mdiLatitude'
-  //-         :disabled='disableDetails'
-  //-         :label="$t('common.latitude')" )
-  //- v-col(cols=12 md=3 v-if='settings.allow_geolocation')
-  //-   v-text-field(ref='longitude' :value='value.longitude'
-  //-         :prepend-icon='mdiLongitude'
-  //-         :disabled='disableDetails'
-  //-         :label="$t('common.longitude')")
+      v-row.mx-0.my-0.align-center.justify-end
+        v-combobox.mt-1.mr-4(v-model="virtualLocations" v-if="value.name === 'online'"
+          :prepend-icon='mdiLink'
+          :hint="`Online locations, for instance a url to a videconference room`"
+          :label="$t('event.online_event_urls')"
+          clearable chips small-chips multiple deletable-chips hide-no-data hide-selected persistent-hint
+          :delimiters="[',', ';', '; ']"
+          :items="virtualLocations"
+          @change='selectLocations')
+          template(v-slot:selection="{ item, on, attrs, selected, parent }")
+            v-chip(v-bind="attrs" close :close-icon='mdiCloseCircle' @click:close='parent.selectItem(item)'
+              :input-value="selected" label small) {{ item }}
+        v-text-field.mt-1.mr-4(v-if="!settings.allow_geolocation" v-show="!online_event_only && value.address !== 'online'"
+          ref='address'
+          :prepend-icon='mdiMap'
+          :disabled='disableAddress'
+          :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
+          :label="$t('common.address')"
+          :hint="$t('event.address_description')"
+          persistent-hint
+          @change="changeAddress"
+          :value="value.address")
+        v-combobox.mt-1.mr-4(ref='address' v-else v-show="!online_event_only && value.name !== 'online'"
+          :prepend-icon='mdiMapSearch'
+          :disabled='disableAddress'
+          @input.native='searchAddress'
+          :label="$t('common.address')"
+          :rules="[ v => disableAddress ? true : $validators.required('common.address')(v)]"
+          :value='value.address'
+          item-text='address'
+          persistent-hint hide-no-data clearable no-filter
+          :loading='loading'
+          @change='selectAddress'
+          @focus='searchAddress'
+          :items="addressList"
+          :hint="$t('event.address_description_osm')")
+          template(v-slot:message="{message, key}")
+            span(v-html='message' :key="key")
+          template(v-slot:item="{ item, attrs, on  }")
+            v-list-item(v-bind='attrs' v-on='on')
+              v-icon.pr-4(v-text='loadCoordinatesResultIcon(item)')
+              v-list-item-content(two-line v-if='item')
+                v-list-item-title(v-text='item.name')
+                v-list-item-subtitle(v-text='`${item.address}`')
+
+        v-btn.m-4(@click="whereInputAdvancedDialog = true" :disabled='!value.name')
+          v-icon.m-4(v-text="mdiCog")
+
+  v-dialog(v-model='whereInputAdvancedDialog' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly' dense)
+    WhereInputAdvanced(ref='whereAdvanced' :place.sync='value' :event='event' @close='whereInputAdvancedDialog = false'
+      :virtualLocations.sync="virtualLocations"
+      :online_event_only.sync='online_event_only'
+      @update:onlineEvent="changeOnlineEvent"
+      @update:virtualLocations="selectLocations"
+      )
 
 </template>
 <script>
-import { mdiMap, mdiMapMarker, mdiPlus, mdiMapSearch, mdiLatitude, mdiLongitude, mdiRoadVariant, mdiHome, mdiCityVariant } from '@mdi/js'
+import { mdiMap, mdiMapMarker, mdiPlus, mdiMapSearch, mdiLatitude, mdiLongitude, mdiRoadVariant, mdiHome, mdiCityVariant, mdiCog, mdiLink, mdiCloseCircle } from '@mdi/js'
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
+import WhereInputAdvanced from './WhereInputAdvanced.vue'
 
 export default {
   name: 'WhereInput',
   props: {
-    value: { type: Object, default: () => ({}) }
+    value: { type: Object, default: () => ({}) },
+    event: { type: Object, default: () => null },
   },
+  components: { WhereInputAdvanced },
   data ( {$store} ) {
     return {
-      mdiMap, mdiMapMarker, mdiPlus, mdiMapSearch, mdiLatitude, mdiLongitude, mdiRoadVariant, mdiHome, mdiCityVariant,
+      mdiMap, mdiMapMarker, mdiPlus, mdiMapSearch, mdiLatitude, mdiLongitude, mdiRoadVariant, mdiHome, mdiCityVariant, mdiCog, mdiLink, mdiCloseCircle,
       place: { },
       placeName: '',
       places: [],
       disableAddress: true,
       addressList: [],
       loading: false,
+      whereInputAdvancedDialog: false,
+      online_event_only: (this.value.name === 'online') ? true : false,
+      virtualLocations: this.event.locations || [],
       nominatim_osm_type: {
         way: mdiRoadVariant,
         house: mdiHome,
@@ -149,6 +167,9 @@ export default {
       }
     },
     selectPlace (p) {
+      // force online events under place: online address: online
+      this.online_event_only = false
+
       if (!p) { return }
       if (typeof p === 'object' && !p.create) {
         if (p.id === this.value.id) return
@@ -169,6 +190,8 @@ export default {
           this.place.name = place.name
           this.place.id = place.id
           this.place.address = place.address
+          this.place.latitude = place.latitude
+          this.place.longitude = place.longitude
           this.disableAddress = true
         } else {
           delete this.place.id
@@ -183,12 +206,33 @@ export default {
           this.$refs.address.focus()
         }
       }
+
       this.$emit('input', { ...this.place })
     },
     changeAddress (v) {
       this.place.address = v
       this.$emit('input', { ...this.place })
       this.disableDetails = false
+    },
+    selectLocations () {
+      this.event.locations = []
+      this.virtualLocations && this.virtualLocations.forEach((item, i) => {
+        if (!item.startsWith('http')) {
+          this.virtualLocations[i] = `https://${item}`
+        }
+        this.event.locations[i] = {'type': 'virtualLocation', 'url': this.virtualLocations[i] }
+      })
+    },
+    changeOnlineEvent(v) {
+      this.online_event_only = v
+      if (this.online_event_only) { this.place.name = this.place.address = 'online' }
+      if (!this.online_event_only) { this.place.name = this.place.address = '' }
+      this.place.latitude = null
+      this.place.longitude = null
+
+      // update virtualLocations
+      this.event.locations && this.selectLocations()
+      this.$emit('input', { ...this.place })
     },
     selectAddress (v) {
       if (!v) { return }
