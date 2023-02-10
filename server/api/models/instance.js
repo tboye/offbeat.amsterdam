@@ -7,5 +7,6 @@ module.exports = (sequelize, DataTypes) =>
   },
   name: DataTypes.STRING,
   blocked: DataTypes.BOOLEAN,
+  // friendly: DataTypes.BOOLEAN,
   data: DataTypes.JSON
 })

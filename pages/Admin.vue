@@ -3,7 +3,8 @@ v-container.container.pa-0.pa-md-3
   v-card
     v-alert(v-if='url!==settings.baseurl' outlined type='warning' show-icon :icon='mdiAlert')
       span(v-html="$t('admin.wrong_domain_warning', { url, baseurl: settings.baseurl })")
-    v-tabs(v-model='selectedTab' show-arrows :next-icon='mdiChevronRight' :prev-icon='mdiChevronLeft')
+
+    v-tabs(v-model='selectedTab' show-arrows :next-icon='mdiChevronRight' :prev-icon='mdiChevronLeft' vertical)
 
       //- SETTINGS
       v-tab(href='#settings') {{$t('common.settings')}}

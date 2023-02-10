@@ -1,5 +1,6 @@
 const Follows = require('./follows')
 const Resources = require('./resources')
+const Events = require('./events')
 const Ego = require('./ego')
 const log = require('../log')
 
@@ -39,6 +40,7 @@ module.exports = async (req, res) => {
         await Resources.create(req, res)
       } else if (b.object.type === 'Event') {
         log.debug('Event type is coming!!')
+        await Events.create(req, res)
       } else {
         // await Resources.create(req, res)
         log.warn(`Create with unsupported Object or not a reply => ${b.object.type}`)

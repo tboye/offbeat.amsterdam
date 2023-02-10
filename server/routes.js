@@ -5,6 +5,7 @@ const initialize = require('./initialize.server')
 const config = require('./config')
 const helpers = require('./helpers')
 const api = require('./api')
+const federation = require('./federation')
 
 async function main () {
   const log = require('./log')
@@ -31,7 +32,6 @@ async function main () {
   if (config.status === 'READY') {
     const cors = require('cors')
     const { spamFilter } = require('./federation/helpers')
-    const federation = require('./federation')
     const webfinger = require('./federation/webfinger')
     const exportController = require('./api/controller/export')
     const tagController = require('./api/controller/tag')
