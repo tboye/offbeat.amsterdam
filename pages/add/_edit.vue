@@ -34,6 +34,7 @@ v-container.container.pa-0.pa-md-3
 
             //- When
             DateInput(ref='when' v-model='date' :event='event')
+
             //- Description
             v-col.px-0(cols='12')
               Editor.px-3.ma-0(
@@ -140,6 +141,8 @@ export default {
       data.event.id = event.id
       data.event.tags = event.tags
       data.event.media = event.media || []
+      data.event.parentId = event.parentId
+      data.event.recurrent = event.recurrent
       return data
     }
     return {}
@@ -251,11 +254,13 @@ export default {
       if (this.event.tags) { this.event.tags.forEach(tag => formData.append('tags[]', tag.tag || tag)) }
       try {
         if (this.edit) {
-          await this.$axios.$put('/event', formData)
+          const ret = await this.$axios.$put('/event', formData)
+          this.$router.push(`/event/${ret.slug}`)
+
         } else {
-          await this.$axios.$post('/event', formData)
+          const ret = await this.$axios.$post('/event', formData)
+          this.$router.push(`/event/${ret.slug}`)
         }
-        this.$router.push('/')
         this.$nextTick(() => {
           this.$root.$message(this.$auth.loggedIn ? (this.edit ? 'event.saved' : 'event.added') : 'event.added_anon', { color: 'success' })
         })

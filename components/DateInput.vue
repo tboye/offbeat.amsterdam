@@ -1,7 +1,7 @@
 <template lang="pug">
 v-col(cols=12)
   .text-center
-    v-btn-toggle.v-col-6.flex-column.flex-sm-row(v-model='type' color='primary' @change='type => change("type", type)')
+    v-btn-toggle.v-col-6.flex-column.flex-sm-row(v-if="!event.parentId && !event.recurrent" v-model='type' color='primary' @change='type => change("type", type)')
       v-btn(value='normal' label="normal") {{ $t('event.normal') }}
       v-btn(v-if='settings.allow_multidate_event' value='multidate' label='multidate') {{ $t('event.multidate') }}
       v-btn(v-if='settings.allow_recurrent_event' value='recurrent' label="recurrent") {{ $t('event.recurrent') }}
@@ -10,7 +10,6 @@ v-col(cols=12)
 
     v-btn-toggle.v-col-6.flex-column.flex-sm-row(v-if='type === "recurrent"' color='primary' :value='value.recurrent.frequency' @change='fq => change("frequency", fq)')
       v-btn(v-for='f in frequencies' :key='f.value' :value='f.value') {{ f.text }}
-
     client-only
       .datePicker.mt-3
         v-input(:value='fromDate' :rules="[$validators.required('common.when')]")
@@ -23,10 +22,9 @@ v-col(cols=12)
             :is-dark="is_dark"
             is-inline
             is-expanded
-            :min-date='type !== "recurrent" && new Date()')
-      //- template(#placeholder)
-      .d-flex.calh.justify-center(slot='placeholder')
-        v-progress-circular(indeterminate)
+            :min-date='new Date()')
+      .calh.text-center(slot='placeholder')
+        v-progress-circular(indeterminate color='primary')
 
   div.text-center.mb-2(v-if='type === "recurrent"')
     span(v-if='value.recurrent.frequency !== "1m" && value.recurrent.frequency !== "2m"') {{ whenPatterns }}
@@ -213,13 +211,14 @@ export default {
           if (from && from.start) {
             from = from.start
           }
-          let due = this.value.due
+          let due = this.value.multidate ? null : this.value.due
           if (due && due.start) {
             due = due.start
           }
           this.$emit('input', { ...this.value, from, due, recurrent: null, multidate: false })
         }
       } else if (what === 'frequency') {
+        if (typeof value === 'undefined') { value = '1w' }
         this.$emit('input', { ...this.value, recurrent: { ...this.value.recurrent, frequency: value } })
       } else if (what === 'recurrentType') {
         this.$emit('input', { ...this.value, recurrent: { ...this.value.recurrent, type: value } })
