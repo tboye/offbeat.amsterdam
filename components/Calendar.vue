@@ -9,14 +9,13 @@
       @input='click'
       @update:from-page='updatePage'
       :locale='$i18n.locale'
-      :popover="{ visibility: 'click' }"
       :attributes='attributes'
       transition='fade'
       aria-label='Calendar'
       is-expanded
       is-inline)
-    .calh.d-flex.justify-center.align-center(slot='placeholder')
-      v-progress-circular(indeterminate)
+    .calh.text-center(slot='placeholder')
+      v-progress-circular.mt-5(indeterminate color='primary')
 
   </template>
 

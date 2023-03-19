@@ -10,11 +10,16 @@ v-container.px-2.px-sm-6.pt-0
     Announcement(v-for='announcement in announcements' :key='`a_${announcement.id}`' :announcement='announcement')
 
   //- Events
-  #events.mt-sm-4.mt-2
-    Event(:event='event' v-for='(event, idx) in visibleEvents' :lazy='idx>2' :key='event.id')
+  #events.mt-sm-4.mt-2(v-if='!$fetchState.pending')
+    v-lazy.event(:value='idx<9' v-for='(event, idx) in visibleEvents' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }")
+      Event(:event='event' :lazy='idx<9')
+  .text-center(v-else)
+    v-progress-circular.justify-center.align-center(color='primary' indeterminate model-value='20')
+
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters  } from 'vuex'
 import { DateTime } from 'luxon'
 import Event from '@/components/Event'
 import Announcement from '@/components/Announcement'
@@ -26,14 +31,16 @@ export default {
   components: { Event, Announcement, ThemeView },
   middleware: 'setup',
   fetch () {
-    return this.getEvents({
-      start: this.start,
-      end: this.end
-    })
-  },
-  activated() {
-    if (this.$fetchState.timestamp <= Date.now() - 60000) {
-      this.$fetch()
+    if (this.filter.query) {
+      return this.getEvents({
+        query: this.filter.query,
+        older: true
+      })
+    } else {
+      return this.getEvents({
+        start: this.start,
+        end: this.end,
+      })
     }
   },
   data ({ $time }) {
@@ -68,6 +75,7 @@ export default {
   },
   computed: {
     ...mapState(['settings', 'announcements', 'events', 'filter']),
+    ...mapGetters(['hide_thumbs']),
     visibleEvents () {
       const now = this.$time.nowUnix()
       if (this.selectedDay) {
@@ -84,16 +92,11 @@ export default {
   created () {
     this.$root.$on('dayclick', this.dayChange)
     this.$root.$on('monthchange', this.monthChange)
-    this.storeUnsubscribe = this.$store.subscribeAction( { after: (action, state) => {
-      if (action.type === 'setFilter') {
-        if (this.filter.query && this.filter.query.length > 2) {
-          this.search()
-        } else {
-          this.tmpEvents = []
-          this.$fetch()
-        }
-      }
-    }})
+    if (process.client) {
+      this.storeUnsubscribe = this.$store.subscribeAction( { after: (action, state) => {
+        if (action.type === 'setFilter') { this.$fetch() }
+      }})
+    }
   },
   destroyed () {
     this.$root.$off('dayclick')
@@ -104,15 +107,8 @@ export default {
   },
   methods: {
     ...mapActions(['getEvents']),
-    search: debounce(async function() {
-      this.tmpEvents =  await this.$api.getEvents({
-        start: 0,
-        show_recurrent: this.filter.show_recurrent,
-        show_multidate: this.filter.show_multidate,
-        query: this.filter.query
-      })
-    }, 200),
     async monthChange ({ year, month }) {
+      if (this.filter.query) return
       this.$nuxt.$loading.start()
       let isCurrentMonth
 
