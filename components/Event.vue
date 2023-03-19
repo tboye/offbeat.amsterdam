@@ -6,8 +6,8 @@ div.d-flex.flex-column.flex-grow-1(itemscope itemtype="https://schema.org/Event"
     .title.p-name(itemprop="name") {{ event.title }}
 
   v-card-text.body.pt-0.pb-0
-    time.dt-start.subtitle-1(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content="$time.unixFormat(event.start_datetime, 'yyyy-MM-dd\THH:mm')")  <v-icon v-text='mdiCalendar'></v-icon> {{ $time.when(event) }}
-    .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content="$time.unixFormat(event.end_datetime,'yyyy-MM-DD\THH:mm')") {{ $time.unixFormat(event.end_datetime)}}
+    time.dt-start.subtitle-1(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content="$time.unixFormat(event.start_datetime, \"yyyy-MM-dd'T'HH:mm\")")  <v-icon v-text='mdiCalendar'></v-icon> {{ $time.when(event) }}
+    .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content="$time.unixFormat(event.end_datetime,\"yyyy-MM-dd'T'HH:mm\")") {{ $time.unixFormat(event.end_datetime)}}
     nuxt-link.place.d-block.p-location.pl-0(text :to='`/place/${encodeURIComponent(event.place.name)}`' itemprop="location" itemscope itemtype="https://schema.org/Place") <v-icon v-text='mdiMapMarker'></v-icon> <span itemprop='name'>{{ event.place.name }}</span>
       .d-none(itemprop='address') {{ event.place.address }}
 
