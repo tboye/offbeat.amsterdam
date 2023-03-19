@@ -110,7 +110,7 @@ export const actions = {
   },
   async getEvents ({ commit, state }, params = {}) {
     const events = await this.$api.getEvents({
-      start: params.start || dayjs().startOf('month').unix(),
+      start: params.start || this.$time.startMonth(),
       end: params.end || null,
       show_recurrent: state.filter.show_recurrent,
       show_multidate: state.filter.show_multidate
