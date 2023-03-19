@@ -74,7 +74,6 @@ import debounce from 'lodash/debounce'
 
 import { mdiFileImport, mdiFormatTitle, mdiTagMultiple, mdiCloseCircle } from '@mdi/js'
 
-import List from '@/components/List'
 import Editor from '@/components/Editor'
 import ImportDialog from '@/components/ImportDialog'
 import MediaInput from '@/components/MediaInput'
@@ -84,7 +83,6 @@ import DateInput from '@/components/DateInput'
 export default {
   name: 'NewEvent',
   components: {
-    List,
     Editor,
     ImportDialog,
     MediaInput,
@@ -163,7 +161,6 @@ export default {
       },
       tags: [],
       page: { month, year },
-      fileList: [],
       id: null,
       date: { from: null, due: null, recurrent: null },
       edit: false,
@@ -237,8 +234,8 @@ export default {
       }
       formData.append('place_name', this.event.place.name.trim())
       formData.append('place_address', this.event.place.address)
-      formData.append('place_latitude', this.event.place.latitude)
-      formData.append('place_longitude', this.event.place.longitude)
+      if (this.event.place.latitude) { formData.append('place_latitude', this.event.place.latitude) }
+      if (this.event.place.longitude) { formData.append('place_longitude', this.event.place.longitude) }
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
       formData.append('start_datetime', this.$time.fromDateInput(this.date.from, this.date.fromHour))

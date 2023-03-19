@@ -43,6 +43,7 @@ module.exports = () => {
     api.post('/setup/db', setupController.setupDb)
     api.post('/setup/restart', setupController.restart)
     api.post('/settings/smtp', settingsController.testSMTP)
+    api.get('/locale/:locale', localeController.get)
   
   } else {
   
@@ -132,7 +133,7 @@ module.exports = () => {
      * @param {image} [image] - Image
      */
   
-    // allow anyone to add an event (anon event has to be confirmed, TODO: flood protection)
+    // allow anyone to add an event (anon event has to be confirmed, flood protection)
     api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.single('image'), eventController.add)
   
     // api.get('/event/search', eventController.search)

@@ -39,10 +39,10 @@ export const state = () => ({
 
 export const getters = {
   hide_thumbs (state) {
-    return (state.localSettings['hide_thumbs'] === null) ? state.settings.hide_thumbs : state.localSettings.hide_thumbs
+    return (![true, false].includes(state.localSettings['hide_thumbs'])) ? state.settings.hide_thumbs : state.localSettings.hide_thumbs
   },
   is_dark (state) {
-    return (state.localSettings['theme.is_dark'] === null) ? state.settings['theme.is_dark'] : state.localSettings['theme.is_dark']
+    return (![true, false].includes(state.localSettings['theme.is_dark'])) ? state.settings['theme.is_dark'] : state.localSettings['theme.is_dark']
   }
 }
 
@@ -71,7 +71,6 @@ export const actions = {
   // this method is called server side only for each request for nuxt
   // we use it to get configuration from db, set locale, etc...
   nuxtServerInit ({ commit }, { res, app }) {
-
     if (res.locals && res.locals.settings) {
       commit('setSettings', res.locals.settings)
     }
