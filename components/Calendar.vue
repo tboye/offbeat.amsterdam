@@ -1,43 +1,37 @@
 <template lang="pug">
-  client-only
-    vc-date-picker(
-      ref='cal'
-      v-model='selectedDate'
-      title-position='left'
-      :is-dark="is_dark"
-      :columns="!$vuetify.breakpoint.smAndDown ? 2 : 1"
-      @input='click'
-      @update:from-page='updatePage'
+    v-date-picker(
+      :landscape="landscape"
+      v-model='date'
+      full-width
+      show-adjacent-months
       :locale='$i18n.locale'
-      :attributes='attributes'
-      transition='fade'
-      aria-label='Calendar'
-      is-expanded
-      is-inline)
-    .calh.text-center(slot='placeholder')
-      v-progress-circular.mt-5(indeterminate color='primary')
-
+      aria-label='Calendar')
   </template>
 
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { mdiChevronDown, mdiClose } from '@mdi/js'
 
 export default {
   name: 'Calendar',
   data ({$time}) {
+
     const month = $time.currentMonth()
     const year = $time.currentYear()
     return {
       mdiChevronDown, mdiClose,
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       selectedDate: null,
       page: { month, year },
     }
   },
   computed: {
     ...mapState(['settings', 'events']),
-    ...mapGetters(['is_dark']),
+    landscape () {
+      return true
+      // return this.$vuetify.breakpoint.smAndDown
+    },
     attributes () {
       return this.$time.attributesFromEvents(this.events)
     }
