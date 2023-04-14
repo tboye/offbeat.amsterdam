@@ -13,6 +13,11 @@ module.exports = {
 
     const APEvent = req.body?.object
 
+
+    // check if we are following this user
+    console.error(req.body)
+
+    // 
     console.error(APEvent)
 
     // check if this event is new
