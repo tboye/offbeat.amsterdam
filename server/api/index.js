@@ -171,7 +171,7 @@ module.exports = () => {
     api.get('/event/detail/:event_slug.:format?', cors, eventController.get)
   
     // export events (rss/ics)
-    api.get('/export/:type', cors, exportController.export)
+    api.get('/export/:format', cors, exportController.export)
   
   
     // - PLACES
@@ -220,6 +220,7 @@ module.exports = () => {
   
     // - PLUGINS
     api.get('/plugins', isAdmin, pluginController.getAll)
+    api.post('/plugin/test/:plugin', isAdmin, pluginController.testPlugin)
     api.put('/plugin/:plugin', isAdmin, pluginController.togglePlugin)
   
     // OAUTH
