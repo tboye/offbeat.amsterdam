@@ -8,6 +8,70 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+### 1.6.13 - 16 may '23
+  - fix feed, ics, json exports
+
+### 1.6.12 - 12 may '23
+  - Fixed a bad bug in end time calculation that would sometimes hide the event from the homepage the day it occurred
+  - update locales (Basque, Galician, Italian, Spanish, Catalan)
+  - [fix multiline event description breaks ICS export](https://framagit.org/les/gancio/-/issues/234)
+  - adds online locations and geo coords to ICS export
+  - map marker is now draggable
+  - do not allow duplicate or empty tags in UI
+  - [fix wrong week calculation in recurrent events](https://framagit.org/les/gancio/-/issues/266)
+  - [show full media on upload / add a switch to show preview](https://framagit.org/les/gancio/-/issues/257)
+  - [update image alt text when modified](https://framagit.org/les/gancio/-/issues/267)
+  - [check if place or tag exists](https://framagit.org/les/gancio/-/issues/268)
+  - fix export microformat / microdata events
+  - plugins improvements:
+    - [reload plugins when its settings change](https://framagit.org/les/gancio/-/issues/262)
+    - [allow plugins to use native log system](https://framagit.org/bcn.convocala/gancio-plugin-telegram-bridge/-/issues/6)
+    - [adds a way to test plugins settings from admin](https://framagit.org/bcn.convocala/gancio-plugin-telegram-bridge/-/issues/3)
+    - avoid loading the same plugin twice
+    - update [gancio-plugin-telegram-bridge](https://framagit.org/bcn.convocala/gancio-plugin-telegram-bridge)
+
+### 1.6.11 - 21 apr '23
+  - update deps
+  - update locales (polish, spanish, catalan, galician)
+  - really fix #259
+  - fix #258 without setting TZ env
+  - minor fix with events starting or ending at 00:00
+
+### 1.6.10 - 14 apr '23
+  - add support to online events (thanks @sedum) #26
+  - show past events in tag and place pages #259
+  - fix import from URL for guest, #256
+  - fix ics export timezone, #258
+  - fix autocomplete address when geocoding, #216
+
+### 1.6.8 - 30 mar '23
+  - use new $time in admins table, fix #252
+  - fix some WPGancio issues
+  - new custom color feature!
+  - update locales (durch, spanish, galician)
+  - improve index, tag, place page layout
+  - use luxon instead of dayjs server side, fix #254
+
+### 1.6.7 - 22 mar '23
+  - node is not Intl ready, fix #250
+  - fix old smultidate events without an end_datetime!
+  - fix a small issue during setup
+
+### 1.6.5 - 21 mar '23
+  - optimize home page using lazy loading
+  - add support for server side http proxy (thanks @sedum)
+  - add Duch (nl) locale (thanks @jeoenepraat)
+  - fix #244, dark theme user / admin preference merge issue
+  - fix some issues with recurrent events, #247
+  - improve search flow (order by, press enter or icon...)
+  - filters / helpers refactoring
+  - tag and place pages list all events (past too)
+  - show boosts/bookmarks, fix #241
+  - go to event on save/update
+  - use luxon instead of dayjs, new $time plugin
+  - fix event import from URL
+  - remove an annoying warning from logs
+
 ### 1.6.4 - 22 feb '23
   - add missing i18n during setup
   - really fix #232

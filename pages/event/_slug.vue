@@ -1,10 +1,9 @@
 <template lang="pug">
-v-container#event.pa-0.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-touch="{ left: goNext, right: goPrev }")
-  //- EVENT PAGE
-  //- gancio supports microformats (http://microformats.org/wiki/h-event)
-  //- and microdata https://schema.org/Event
+v-container#event.h-event.pa-2.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-touch="{ left: goNext, right: goPrev }")
+    //- EVENT PAGE
+    //- gancio supports microformats (http://microformats.org/wiki/h-event)
+    //- and microdata https://schema.org/Event
 
-  v-card-text
     v-row
       v-col.col-12.col-md-8
         MyPicture(v-if='hasMedia' :event='event')
@@ -17,27 +16,36 @@ v-container#event.pa-0.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-t
             .title.text-h5
               strong.p-name.text--primary(itemprop="name") {{event.title}}
           v-divider
-          v-card-text.eventDetails
-            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content="$time.unixFormat(event.start_datetime, \"yyyy-MM-dd'T'HH:mm\")")
+          v-container.eventDetails
+            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
               v-icon(v-text='mdiCalendar' small)
               strong.ml-2.text-uppercase {{$time.when(event)}}
-              .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content="$time.unixFormat(event.end_datetime,\"yyyy-MM-dd'T'HH:mm\")") {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
+              .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
             div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
               small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
             .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
               v-icon(v-text='mdiMapMarker' small)
               nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(itemprop="name" :to='`/place/${encodeURIComponent(event.place.name)}`') {{event.place && event.place.name}}
-              .text-weight-light.p-street-address(itemprop='address') {{event.place && event.place.address}}
+              .font-weight-light.p-street-address(v-if='event.place.name !=="online"' itemprop='address') {{event.place && event.place.address}}
 
           //- tags, hashtags
-          v-card-text.pt-0(v-if='event.tags && event.tags.length')
+          v-container.pt-0(v-if='event.tags && event.tags.length')
             v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
               outlined :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
+          //- online events
+          //- v-divider(v-if='hasOnlineLocations')
+          v-list(nav dense v-if='hasOnlineLocations')
+            v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
+              v-list-item-icon
+                v-icon(v-text='mdiMonitorAccount')
+              v-list-item-content.py-0
+                v-list-item-title.text-caption(v-text='item')
+
           v-divider
           //- info & actions
-          v-list(dense nav)
+          v-list(dense nav color='transparent')
               //- v-list-group(:append-icon='mdiChevronUp' :value='true')
               //-   template(v-slot:activator)
               //-     v-list-item.text-overline {{$t('common.actions')}}
@@ -62,7 +70,7 @@ v-container#event.pa-0.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-t
                   v-icon(v-text='mdiCodeTags')
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.embed')")
-              
+
               //- calendar
               v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
                 v-list-item-icon
@@ -77,7 +85,7 @@ v-container#event.pa-0.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-t
                 v-list-item-content
                   v-list-item-title(v-text="$t('event.download_flyer')")
 
-          v-divider
+          v-divider(v-if='is_mine')
 
           //- admin actions
           eventAdmin(v-if='is_mine' :event='event')
@@ -167,9 +175,9 @@ v-container#event.pa-0.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-t
 
     v-dialog(v-model='showEmbed' width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
       EmbedEvent(:event='event' @close='showEmbed=false')
-    
+
     v-dialog(v-show='settings.allow_geolocation && event.place.latitude && event.place.longitude' v-model='mapModal' :fullscreen='$vuetify.breakpoint.xsOnly' destroy-on-close)
-      Map(:event='event' @close='mapModal=false')        
+      EventMapDialog(:event='event' @close='mapModal=false')
 
 </template>
 <script>
@@ -180,12 +188,13 @@ import clipboard from '../../assets/clipboard'
 import MyPicture from '~/components/MyPicture'
 import EventAdmin from '@/components/eventAdmin'
 import EmbedEvent from '@/components/embedEvent'
+import EventMapDialog from '@/components/EventMapDialog'
 
 const { htmlToText } = require('html-to-text')
 
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiBookmark } from '@mdi/js'
+  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark } from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -194,7 +203,7 @@ export default {
     EventAdmin,
     EmbedEvent,
     MyPicture,
-    [process.client && 'Map']: () => import('@/components/Map.vue')
+    EventMapDialog
   },
   async asyncData ({ $axios, params, error }) {
     try {
@@ -204,10 +213,10 @@ export default {
       error({ statusCode: 404, message: 'Event not found' })
     }
   },
-  data () {
+  data ({$store}) {
     return {
       mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline,
-      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiLock, mdiMap, mdiChevronUp, mdiBookmark, mdiShareAll,
+      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiLock, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiShareAll,
       currentAttachment: 0,
       event: {},
       diocane: '',
@@ -295,6 +304,12 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    hasOnlineLocations () {
+      return this.event.online_locations && this.event.online_locations.length
+    },
+    showMap () {
+      return this.settings.allow_geolocation && this.event.place.latitude && this.event.place.longitude
+    },
     hasMedia () {
       return this.event.media && this.event.media.length
     },

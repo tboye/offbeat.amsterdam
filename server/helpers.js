@@ -79,6 +79,7 @@ module.exports = {
       allow_anon_event: settings.allow_anon_event,
       allow_recurrent_event: settings.allow_recurrent_event,
       allow_multidate_event: settings.allow_multidate_event,
+      allow_online_event: settings.allow_online_event,
       recurrent_event_visible: settings.recurrent_event_visible,
       enable_federation: settings.enable_federation,
       enable_resources: settings.enable_resources,
@@ -87,7 +88,8 @@ module.exports = {
       trusted_instances: settings.trusted_instances,
       trusted_instances_label: settings.trusted_instances_label,
       'theme.is_dark': settings['theme.is_dark'],
-      'theme.primary': settings['theme.primary'],
+      dark_colors: settings.dark_colors,
+      light_colors: settings.light_colors,
       hide_thumbs: settings.hide_thumbs,
       hide_calendar: settings.hide_calendar,
       allow_geolocation: settings.allow_geolocation,
@@ -97,11 +99,8 @@ module.exports = {
       tilelayer_provider: settings.tilelayer_provider,
       tilelayer_provider_attribution: settings.tilelayer_provider_attribution,
       footerLinks: settings.footerLinks,
-      about: settings.about
+      about: settings.about,
     }
-    // set user locale
-    // res.locals.user_locale = settingsController.user_locale[res.locals.acceptedLocale]
-    dayjs.tz.setDefault(res.locals.settings.instance_timezone)
     next()
   },
 
@@ -253,16 +252,17 @@ module.exports = {
     let cursor
     if (n === -1) {
       cursor = date.endOf('month')
-      cursor = cursor.day(weekday)
-      if (cursor.month() !== date.month()) {
-        cursor = cursor.subtract(1, 'week')
+      cursor = cursor.set({ weekday })
+      if (cursor.month !== date.month) {
+        cursor = cursor.minus({ days: 7 })
       }
     } else {
       cursor = date.startOf('month')
       cursor = cursor.add(cursor.day() <= date.day() ? n - 1 : n, 'week')
-      cursor = cursor.day(weekday)
+      cursor = cursor.plus({ days: cursor.weekday <= date.weekday ? (n-1) * 7 : n * 7})
+      cursor = cursor.set({ weekday })
     }
-    cursor = cursor.hour(date.hour()).minute(date.minute()).second(0)
+    cursor = cursor.set({ hour: date.hour, minute: date.minute, second: 0 })
     log.debug(cursor)
     return cursor
   },

@@ -223,6 +223,27 @@ describe('Events', () => {
     expect(response.body.title).toBe('test title 4')
     expect(response.body.tags[0]).toBe('test tag')
   })
+
+
+  test('should sanitize htlm in description', async () => {
+    const event = {
+      title: 'test title',
+      place_id: places[0],
+      start_datetime: dayjs().unix() + 1000,
+      tags: ['test tags'],
+      description: `<p wrong-attr="" onclick="alert('test');">inside paragraph</p><a href="https://test.com/?query=true&fbclid=facebook_id">link with fb reference</a>`
+    }
+
+
+    const response = await request(app).post('/api/event')
+      .send(event)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      
+    expect(response.body.description).toBe(`<p>inside paragraph</p><a href="https://test.com/?query=true">link with fb reference</a>`)
+    
+  })
+
 })
 
 let event = {}
@@ -417,13 +438,40 @@ describe('Collection', () => {
   })
 })
 
+describe('Export', () => {
+  test('should export an rss feed', async () => {
+    await request(app).get('/feed/rss')
+      .expect('Content-Type', /application\/rss\+xml/)
+      .expect(200)
+
+    await request(app).get('/api/export/rss')
+      .expect('Content-Type', /application\/rss\+xml/)
+      .expect(200)
+  })
+
+  test('should export a json feed', async () => {
+    await request(app).get('/feed/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200)
+
+    await request(app).get('/api/export/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200)
+  })
+
+  test('should export an ics feed', async () => {
+    await request(app).get('/feed/ics')
+      .expect('Content-Type', /text\/calendar/)
+      .expect(200)
+
+      await request(app).get('/api/export/ics')
+      .expect('Content-Type', /text\/calendar/)
+      .expect(200)
+  })
+})
+
 describe('Geocoding', () => {
   test('should not be enabled by default', async () => {
-    await request(app)
-      .post('/api/settings')
-      .send({ key: 'allow_geolocation', value: false })
-      .auth(token.access_token, { type: 'bearer' })
-      .expect(200)
 
     const response = await request(app).get('/api/placeOSM/Nominatim/test')
       .expect(403)

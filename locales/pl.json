@@ -20,7 +20,93 @@
         "edit": "Edytuj",
         "info": "Informacje",
         "confirm": "Potwierdź",
-        "admin": "Admin",
-        "users": "Użytkownik"
+        "admin": "Admininstrator",
+        "users": "Użytkownik",
+        "logout": "Wyloguj się",
+        "deactivate": "Wyłącz",
+        "remove_admin": "Usuń administratora",
+        "activate": "Aktywuj",
+        "save": "Zapisz",
+        "preview": "Podgląd",
+        "share": "Udostępnij",
+        "name": "Nazwa",
+        "associate": "Skojarz",
+        "edit_event": "Edytuj wydarzenie",
+        "related": "Powiązane",
+        "events": "Wydarzenia",
+        "settings": "Opcje",
+        "places": "Miejsca",
+        "actions": "Działania",
+        "enable": "Włącz",
+        "password_updated": "Zmieniono hasło.",
+        "recover_password": "Odzyskaj hasło",
+        "new_password": "Nowe hasło",
+        "new_user": "Nowy użytkownik",
+        "ok": "Ok",
+        "cancel": "Anuluj",
+        "me": "Ja",
+        "resources": "Zasoby",
+        "activate_user": "Potwierdzone",
+        "add": "Dodaj",
+        "logout_ok": "Wylogowano",
+        "disable": "Wyłącz",
+        "copy": "Kopiuj",
+        "n_resources": "brak zasobu|zasób|{n} zasoby",
+        "send_via_mail": "Wyślij e-mail",
+        "embed_title": "Zamieść to wydarzenie na swojej stronie internetowej",
+        "set_password": "Ustaw hasło",
+        "displayname": "Wyświetlana nazwa użytkownika",
+        "federation": "Federalizacja",
+        "copy_link": "Skopiuj link",
+        "add_to_calendar": "Dodaj do kalendarza",
+        "instances": "Instancje",
+        "copied": "Skopiowano",
+        "embed": "Osadź",
+        "embed_help": "Skopiuj poniższy kod na swoją stronę internetową, a wydarzenie będzie wyglądało tak jak tutaj",
+        "feed": "Kanał RSS",
+        "feed_url_copied": "Otwórz skopiowany link w swoim czytniku RSS"
+    },
+    "settings": {
+        "change_password": "Zmień swoje hasło",
+        "danger_section": "Niebezpieczna sekcja",
+        "remove_account": "Aby trwale usunąć swoje konto kliknij poniższy przycisk. Nie usunie to wydarzeń, które już dodano.",
+        "password_updated": "Hasło zmienione.",
+        "remove_account_confirm": "Zamierzasz trwale usunąć swoje konto"
+    },
+    "ordinal": {
+        "1": "pierwszy",
+        "5": "piąty",
+        "-1": "ostatni",
+        "2": "drugi",
+        "3": "trzeci",
+        "4": "czwarty"
+    },
+    "confirm": {
+        "not_valid": "Coś poszło nie tak.",
+        "valid": "Twoje konto zostało zatwierdzone. Możesz się teraz <a href=\"/login\">zalogować</a>",
+        "title": "Potwiedzenie użytkownika"
+    },
+    "validators": {
+        "required": "Pole {fieldName} jest wymagane",
+        "email": "Podaj właściwy adres e-mail"
+    },
+    "error": {
+        "nick_taken": "Ta nazwa użytkownika jest już zarejestrowana.",
+        "email_taken": "Ten e-mail jest już zarejestrowany."
+    },
+    "about": "\n  <p><a href='https://gancio.org'>Gancio</a> jest rozwiązaniem dla lokalnych społeczności.</p>\n  ",
+    "oauth": {
+        "authorization_request": "Aplikacja <code>{app}</code> chce dokonać autoryzacji na instancji <code>{instance_name}</code>:",
+        "redirected_to": "Po potwierdzeniu przeniesiemy Cię pod adres <code>{url}</code>",
+        "scopes": {
+            "event:write": "Dodaj lub edytuj swoje wydarzenie"
+        }
+    },
+    "setup": {
+        "start": "Start",
+        "completed": "Zakończono konfigurację",
+        "completed_description": "<p>Możesz się już zalogować wykorzystująć poniższe dane.<br/><br/>Użytkownik: <b>{email}</b><br/>Hasło: <b>{password}<b/></p>",
+        "copy_password_dialog": "Tak, musisz skopiować hasło!",
+        "https_warning": "Odwiedzasz stronę przez HTTP. Pamiętaj aby zmienić baseurl w pliku config.json, jeżeli ustawiłeś HTTPS!"
     }
 }

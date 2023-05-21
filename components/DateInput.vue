@@ -23,7 +23,7 @@ v-col(cols=12)
             is-inline
             is-expanded
             :min-date='new Date()')
-      .calh.text-center(slot='placeholder')
+      v-col.calh.text-center(slot='placeholder')
         v-progress-circular(indeterminate color='primary')
 
   div.text-center.mb-2(v-if='type === "recurrent"')
@@ -38,6 +38,8 @@ v-col(cols=12)
         :close-on-content-click="false"
         offset-y
         :value="value.fromHour"
+        max-width="290px"
+        min-width="290px"
         transition="scale-transition")
         template(v-slot:activator="{ on, attrs }")
           v-text-field(
@@ -56,6 +58,7 @@ v-col(cols=12)
           v-if="menuFromHour"
           :value="value.fromHour"
           :allowedMinutes='allowedMinutes'
+          full-width
           format='24hr'
           @click:minute='menuFromHour = false'
           @input='hr => change("fromHour", hr)')
@@ -66,6 +69,8 @@ v-col(cols=12)
         v-model="menuDueHour"
         :close-on-content-click="false"
         offset-y
+        max-width="290px"
+        min-width="290px"
         :value="value.dueHour"
         transition="scale-transition")
         template(v-slot:activator="{ on, attrs }")
@@ -83,6 +88,7 @@ v-col(cols=12)
         v-time-picker(
           v-if="menuDueHour"
           :value="value.dueHour"
+          full-width
           :allowedMinutes='allowedMinutes'
           format='24hr'
           @click:minute='menuDueHour = false'
@@ -147,7 +153,7 @@ export default {
       if (freq === '1w' || freq === '2w') {
         return this.$t(`event.recurrent_${freq}_days`, { days: weekDay }).toUpperCase()
       } else if (freq === '1m' || freq === '2m') {
-        const n = Math.floor((date.day) / 7) + 1
+        const n = Math.floor((date.day-1) / 7) + 1
 
         const patterns = [
           { label: this.$t(`event.recurrent_${freq}_days`, { days: date.day }), key: 'ordinal' }

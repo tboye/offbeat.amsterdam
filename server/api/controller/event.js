@@ -5,7 +5,7 @@ const fs = require('fs/promises')
 const { Op } = require('sequelize')
 const linkifyHtml = require('linkify-html')
 const Sequelize = require('sequelize')
-const dayjs = require('dayjs')
+const { DateTime } = require('luxon')
 const helpers = require('../../helpers')
 const Col = helpers.col
 const notifier = require('../../notifier')
@@ -31,14 +31,14 @@ const eventController = {
 
     const place_name = body.place_name && body.place_name.trim()
     const place_address = body.place_address && body.place_address.trim()
-    if (!place_address || !place_name) {
+    if (!place_name || !place_address && place_name !== 'online') {
       throw new Error(`place_id or place_name and place_address are required`)
-    }    
+    }
     let place = await Place.findOne({ where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), Sequelize.Op.eq, place_name.toLocaleLowerCase()) })
     if (!place) {
       place = await Place.create({
         name: place_name,
-        address: place_address,
+        address: place_address || '',
         latitude: Number(body.place_latitude) || null,
         longitude: Number(body.place_longitude) || null
       })
@@ -252,7 +252,7 @@ const eventController = {
         where: {
           parentId: null,
           is_visible: false,
-          start_datetime: { [Op.gt]: dayjs().unix() }
+          start_datetime: { [Op.gt]: DateTime.local().toUnixInteger() }
         },
         order: [['start_datetime', 'ASC']],
         include: [{ model: Tag, required: false }, Place]
@@ -335,6 +335,7 @@ const eventController = {
         multidate: body.multidate,
         start_datetime: body.start_datetime,
         end_datetime: body.end_datetime,
+        online_locations: body.online_locations,
         recurrent,
         // publish this event only if authenticated
         is_visible: !!req.user
@@ -419,6 +420,7 @@ const eventController = {
         multidate: body.multidate,
         start_datetime: body.start_datetime || event.start_datetime,
         end_datetime: body.end_datetime || null,
+        online_locations: body.online_locations,
         recurrent
       }
 
@@ -452,11 +454,18 @@ const eventController = {
         }]
       } else if (!body.image) {
         eventDetails.media = []
-      } else if (body.image_focalpoint && event.media.length) {
+      }
+
+      if (body.image_focalpoint && event.media.length) {
         let focalpoint = body.image_focalpoint ? body.image_focalpoint.split(',') : ['0', '0']
         focalpoint = [parseFloat(parseFloat(focalpoint[0]).toFixed(2)), parseFloat(parseFloat(focalpoint[1]).toFixed(2))]
         eventDetails.media = [{ ...event.media[0], focalpoint }] // [0].focalpoint = focalpoint
       }
+
+      if (body.image_name && event.media.length && event.media[0].name !== body.image_name) {
+        eventDetails.media[0].name = body.image_name || body.title || ''
+      }
+
       await event.update(eventDetails)
 
       // find or create the place
@@ -532,7 +541,7 @@ const eventController = {
    * @returns
    */
   async _select({
-    start = dayjs().unix(),
+    start = DateTime.local().toUnixInteger(),
     end,
     query,
     tags,
@@ -541,7 +550,8 @@ const eventController = {
     show_multidate,
     limit,
     page,
-    older }) {
+    older,
+    reverse }) {
 
     const where = {
       // do not include _parent_ recurrent event
@@ -597,7 +607,7 @@ const eventController = {
           Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND LOWER(${Col('tagTag')}) = ?`))
         ]
     }
-    
+
     let pagination = {}
     if (limit) {
       pagination = {
@@ -611,7 +621,7 @@ const eventController = {
       attributes: {
         exclude: ['likes', 'boost', 'userId', 'is_visible', 'createdAt', 'description', 'resources', 'recurrent', 'placeId', 'image_path']
       },
-      order: [['start_datetime', older ? 'DESC' : 'ASC']],
+      order: [['start_datetime', reverse ? 'DESC' : 'ASC']],
       include: [
         {
           model: Tag,
@@ -640,7 +650,7 @@ const eventController = {
    */
   async select(req, res) {
     const settings = res.locals.settings
-    const start = req.query.start || dayjs().unix()
+    const start = req.query.start || DateTime.local().toUnixInteger()
     const end = req.query.end
     const query = req.query.query
     const tags = req.query.tags
@@ -661,10 +671,12 @@ const eventController = {
   },
 
   /**
-   * Ensure we have the next instance of a recurrent event
+   * Ensure we have the next occurrence of a recurrent event
    */
-  async _createRecurrentOccurrence(e, startAt) {
+  async _createRecurrentOccurrence(e, startAt = DateTime.local(), firstOccurrence = true) {
     log.debug(`Create recurrent event [${e.id}] ${e.title}"`)
+
+    // prepare the new event occurrence copying the parent's properties
     const event = {
       parentId: e.id,
       title: e.title,
@@ -672,53 +684,61 @@ const eventController = {
       media: e.media,
       is_visible: true,
       userId: e.userId,
-      placeId: e.placeId
+      placeId: e.placeId,
+      ...(e.online_locations && { online_locations: e.online_locations } )
     }
 
-    const recurrent = e.recurrent
-    const start_date = dayjs.unix(e.start_datetime)
-    let cursor = start_date > startAt ? start_date : startAt
+    const recurrentDetails = e.recurrent
+    const parentStartDatetime = DateTime.fromSeconds(e.start_datetime)
+
+    // cursor is when start to count
+    // sets it to
+    let cursor = parentStartDatetime > startAt ? parentStartDatetime : startAt
     startAt = cursor
+
     const duration = e.end_datetime ? e.end_datetime-e.start_datetime : 0
-    const frequency = recurrent.frequency
-    const type = recurrent.type
+    const frequency = recurrentDetails.frequency
+    const type = recurrentDetails.type
+    if (!frequency) {
+      log.warn(`Recurrent event ${e.id} - ${e.title} does not have a frequency specified`)
+      return
+    }
 
-    cursor = cursor.hour(start_date.hour()).minute(start_date.minute()).second(0)
-
-    if (!frequency) { return }
+    cursor = cursor.set({ hour: parentStartDatetime.hour, minute: parentStartDatetime.minute, second: 0 })
 
     // each week or 2
     if (frequency[1] === 'w') {
-      cursor = cursor.day(start_date.day())
-      if (cursor.isBefore(startAt)) {
-        cursor = cursor.add(7, 'day')
-      }
-      if (frequency[0] === '2') {
-        cursor = cursor.add(7, 'day')
+      cursor = cursor.set({ weekday: parentStartDatetime.weekday }) //day(parentStartDatetime.day())
+      if (cursor < startAt) {
+        cursor = cursor.plus({ days: 7 * Number(frequency[0]) })
       }
     } else if (frequency === '1m') {
       if (type === 'ordinal') {
-        cursor = cursor.date(start_date.date())
+        cursor = cursor.set({ day: parentStartDatetime.day })
 
-        if (cursor.isBefore(startAt)) {
-          cursor = cursor.add(1, 'month')
+        if (cursor< startAt) {
+          cursor = cursor.plus({ months: 1 })
         }
       } else { // weekday
         // get weekday
         // get recurrent freq details
-        cursor = helpers.getWeekdayN(cursor, type, start_date.day())
-        if (cursor.isBefore(startAt)) {
-          cursor = cursor.add(4, 'week')
-          cursor = helpers.getWeekdayN(cursor, type, start_date.day())
+        cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
+        if (cursor< startAt) {
+          cursor = cursor.plus({ months: 1 })
+          cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         }
       }
     }
     log.debug(cursor)
-    event.start_datetime = cursor.unix()
+    event.start_datetime = cursor.toUnixInteger()
     event.end_datetime = e.end_datetime ? event.start_datetime + duration : null
     try {
       const newEvent = await Event.create(event)
-      return newEvent.addTags(e.tags)
+      if (e.tags) {
+        return newEvent.addTags(e.tags)
+      } else {
+        return newEvent
+      }
     } catch (e) {
       console.error(event)
       log.error('[RECURRENT EVENT]', e)
@@ -728,7 +748,7 @@ const eventController = {
   /**
    * Create instances of recurrent events
    */
-  async _createRecurrent(start_datetime = dayjs().unix()) {
+  async _createRecurrent(start_datetime = DateTime.local().toUnixInteger()) {
     // select recurrent events and its childs
     const events = await Event.findAll({
       where: { is_visible: true, recurrent: { [Op.ne]: null } },
@@ -741,9 +761,9 @@ const eventController = {
     const creations = events.map(e => {
       if (e.child.length) {
         if (e.child.find(c => c.is_visible)) return
-        return eventController._createRecurrentOccurrence(e, dayjs.unix(e.child[0].start_datetime + 1))
+        return eventController._createRecurrentOccurrence(e, DateTime.fromSeconds(e.child[0].start_datetime + 1), false)
       }
-      return eventController._createRecurrentOccurrence(e, dayjs())
+      return eventController._createRecurrentOccurrence(e, DateTime.local(), true)
     })
 
     return Promise.all(creations)

@@ -101,6 +101,7 @@ module.exports = () => {
      * @param {string}  [query] - search for this string
      * @param {array} [tags] - List of tags
      * @param {array} [places] - List of places id
+     * @param {array} [online_locations] - List of online locations
      * @param {integer} [max] - Limit events
      * @param {boolean} [show_recurrent] - Show also recurrent events (default: as choosen in admin settings)
      * @param {integer} [page] - Pagination
@@ -124,6 +125,7 @@ module.exports = () => {
      * @param {string} [place_address] - the address of the place
      * @param {float} [place_latitude] - the latitude of the place
      * @param {float} [place_longitude] - the longitude of the place
+     * @param {array} online_locations - List of online locations
      * @param {integer} start_datetime - start timestamp
      * @param {integer} multidate - is a multidate event?
      * @param {array} tags - List of tags
@@ -139,7 +141,7 @@ module.exports = () => {
     // api.get('/event/search', eventController.search)
   
     api.put('/event', isAuth, upload.single('image'), eventController.update)
-    api.get('/event/import', isAuth, helpers.importURL)
+    api.get('/event/import', eventController.isAnonEventAllowed, helpers.importURL)
   
     // remove event
     api.delete('/event/:id', isAuth, eventController.remove)
@@ -170,7 +172,7 @@ module.exports = () => {
     api.get('/event/detail/:event_slug.:format?', cors, eventController.get)
   
     // export events (rss/ics)
-    api.get('/export/:type', cors, exportController.export)
+    api.get('/export/:format', cors, exportController.export)
   
   
     // - PLACES
@@ -217,6 +219,7 @@ module.exports = () => {
   
     // - PLUGINS
     api.get('/plugins', isAdmin, pluginController.getAll)
+    api.post('/plugin/test/:plugin', isAdmin, pluginController.testPlugin)
     api.put('/plugin/:plugin', isAdmin, pluginController.togglePlugin)
   
     // OAUTH

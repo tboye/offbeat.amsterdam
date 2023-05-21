@@ -30,7 +30,7 @@ v-container.container.pa-0.pa-md-3
 
             //- Where
             v-col(cols=12)
-              WhereInput(ref='where' v-model='event.place')
+              WhereInput(ref='where' v-model='event.place' :event='event')
 
             //- When
             DateInput(ref='when' v-model='date' :event='event')
@@ -49,10 +49,11 @@ v-container.container.pa-0.pa-md-3
 
             //- tags
             v-col(cols=12 md=6)
-              v-combobox(v-model='event.tags'
+              v-combobox(:value='event.tags'
                 :prepend-icon="mdiTagMultiple"
                 chips small-chips multiple deletable-chips hide-no-data hide-selected persistent-hint
                 cache-items
+                @change='updateTags'
                 @input.native='searchTags'
                 :delimiters="[',', ';']"
                 :items="tags"
@@ -71,6 +72,7 @@ v-container.container.pa-0.pa-md-3
 <script>
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
+import uniq from 'lodash/uniq'
 
 import { mdiFileImport, mdiFormatTitle, mdiTagMultiple, mdiCloseCircle } from '@mdi/js'
 
@@ -141,6 +143,7 @@ export default {
       data.event.media = event.media || []
       data.event.parentId = event.parentId
       data.event.recurrent = event.recurrent
+      data.event.online_locations = event.online_locations
       return data
     }
     return {}
@@ -173,20 +176,16 @@ export default {
       title: `${this.settings.title} - ${this.$t('common.add_event')}`
     }
   },
-  computed: {
-    ...mapState(['settings']),
-    filteredTags() {
-      if (!this.tagName) { return this.tags.slice(0, 10).map(t => t.tag) }
-      const tagName = this.tagName.trim().toLowerCase()
-      return this.tags.filter(t => t.tag.toLowerCase().includes(tagName)).map(t => t.tag)
-    }
-  },
+  computed: mapState(['settings']),
   methods: {
+    updateTags (tags) {
+      this.event.tags = uniq(tags.map(t => t.trim()).filter(t => t))
+    },
     searchTags: debounce(async function (ev) {
       const search = ev.target.value
       if (!search) return
       this.tags = await this.$axios.$get(`/tag?search=${search}`)
-    }, 100),
+    }, 200),
     eventImported(event) {
       this.event = Object.assign(this.event, event)
 
@@ -233,16 +232,24 @@ export default {
         formData.append('place_id', this.event.place.id)
       }
       formData.append('place_name', this.event.place.name.trim())
-      formData.append('place_address', this.event.place.address)
-      if (this.event.place.latitude) { formData.append('place_latitude', this.event.place.latitude) }
-      if (this.event.place.longitude) { formData.append('place_longitude', this.event.place.longitude) }
+      formData.append('place_address', this.event.place.address || null)
+
+      if (this.settings.allow_geolocation) {
+        formData.append('place_latitude', this.event.place.latitude || '')
+        formData.append('place_longitude', this.event.place.longitude || '')
+      }
+
+      if (this.event.online_locations) {
+        this.event.online_locations.forEach(l => formData.append('online_locations[]', l))
+      }
+
       formData.append('description', this.event.description)
       formData.append('multidate', !!this.date.multidate)
       formData.append('start_datetime', this.$time.fromDateInput(this.date.from, this.date.fromHour))
       if (!!this.date.multidate) {
         formData.append('end_datetime', this.$time.fromDateInput(this.date.due, this.date.dueHour || '23:59'))
       } else if (this.date.dueHour) {
-        formData.append('end_datetime', this.$time.fromDateInput(this.date.from, this.date.dueHour))
+        formData.append('end_datetime', this.$time.fromDateInput(this.date.due, this.date.dueHour))
       }
 
       if (this.edit) {
@@ -250,13 +257,11 @@ export default {
       }
       if (this.event.tags) { this.event.tags.forEach(tag => formData.append('tags[]', tag.tag || tag)) }
       try {
-        if (this.edit) {
-          const ret = await this.$axios.$put('/event', formData)
+        const ret = this.edit ? await this.$axios.$put('/event', formData) : await this.$axios.$post('/event', formData)
+        if (!this.date.recurrent && ret.is_visible) {
           this.$router.push(`/event/${ret.slug}`)
-
         } else {
-          const ret = await this.$axios.$post('/event', formData)
-          this.$router.push(`/event/${ret.slug}`)
+          this.$router.push('/')
         }
         this.$nextTick(() => {
           this.$root.$message(this.$auth.loggedIn ? (this.edit ? 'event.saved' : 'event.added') : 'event.added_anon', { color: 'success' })

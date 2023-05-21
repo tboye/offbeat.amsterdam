@@ -32,6 +32,23 @@ const pluginController = {
     res.json()
   },
 
+  async testPlugin (req, res) {
+    const pluginName = req.params.plugin
+    const plugin = pluginController.plugins.find(p => p.configuration.name === pluginName)
+    if (!plugin) {
+      log.warn(`Plugin ${pluginName} not found`)
+      return res.sendStatus(404)
+    }
+  
+    if (typeof plugin.onTest !== 'function') {
+      log.warn(`Plugin ${pluginName} does not expose an 'onTest' function`)
+      return res.sendStatus(404)
+    }
+
+    await plugin.onTest()
+    res.sendStatus(200)
+  },
+
   unloadPlugin(pluginName) {
     const plugin = pluginController.plugins.find(p => p.configuration.name === pluginName)
     const settings = settingsController.settings['plugin_' + pluginName]
@@ -78,6 +95,7 @@ const pluginController = {
     if (plugin.load && typeof plugin.load === 'function') {
       plugin.load({
         helpers: require('../../helpers'),
+        log,
         settings: settingsController.settings
       },
       settings)
@@ -88,7 +106,11 @@ const pluginController = {
     try {
       const plugin = require(pluginFile)
       const name = plugin.configuration.name
-      console.log(`Found plugin '${name}'`)
+      log.info(`Found plugin '${name}' in '${pluginFile}'`)
+      if (pluginController.plugins.find(p => p.configuration.name === name)) {
+        log.warn(`Cannot load plugins with the same name: plugin '${name}' already exists`)
+        return
+      }
       pluginController.plugins.push(plugin)
       if (settingsController.settings['plugin_' + name]) {
         const pluginSetting = settingsController.settings['plugin_' + name]
