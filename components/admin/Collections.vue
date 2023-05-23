@@ -10,7 +10,7 @@ v-container
 
   v-btn(color='primary' text @click='newCollection') <v-icon v-text='mdiPlus'></v-icon> {{ $t('admin.new_collection') }}
 
-  v-dialog(v-model='dialog' width='800' destroy-on-close :fullscreen='$vuetify.breakpoint.xsOnly')
+  v-dialog(v-model='dialog' width='900' destroy-on-close :fullscreen='$vuetify.breakpoint.xsOnly')
     v-card
       v-card-title {{ $t('admin.edit_collection') }}
       v-card-text
@@ -27,7 +27,23 @@ v-container
           h3(v-else class='text-h5' v-text='collection.name')
 
         v-row
-          v-col(cols=5)
+          v-col(cols=4)
+            v-autocomplete(v-model='filterActors'
+              cache-items
+              :prepend-icon="mdiTagMultiple"
+              chips small-chips multiple deletable-chips hide-no-data hide-selected persistent-hint
+              :disabled="!collection.id"
+              placeholder='Local'
+              @input.native='searchActors'
+              @focus='searchActors'
+              :delimiters="[',', ';']"
+              :items="actors"
+              :label="$t('common.actors')")
+                template(v-slot:selection="{ item, on, attrs, selected, parent }")
+                  v-chip(v-bind="attrs" close :close-icon='mdiCloseCircle' @click:close='parent.selectItem(item)'
+                    :input-value="selected" label small) {{ item }}        
+
+          v-col(cols=4)
             v-autocomplete(v-model='filterTags'
               cache-items
               :prepend-icon="mdiTagMultiple"
@@ -43,7 +59,7 @@ v-container
                   v-chip(v-bind="attrs" close :close-icon='mdiCloseCircle' @click:close='parent.selectItem(item)'
                     :input-value="selected" label small) {{ item }}
 
-          v-col(cols=5)
+          v-col(cols=4)
             v-autocomplete(v-model='filterPlaces'
               cache-items
               :prepend-icon="mdiMapMarker"
@@ -68,8 +84,7 @@ v-container
                 //-       v-list-item-title(v-text='item.name')
                 //-       v-list-item-subtitle(v-text='item.address')
 
-          v-col(cols=2)
-            v-btn(color='primary' :loading='loading' text @click='addFilter' :disabled='loading || !collection.id || !filterPlaces.length && !filterTags.length') add <v-icon v-text='mdiPlus'></v-icon>
+          v-btn(color='primary' :loading='loading' text @click='addFilter' :disabled='loading || !collection.id || !filterPlaces.length && !filterTags.length') add <v-icon v-text='mdiPlus'></v-icon>
 
         v-data-table(
           :headers='filterHeaders'
@@ -126,6 +141,8 @@ export default {
       collection: { name: '', id: null },
       filterTags: [],
       filterPlaces: [],
+      filterActors: [],
+      actors: [],
       tags: [],
       places: [],
       collections: [],
@@ -138,6 +155,7 @@ export default {
         { value: 'actions', text: this.$t('common.actions'), align: 'right' }
       ],
       filterHeaders: [
+        { value: 'actors', text: this.$t('common.actors') },
         { value: 'tags', text: this.$t('common.tags') },
         { value: 'places', text: this.$t('common.places') },
         { value: 'actions', text: this.$t('common.actions'), align: 'right' }
@@ -155,6 +173,9 @@ export default {
     searchPlaces: debounce(async function (ev) {
       this.places = await this.$axios.$get(`/place?search=${ev.target.value}`)
     }, 100),
+    searchActors: debounce(async function (ev) {
+      this.places = await this.$axios.$get(`/friendly_instances?search=${ev.target.value}`)
+    }, 100),    
     collectionFilters(collection) {
       return collection.filters.map(f => {
         const tags = f.tags?.join(', ')

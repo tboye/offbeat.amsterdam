@@ -136,15 +136,21 @@ export default {
           this.instance_url = `https://${this.instance_url}`
         }
         this.instance_url = this.instance_url.replace(/\/$/, '')
-        const instance = await axios.get(`${this.instance_url}/.well-known/nodeinfo/2.1`)
-        this.setSetting({
-          key: 'trusted_instances',
-          value: this.settings.trusted_instances.concat({
-            url: this.instance_url,
-            name: get(instance, 'data.metadata.nodeName', ''),
-            label: get(instance, 'data.metadata.nodeLabel', '')
-          })
-        })
+
+        // const instance = await axios.get(`${this.instance_url}/.well-known/nodeinfo/2.1`)
+        // // this.setSetting({
+        //   // key: 'trusted_instances',
+        //   // value: this.settings.trusted_instances.concat({
+        // const instance = {
+        //   url: this.instance_url,
+        //   name: get(instance, 'data.metadata.nodeName', ''),
+        //   label: get(instance, 'data.metadata.nodeLabel', ''),
+        //   actor: get(instance, 'data.medatada.nodeActor', ''),
+        //   timezone: get(instance, 'data.metadata.nodeTimezone', '')
+        // }
+
+        const ret = await this.$axios.$post('/instances/add_friendly', { instance_url: this.instance_url })
+        console.error(ret)
         this.$refs.form.reset()
         this.dialogAddInstance = false
       } catch (e) {
