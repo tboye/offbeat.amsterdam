@@ -7,7 +7,7 @@ const eventController = require('../api/controller/event')
 const { Event } = require('../api/models/models')
 
 module.exports = {
-  
+
   // create an Event from AP
   async create (req, res) {
 
@@ -17,7 +17,7 @@ module.exports = {
     // check if we are following this user
     console.error(req.body)
 
-    // 
+    //
     console.error(APEvent)
 
     // check if this event is new
@@ -27,6 +27,9 @@ module.exports = {
       place_name: APEvent.location?.name,
       place_address: APEvent.location?.address
     })
+
+    // TODO: tags
+    // TODO: media
 
     // create it
     console.error(Event)
