@@ -78,7 +78,7 @@ const Helpers = {
     const followers = await APUser.findAll({ where: { follower: true } })
     const recipients = {}
     followers.forEach(follower => {
-      const sharedInbox = follower.object.endpoints?.sharedInbox || follower.object.inbox
+      const sharedInbox = follower.object?.endpoints?.sharedInbox || follower.object.inbox
       if (!recipients[sharedInbox]) { recipients[sharedInbox] = [] }
       recipients[sharedInbox].push(follower.ap_id)
     })
@@ -104,7 +104,7 @@ const Helpers = {
     }
   },
 
-  followActor (actor) {
+  async followActor (actor) {
     log.debug(`Following actor ${actor.ap_id}`)
     const body = {
       '@context': 'https://www.w3.org/ns/activitystreams',
@@ -113,7 +113,10 @@ const Helpers = {
       actor: `${config.baseurl}/federation/u/${settingsController.settings.instance_name}`,
       object: actor.ap_id
     }
-    return Helpers.signAndSend(JSON.stringify(body), actor.object.endpoints?.sharedInbox || actor.object.inbox)
+
+    await Helpers.signAndSend(JSON.stringify(body), actor.object.endpoints?.sharedInbox || actor.object.inbox)
+
+    await actor.update({ following: 1 })
   },
 
   async getActor (URL, instance, force = false) {

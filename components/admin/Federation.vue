@@ -65,12 +65,12 @@ v-container
 
       v-btn.mt-4(@click='dialogAddInstance = true' color='primary' text) <v-icon v-text='mdiPlus'></v-icon> {{$t('admin.add_instance')}}
       v-data-table(
-        v-if='settings.trusted_instances.length'
-        :hide-default-footer='settings.trusted_instances.length<10'
+        v-if='friendly_instances.length'
+        :hide-default-footer='friendly_instances.length<10'
         :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
         :header-props='{ sortIcon: mdiChevronDown }'
         :headers='headers'
-        :items='settings.trusted_instances')
+        :items='friendly_instances')
         template(v-slot:item.actions="{item}")
           v-btn(icon @click='deleteInstance(item)' color='error')
             v-icon(v-text='mdiDeleteForever')
@@ -94,14 +94,18 @@ export default {
       url2host: $options.filters.url2host,
       dialogAddInstance: false,
       loading: false,
+      friendly_instances: [],
       valid: false,
       headers: [
-        { value: 'name', text: 'Name' },
-        { value: 'url', text: 'URL' },
-        { value: 'label', text: 'Place' },
+        { value: 'object.id', text: 'Name' },
+        { value: 'ap_id', text: 'URL' },
+        { value: 'instance.domain', text: 'Instance' },
         { value: 'actions', text: 'Actions', align: 'right' }
       ]
     }
+  },
+  async fetch() {
+    this.friendly_instances = await this.$axios.$get('/instances/friendly')
   },
   computed: {
     ...mapState(['settings']),

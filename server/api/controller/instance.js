@@ -4,6 +4,7 @@ const axios = require('axios')
 const get = require('lodash/get')
 
 const Sequelize = require('sequelize')
+const log = require('../../log')
 
 const instancesController = {
   async getAll (req, res) {
@@ -69,9 +70,9 @@ const instancesController = {
       }
       instance_url = instance_url.replace(/\/$/, '')
 
+      log.info(`Add friendly instance ${instance_url} ...`)
       const { data: nodeinfo } = await axios.get(`${instance_url}/.well-known/nodeinfo/2.1`)
-      
-      console.error(nodeinfo)
+
 
       // create a new instance
       const instance = {
@@ -82,20 +83,27 @@ const instancesController = {
         timezone: get(nodeinfo, 'metadata.nodeTimezone', '')
       }
 
+      log.debug(`instance .well-known: ${instance.name} / ${instance.actor}`)
+
       // if we have an actor, let's follow him
       if (instance.actor) {
+
         // send a well-known request
         const instance_hostname = new URL(instance_url).host
         const { data: wellknown } = await axios.get(`${instance_url}/.well-known/webfinger?resource=acct:${instance.actor}@${instance_hostname}`)
-        console.error(wellknown)
+
+        // search for actor url
         const actorURL = wellknown?.links.find(l => l.rel === 'self').href
+
+        // retrieve the AP actor
         const actor = await getActor(actorURL)
 
-        const ret = await followActor(actor)
-
+        await followActor(actor)
+        return res.json(actor)
       }
     } catch (e) {
-      console.error(e)
+      log.warn(e)
+      return res.status(400).send(e)
     }
 
 

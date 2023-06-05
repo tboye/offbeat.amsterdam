@@ -36,12 +36,14 @@ v-container
               placeholder='Local'
               @input.native='searchActors'
               @focus='searchActors'
+              item-text='ap_id'
+              item-value='ap_id'
               :delimiters="[',', ';']"
               :items="actors"
               :label="$t('common.actors')")
                 template(v-slot:selection="{ item, on, attrs, selected, parent }")
                   v-chip(v-bind="attrs" close :close-icon='mdiCloseCircle' @click:close='parent.selectItem(item)'
-                    :input-value="selected" label small) {{ item }}        
+                    :input-value="selected" label small) {{ item }}
 
           v-col(cols=4)
             v-autocomplete(v-model='filterTags'
@@ -174,8 +176,8 @@ export default {
       this.places = await this.$axios.$get(`/place?search=${ev.target.value}`)
     }, 100),
     searchActors: debounce(async function (ev) {
-      this.places = await this.$axios.$get(`/friendly_instances?search=${ev.target.value}`)
-    }, 100),    
+      this.actors = await this.$axios.$get(`/instances/friendly?search=${ev.target.value}`)
+    }, 100),
     collectionFilters(collection) {
       return collection.filters.map(f => {
         const tags = f.tags?.join(', ')
@@ -191,8 +193,8 @@ export default {
       const filter = { collectionId: this.collection.id, tags, places }
 
       // tags and places are JSON field and there's no way to use them inside a unique constrain
-      // 
-      const alreadyExists = this.filters.find(f => 
+      //
+      const alreadyExists = this.filters.find(f =>
         isEqual(sortBy(f.places, 'id'), sortBy(filter.places, 'id')) && isEqual(sortBy(f.tags), sortBy(filter.tags))
       )
 
