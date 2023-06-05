@@ -64,7 +64,8 @@ const Helpers = {
       log.debug(`signed ${ret.status} => ${ret.data}`)
     } catch (e) {
       log.debug(e)
-      log.error(`Response: ${ret.status} ${ret.data}`)
+      console.error(e)
+      log.error(`Response`)
     }
   },
 
@@ -104,7 +105,7 @@ const Helpers = {
   },
 
   followActor (actor) {
-    log.debug(`Following actor ${actor}`)
+    log.debug(`Following actor ${actor.ap_id}`)
     const body = {
       '@context': 'https://www.w3.org/ns/activitystreams',
       id: `${config.baseurl}/federation/m/${actor.ap_id}#follow`,
