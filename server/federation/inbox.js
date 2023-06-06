@@ -31,15 +31,24 @@ module.exports = async (req, res) => {
       Ego.bookmark(req, res)
       break
     case 'Delete':
-      await Resources.remove(req, res)
+      if (b.object.type === 'Note') {
+        await Resources.remove(req, res)
+      } else if (b.object.type === 'Event') {
+        await Events.remove(req, res)
+      }
       break
+    case 'Update':
+      if (b.object.type === 'Event') {
+        log.debug(`Event update is coming from ${res.locals.fedi_user}`)
+        await Event.update(req, res)
+      }
     case 'Create':
       // this is a reply
       if (b.object.type === 'Note') {
         log.debug('Create a resource!')
         await Resources.create(req, res)
       } else if (b.object.type === 'Event') {
-        log.debug('Event type is coming!!')
+        log.debug(`Event is coming from ${res.locals.fedi_user}`)
         await Events.create(req, res)
       } else {
         // await Resources.create(req, res)
