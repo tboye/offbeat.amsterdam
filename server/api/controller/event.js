@@ -454,9 +454,7 @@ const eventController = {
         }]
       } else if (!body.image) {
         eventDetails.media = []
-      }
-
-      if (body.image_focalpoint && event.media.length) {
+      } else if (body.image_focalpoint && event.media.length) {
         let focalpoint = body.image_focalpoint ? body.image_focalpoint.split(',') : ['0', '0']
         focalpoint = [parseFloat(parseFloat(focalpoint[0]).toFixed(2)), parseFloat(parseFloat(focalpoint[1]).toFixed(2))]
         eventDetails.media = [{ ...event.media[0], focalpoint }] // [0].focalpoint = focalpoint
