@@ -287,6 +287,13 @@ module.exports = {
     next()
   },
 
+  async caldav (req, res, next) {
+    if (req.method === 'PRODFIND') {
+      return res.sendStatus(400)
+    }
+    next()
+  },
+
   async isGeocodingEnabled(req, res, next) {
     if (res.locals.settings.allow_geolocation) {
       next()

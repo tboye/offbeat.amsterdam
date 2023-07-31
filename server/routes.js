@@ -38,9 +38,11 @@ async function main () {
     const placeController = require('./api/controller/place')
     const collectionController = require('./api/controller/collection')
     const authController = require('./api/controller/oauth')
+    const caldavController = require('./api/controller/caldav')
 
     // rss / ics feed
     app.use(helpers.feedRedirect)
+    app.use(helpers.caldav)
     app.get('/feed/:format/tag/:tag', cors(), tagController.getEvents)
     app.get('/feed/:format/place/:placeName', cors(), placeController.getEvents)
     app.get('/feed/:format/collection/:name', cors(), collectionController.getEvents)
@@ -48,6 +50,9 @@ async function main () {
     
     app.use('/event/:slug', helpers.APRedirect)
     
+    // caldav
+    app.use('/.well-known/caldav', caldavController.wellknown)
+
     // federation api / activitypub / webfinger / nodeinfo
     app.use('/federation', federation)
     app.use('/.well-known', webfinger)
