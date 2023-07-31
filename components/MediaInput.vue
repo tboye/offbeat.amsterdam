@@ -1,5 +1,6 @@
 <template lang="pug">
 span
+  span {{ value }}
   v-dialog(v-model='openMediaDetails' :fullscreen="$vuetify.breakpoint.xsOnly" width='1000px')
     v-card
       v-card-title {{$t('common.media')}}
@@ -38,23 +39,27 @@ span
   div.col-12.pt-0(v-if='mediaPreview')
     img.col-12.pa-0(:src='mediaPreview' v-if='!showPreview')
     img.col-12.mediaPreview.pa-0(:src='mediaPreview' v-else :style="{ 'object-position': savedPosition }")
-    span.text-center {{event.media[0].name}}
-  v-file-input(
-    v-else
-    :label="$t('common.media')"
-    :hint="$t('event.media_description')"
-    :prepend-icon="mdiCamera"
-    :value='value.image'
-    @change="selectMedia"
-    persistent-hint
-    accept='image/*')
+  div(v-else)
+    v-text-field(
+      v-model='value.url'
+      :label="$t('common.media')"
+    )
+    v-file-input(
+      multiple
+      :label="$t('common.media')"
+      :hint="$t('event.media_description')"
+      :prepend-icon="mdiCamera"
+      :value='images'
+      @change="selectMedia"
+      persistent-hint
+      accept='image/*')
 </template>
 <script>
 import { mdiCamera } from '@mdi/js'
 export default {
   name: 'MediaInput',
   props: {
-    value: { type: Object, default: () => ({ image: null }) },
+    value: { type: Array, default: () => ([{ image: null }]) },
     event: { type: Object, default: () => ({}) }
   },
   data () {
@@ -72,8 +77,11 @@ export default {
       if (!this.value.url && !this.value.image) {
         return false
       }
-      const url = this.value.image ? URL.createObjectURL(this.value.image) : /^https?:\/\//.test(this.value.url) ? this.value.url : `/media/thumb/${this.value.url}`
+      const url = this.value.image ? URL.createObjectURL(this.value.image[0]) : /^https?:\/\//.test(this.value.url) ? this.value.url : `/media/thumb/${this.value.url}`
       return url
+    },
+    images () {
+      return this.value.map(i => i.image)
     },
     top () {
       return ((this.focalpoint[1] + 1) * 50) + '%'

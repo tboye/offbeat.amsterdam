@@ -437,19 +437,19 @@ const eventController = {
       }
 
       // modify associated media only if a new file is uploaded or remote image_url is used
-      if (req.file || (body.image_url && /^https?:\/\//.test(body.image_url))) {
-        if (!req.file && body.image_url) {
-          req.file = await helpers.getImageFromURL(body.image_url)
+      if (req.files || (body.image_url && /^https?:\/\//.test(body.image_url))) {
+        if (!req.files && body.image_url) {
+          req.files = await helpers.getImageFromURL(body.image_url)
         }
 
         let focalpoint = body.image_focalpoint ? body.image_focalpoint.split(',') : ['0', '0']
         focalpoint = [parseFloat(parseFloat(focalpoint[0]).toFixed(2)), parseFloat(parseFloat(focalpoint[1]).toFixed(2))]
         eventDetails.media = [{
-          url: req.file.filename,
-          height: req.file.height,
-          width: req.file.width,
+          url: req.files[0].filename,
+          height: req.files[0].height,
+          width: req.files[0].width,
           name: body.image_name || body.title || '',
-          size: req.file.size || 0,
+          size: req.files[0].size || 0,
           focalpoint
         }]
       } else if (!body.image) {

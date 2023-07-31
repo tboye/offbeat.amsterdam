@@ -136,11 +136,11 @@ module.exports = () => {
      */
 
     // allow anyone to add an event (anon event has to be confirmed, flood protection)
-    api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.single('image'), eventController.add)
+    api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.array('image', 5), eventController.add)
 
     // api.get('/event/search', eventController.search)
 
-    api.put('/event', isAuth, upload.single('image'), eventController.update)
+    api.put('/event', isAuth, SPAMProtectionApiRateLimiter, upload.array('image', 5), eventController.update)
     api.get('/event/import', eventController.isAnonEventAllowed, helpers.importURL)
 
     // remove event

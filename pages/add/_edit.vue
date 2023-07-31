@@ -45,7 +45,7 @@ v-container.container.pa-0.pa-md-3
 
             //- MEDIA / FLYER / POSTER
             v-col(cols=12 md=6)
-              MediaInput(v-model='event.media[0]' :event='event' @remove='event.media = []')
+              MediaInput(v-model='event.media' :event='event')
 
             //- tags
             v-col(cols=12 md=6)
