@@ -31,6 +31,11 @@ v-col(cols=12)
     v-btn-toggle.mt-1.flex-column.flex-sm-row(v-else :value='value.recurrent.type' color='primary' @change='fq => change("recurrentType", fq)')
       v-btn(v-for='whenPattern in whenPatterns' :value='whenPattern.key' :key='whenPatterns.key' small) {{ whenPattern.label }}
 
+  .text-center.col-4
+    vc-date-picker(:input-debounce="500" v-if='type === "recurrent"' v-model='value.recurrent.date_limit' :min-date='fromDate')
+      template(v-slot="{ inputValue, inputEvents }")
+        v-text-field(:value="inputValue" v-on="inputEvents" label='end')
+
   v-row.mt-3.col-md-6.mx-auto
     v-col.col-12.col-sm-6
       v-menu(
@@ -117,6 +122,7 @@ export default {
       menuFromHour: false,
       menuDueHour: false,
       type: this.value.type || 'normal',
+      recurrent_limit: null,
       frequencies: [
         { value: '1w', text: this.$t('event.each_week') },
         { value: '2w', text: this.$t('event.each_2w') },

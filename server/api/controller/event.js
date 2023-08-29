@@ -389,7 +389,7 @@ const eventController = {
       // create recurrent instances of event if needed
       // without waiting for the task manager
       if (event.recurrent) {
-        eventController._createRecurrent()
+        eventController.createRecurrent(event)
       } else {
         // send notifications
         const notifier = require('../../notifier')
@@ -749,27 +749,112 @@ const eventController = {
   },
 
   /**
-   * Create instances of recurrent events
+   * calculate next event occurrence
    */
-  async _createRecurrent(start_datetime = DateTime.local().toUnixInteger()) {
-    // select recurrent events and its childs
-    const events = await Event.findAll({
-      where: { is_visible: true, recurrent: { [Op.ne]: null } },
-      include: [{ model: Tag, required: false },
-      { model: Event, as: 'child', required: false, where: { start_datetime: { [Op.gte]: start_datetime } } }],
-      order: [['child', 'start_datetime', 'DESC']]
-    })
+  _nextEventOccurrence(e, startAt = DateTime.local()) {
+    const recurrentDetails = e.recurrent
+    const parentStartDatetime = DateTime.fromSeconds(e.start_datetime)
 
-    // create a new occurrence for each recurring events but the one's that has an already visible occurrence coming
-    const creations = events.map(e => {
-      if (e.child.length) {
-        if (e.child.find(c => c.is_visible)) return
-        return eventController._createRecurrentOccurrence(e, DateTime.fromSeconds(e.child[0].start_datetime + 1), false)
+    // cursor is when start to count
+    // in case parent is in past, start to calculate from now
+    let cursor = parentStartDatetime > startAt ? parentStartDatetime : startAt
+    startAt = cursor
+
+    const duration = e.end_datetime ? e.end_datetime-e.start_datetime : 0
+    const frequency = recurrentDetails.frequency
+    const type = recurrentDetails.type
+    if (!frequency) {
+      log.warn(`Recurrent event ${e.id} - ${e.title} does not have a frequency specified`)
+      return
+    }
+
+    cursor = cursor.set({ hour: parentStartDatetime.hour, minute: parentStartDatetime.minute, second: 0 })
+
+    // each week or 2
+    if (frequency[1] === 'w') {
+      cursor = cursor.set({ weekday: parentStartDatetime.weekday }) //day(parentStartDatetime.day())
+      if (cursor < startAt) {
+        cursor = cursor.plus({ days: 7 * Number(frequency[0]) })
       }
-      return eventController._createRecurrentOccurrence(e, DateTime.local(), true)
-    })
+    } else if (frequency === '1m') {
 
-    return Promise.all(creations)
+      // day n.X each month
+      if (type === 'ordinal') {
+        cursor = cursor.set({ day: parentStartDatetime.day })
+
+        if (cursor< startAt) {
+          cursor = cursor.plus({ months: 1 })
+        }
+      } else { // weekday
+
+        // get recurrent freq details
+        cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
+        if (cursor < startAt) {
+          cursor = cursor.plus({ months: 1 })
+          cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
+        }
+      }
+    }
+    log.debug(cursor)
+    const start_datetime = cursor.toUnixInteger()
+    const end_datetime = e.end_datetime ? start_datetime + duration : null
+    return { start_datetime, end_datetime }
+  },
+
+  /**
+   * Create occurrences of recurrent events
+   */
+  async createRecurrent(e) {
+
+    // select recurrent events and its childs
+    // const events = await Event.findAll({
+    //   where: { recurrent: { [Op.ne]: null } },
+    //   include: [{ model: Tag, required: false },
+    //   { model: Event, as: 'child', required: false, where: { start_datetime: { [Op.gte]: start_datetime } } }],
+    //   order: [['child', 'start_datetime', 'DESC']]
+    // })
+
+    let current_datetime = DateTime.fromSeconds(e.start_datetime)
+    if (!e.recurrent.date_limit) {
+      e.recurrent.date_limit = DateTime.fromSeconds(e.start_datetime).plus({ months: 6 }).toUnixInteger()
+    } else {
+      e.recurrent.date_limit = DateTime.fromSeconds(e.recurrent.date_limit).endOf('day').toUnixInteger()
+    }
+    
+    let creations = []
+    let max_occurrences = 10
+    while (true) {
+      max_occurrences--
+      log.info(`Create a new instance`)
+      // 
+      let { start_datetime, end_datetime } = eventController._nextEventOccurrence(e, current_datetime)
+      // console.error(`trovato ${start_datetime}`)
+      if (start_datetime <= e.recurrent.date_limit && max_occurrences >= 0 ) {
+        log.debug(`Create recurrent event [${e.id}] ${e.title}"`)
+
+        // prepare the new event occurrence copying the parent's properties
+        const event = {
+          slug: null,
+          id: null,
+          start_datetime,
+          end_datetime,
+          parentId: e.id,
+          title: e.title,
+          description: e.description,
+          media: e.media,
+          is_visible: true,
+          userId: e.userId,
+          placeId: e.placeId,
+          ...(e.online_locations && { online_locations: e.online_locations } )
+        }
+        current_datetime = DateTime.fromSeconds(start_datetime + 1)
+        creations.push(await Event.create(event))
+      } else {
+        break
+      }
+    }
+
+    return creations
   }
 }
 

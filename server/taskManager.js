@@ -56,12 +56,12 @@ class TaskManager {
     const eventController = require('./api/controller/event')
 
     // create and clean recurrent events
-    this.add(new Task({
-      name: 'CREATE_RECURRENT_EVENT',
-      method: eventController._createRecurrent,
-      repeatDelay: hour / 2, // check each half an hour
-      repeat: true
-    }))
+    // this.add(new Task({
+    //   name: 'CREATE_RECURRENT_EVENT',
+    //   method: eventController._createRecurrent,
+    //   repeatDelay: hour / 2, // check each half an hour
+    //   repeat: true
+    // }))
     
     // remove unrelated places
     this.add(new Task({
