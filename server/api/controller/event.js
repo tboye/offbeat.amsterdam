@@ -9,8 +9,9 @@ const { DateTime } = require('luxon')
 const helpers = require('../../helpers')
 const Col = helpers.col
 const notifier = require('../../notifier')
+const { htmlToText } = require('html-to-text')
 
-const { Event, Resource, Tag, Place, Notification, APUser } = require('../models/models')
+const { Event, Resource, Tag, Place, Notification, APUser, Collection } = require('../models/models')
 
 
 const exportController = require('./export')
@@ -47,7 +48,7 @@ const eventController = {
   },
 
   async searchMeta(req, res) {
-    const search = req.query.search
+    const search = req.query.search.toLocaleLowerCase()
 
     const places = await Place.findAll({
       order: [[Sequelize.col('w'), 'DESC']],
@@ -73,6 +74,7 @@ const eventController = {
       group: ['tag.tag'],
       raw: true
     })
+
 
     const ret = places.map(p => {
       p.type = 'place'
@@ -181,6 +183,8 @@ const eventController = {
       event.next = next && (next.slug || next.id)
       event.prev = prev && (prev.slug || prev.id)
       event.tags = event.tags.map(t => t.tag)
+      event.plain_description = htmlToText(event.description, event.description.replace('\n', '').slice(0, 1000) )
+
       if (format === 'json') {
         res.json(event)
       } else if (format === 'ics') {
@@ -313,6 +317,26 @@ const eventController = {
       if (missing_field) {
         log.warn(`${missing_field} required`)
         return res.status(400).send(`${missing_field} required`)
+      }
+
+      // validate start_datetime and end_datetime
+      if (body.end_datetime) {
+        if (body.start_datetime > body.end_datetime) {
+          return res.status(400).send(`start datetime is greater than end datetime`)
+        }
+
+        if (Number(body.end_datetime) > 1000*24*60*60*365) {
+          return res.status(400).send('are you sure?')
+        }
+  
+      }
+
+      if (!Number(body.start_datetime)) {
+        return res.status(400).send(`Wrong format for start datetime`)
+      }
+
+      if (Number(body.start_datetime) > 1000*24*60*60*365) {
+        return res.status(400).send('are you sure?')
       }
 
       // find or create the place
@@ -597,6 +621,8 @@ const eventController = {
     }
 
     if (query) {
+      query = query.toLocaleLowerCase()
+      replacements.push(query)
       replacements.push(query)
       where[Op.or] =
         [
@@ -690,7 +716,7 @@ const eventController = {
     const parentStartDatetime = DateTime.fromSeconds(e.start_datetime)
 
     // cursor is when start to count
-    // sets it to
+    // in case parent is in past, start to calculate from now
     let cursor = parentStartDatetime > startAt ? parentStartDatetime : startAt
     startAt = cursor
 
@@ -711,6 +737,8 @@ const eventController = {
         cursor = cursor.plus({ days: 7 * Number(frequency[0]) })
       }
     } else if (frequency === '1m') {
+
+      // day n.X each month
       if (type === 'ordinal') {
         cursor = cursor.set({ day: parentStartDatetime.day })
 
@@ -718,10 +746,10 @@ const eventController = {
           cursor = cursor.plus({ months: 1 })
         }
       } else { // weekday
-        // get weekday
+
         // get recurrent freq details
         cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
-        if (cursor< startAt) {
+        if (cursor < startAt) {
           cursor = cursor.plus({ months: 1 })
           cursor = helpers.getWeekdayN(cursor, type, parentStartDatetime.weekday)
         }

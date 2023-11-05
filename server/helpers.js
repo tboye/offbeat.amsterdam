@@ -258,8 +258,8 @@ module.exports = {
       }
     } else {
       cursor = date.startOf('month')
-      cursor = cursor.add(cursor.day() <= date.day() ? n - 1 : n, 'week')
-      cursor = cursor.plus({ days: cursor.weekday <= date.weekday ? (n-1) * 7 : n * 7})
+      // cursor = cursor.add(cursor.day <= date.day ? n - 1 : n, 'week')
+      cursor = cursor.plus({ weeks: cursor.weekday <= weekday ? n-1 : n })
       cursor = cursor.set({ weekday })
     }
     cursor = cursor.set({ hour: date.hour, minute: date.minute, second: 0 })
@@ -287,11 +287,26 @@ module.exports = {
     next()
   },
 
+  async reachable(req, res) {
+    try {
+      const response = await axios({ url: config.baseurl })
+      return res.sendStatus(200)
+    } catch(e) {
+      return res.status(400).json(e)
+    }
+  },
+
   async isGeocodingEnabled(req, res, next) {
     if (res.locals.settings.allow_geolocation) {
       next()
     } else {
       res.sendStatus(403)
     }
+  },
+
+  queryParamToBool (value, defaultValue) {
+    if (typeof value === 'undefined') return defaultValue
+    return (String(value).toLowerCase() === 'true')
   }
+
 }

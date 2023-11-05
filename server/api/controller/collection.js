@@ -1,14 +1,15 @@
 const { Collection, Filter, Event, Tag, Place } = require('../models/models')
+const exportController = require('./export')
 
 const log = require('../../log')
 const { DateTime } = require('luxon')
-const { col: Col } = require('../../helpers')
+const { col: Col, queryParamToBool } = require('../../helpers')
 const { Op, Sequelize } = require('sequelize')
 
 const collectionController = {
 
   async getAll (req, res) {
-    const withFilters = req.query.withFilters
+    const withFilters = queryParamToBool(req.query.withFilters)
     let collections
     if (withFilters) {
       collections = await Collection.findAll({ include: [ Filter ] })
@@ -19,18 +20,39 @@ const collectionController = {
     return res.json(collections)
   },
 
-  // return events from collection
   async getEvents (req, res) {
     const name = req.params.name
+    const format = req.params.format || 'json'
+
+    try {
+      const events = await collectionController._getEvents(name)
+      switch (format) {
+        case 'rss':
+          return exportController.feed(req, res, events,
+              `${res.locals.settings.title} - Collection @${name}`,
+              `${res.locals.settings.baseurl}/feed/rss/collection/${name}`)
+        case 'ics':
+          return exportController.ics(req, res, events)
+        default:
+          return res.json(events )
+      }      
+    } catch (e) {
+      log.error(e)
+      return res.sendStatus(404)
+    }
+  },
+
+  // return events from collection
+  async _getEvents (name) {
 
     const collection = await Collection.findOne({ where: { name } })
     if (!collection) {
-      return res.sendStatus(404)
+      throw new Error(`Collection ${name} not found`)
     }
-    const filters = await Filter.findAll({ where: { collectionId: collection.id } })
 
+    const filters = await Filter.findAll({ where: { collectionId: collection.id } })
     if (!filters.length) {
-      return res.json([])
+      return []
     }
     const start = DateTime.local().toUnixInteger()
     const where = {
@@ -40,10 +62,7 @@ const collectionController = {
       // confirmed event only
       is_visible: true,
 
-      // [Op.or]: {
-        start_datetime: { [Op.gte]: start },
-        // end_datetime: { [Op.gte]: start }
-      // }
+      start_datetime: { [Op.gte]: start },
     }
 
     const replacements = []
@@ -67,7 +86,7 @@ const collectionController = {
     const events = await Event.findAll({
       where,
       attributes: {
-        exclude: ['likes', 'boost', 'userId', 'is_visible', 'createdAt', 'updatedAt', 'description', 'resources']
+        exclude: ['likes', 'boost', 'userId', 'is_visible', 'createdAt', 'description', 'resources']
       },
       order: ['start_datetime'],
       include: [
@@ -86,13 +105,11 @@ const collectionController = {
       return []
     })
 
-    const ret  = events.map(e => {
+    return events.map(e => {
       e = e.get()
       e.tags = e.tags ? e.tags.map(t => t && t.tag) : []
       return e
     })
-
-    return res.json(ret)
 
   },
 
@@ -131,11 +148,11 @@ const collectionController = {
     const collectionId = req.params.collection_id
     const filters = await Filter.findAll({ where: { collectionId } })
     return res.json(filters)
-  }, 
+  },
 
   async addFilter (req, res) {
     const { collectionId, tags, places } = req.body
-    
+
     try {
       filter = await Filter.create({ collectionId, tags, places })
       return res.json(filter)

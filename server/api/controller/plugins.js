@@ -4,6 +4,7 @@ const log = require('../../log')
 const config = require('../../config')
 const settingsController = require('./settings')
 const notifier = require('../../notifier')
+const db = require('../models/index.js')
 
 const pluginController = {
   plugins: [],
@@ -32,6 +33,22 @@ const pluginController = {
     res.json()
   },
 
+  async routeAPI (req, res, next) {
+    const pluginName = req.params.plugin
+    const plugin = pluginController.plugins.find(p => p.configuration.name === pluginName)
+    if (!plugin) {
+      log.warn(`Plugin ${pluginName} not found`)
+      return res.sendStatus(404)
+    }
+
+    if (typeof plugin.routeAPI !== 'function') {
+      log.warn(`Plugin ${pluginName} does not expose a 'routeAPI' function`)
+      return res.sendStatus(404)
+    }
+
+    return plugin.routeAPI(req, res, next)
+  },
+
   async testPlugin (req, res) {
     const pluginName = req.params.plugin
     const plugin = pluginController.plugins.find(p => p.configuration.name === pluginName)
@@ -39,7 +56,7 @@ const pluginController = {
       log.warn(`Plugin ${pluginName} not found`)
       return res.sendStatus(404)
     }
-  
+
     if (typeof plugin.onTest !== 'function') {
       log.warn(`Plugin ${pluginName} does not expose an 'onTest' function`)
       return res.sendStatus(404)
@@ -69,7 +86,7 @@ const pluginController = {
     }
 
     if (plugin.unload && typeof plugin.unload === 'function') {
-      plugin.unload({ settings: settingsController.settings }, settings)
+      plugin.unload()
     }
 
   },
@@ -96,7 +113,8 @@ const pluginController = {
       plugin.load({
         helpers: require('../../helpers'),
         log,
-        settings: settingsController.settings
+        settings: settingsController.settings,
+        db: db.sequelize
       },
       settings)
     }
@@ -116,13 +134,15 @@ const pluginController = {
         const pluginSetting = settingsController.settings['plugin_' + name]
         if (pluginSetting.enable) {
           pluginController.loadPlugin(name)
+        } else {
+          log.info(`Do not load plugin ${name} (${pluginFile}) as it is not enabled!`)
         }
       } else {
         settingsController.set('plugin_' + name, { enable: false })
       }
     } catch (e) {
       log.warn(`Unable to load plugin ${pluginFile}: ${String(e)}`)
-    }    
+    }
   },
 
   _load() {

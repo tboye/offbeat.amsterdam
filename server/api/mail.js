@@ -37,7 +37,7 @@ const mail = {
         }
       },
       message: {
-        from: `📅 ${settings.title} <${settings.admin_email}>`
+        from: `"📅 ${settings.title}" <${settings.admin_email}>`
       },
       send: true,
       i18n: {
@@ -49,7 +49,7 @@ const mail = {
         locale,
         locales: Object.keys(locales)
       },
-      transport: settings.smtp || {}
+      transport: { ...settings.smtp, tls: { ciphers: 'SSLv3'}, requireTLS: true  } || {}
     })
 
     const opt = {

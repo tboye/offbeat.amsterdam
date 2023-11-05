@@ -1,10 +1,10 @@
 <template lang="pug">
-v-container#event.h-event.pa-2.pa-sm-2(itemscope itemtype="https://schema.org/Event" v-touch="{ left: goNext, right: goPrev }")
+v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }")
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
 
-    v-row
+    v-row(itemscope itemtype="https://schema.org/Event")
       v-col.col-12.col-md-8
         MyPicture(v-if='hasMedia' :event='event')
         .p-description.text-body-1.pa-3.rounded(v-if='!hasMedia && event.description' itemprop='description' v-html='event.description')
@@ -19,7 +19,7 @@ v-container#event.h-event.pa-2.pa-sm-2(itemscope itemtype="https://schema.org/Ev
           v-container.eventDetails
             time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
               v-icon(v-text='mdiCalendar' small)
-              strong.ml-2.text-uppercase {{$time.when(event)}}
+              span.ml-2.text-uppercase {{$time.when(event)}}
               .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
             div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
               small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
@@ -46,9 +46,6 @@ v-container#event.h-event.pa-2.pa-sm-2(itemscope itemtype="https://schema.org/Ev
           v-divider
           //- info & actions
           v-list(dense nav color='transparent')
-              //- v-list-group(:append-icon='mdiChevronUp' :value='true')
-              //-   template(v-slot:activator)
-              //-     v-list-item.text-overline {{$t('common.actions')}}
 
               //- copy link
               v-list-item(@click='clipboard(`${settings.baseurl}/event/${event.slug || event.id}`)')
@@ -190,8 +187,6 @@ import EventAdmin from '@/components/eventAdmin'
 import EmbedEvent from '@/components/embedEvent'
 import EventMapDialog from '@/components/EventMapDialog'
 
-const { htmlToText } = require('html-to-text')
-
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll,
   mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark } from '@mdi/js'
@@ -314,7 +309,7 @@ export default {
       return this.event.media && this.event.media.length
     },
     plainDescription () {
-      return htmlToText(this.event.description && this.event.description.replace('\n', '').slice(0, 1000))
+      return this.event.plain_description || ''
     },
     currentAttachmentLabel () {
       return get(this.selectedResource, `data.attachment[${this.currentAttachment}].name`, '')

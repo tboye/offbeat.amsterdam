@@ -4,13 +4,11 @@ v-container.pa-0.pa-md-3
     v-card-title {{$t('common.share')}}
     v-card-text
       p.text-body-1 {{$t('export.intro')}}
-      v-row
-        v-col(:md='2' :cols='12')
-          v-card-title.py-0 {{$t('common.filter')}}
-        v-col
-          Search(
-            :filters='filters'
-            @update='f => filters = f')
+      v-card(outlined :dark='is_dark' :color="is_dark ? '#333' : '#ececec'")
+        v-card-title {{$t('common.filter')}}
+        v-card-subtitle {{$t('export.filter_description')}}
+        v-card-text
+          Search(v-model='filters')
     v-tabs(v-model='type' show-arrows :next-icon='mdiChevronRight' :prev-icon='mdiChevronLeft')
 
       //- TOFIX
@@ -52,13 +50,14 @@ v-container.pa-0.pa-md-3
               v-col.col-12.col-lg-4
                 v-text-field(v-model='list.title' :label='$t("common.title")')
                 v-text-field(v-model='list.maxEvents' type='number' min='1' :label='$t("common.max_events")')
-                v-switch(v-model='list.theme' inset true-value='dark' false-value='light' :label="$t('admin.is_dark')")
+                v-switch(v-model='list.theme' hide-details inset true-value='dark' false-value='light' :label="$t('admin.is_dark')")
                 v-switch(v-model='list.sidebar' inset true-value='true' false-value='false' :label="$t('admin.widget')")
               v-col.col-12.col-lg-8
                 gancio-events(:baseurl='settings.baseurl'
                   :maxlength='list.maxEvents &&  Number(list.maxEvents)'
                   :title='list.title'
                   :theme='list.theme'
+                  :collection='filters.collection'
                   :places='filters.places.join(",")'
                   :tags='filters.tags.join(",")'
                   :show_recurrent='filters.show_recurrent'
@@ -81,7 +80,7 @@ v-container.pa-0.pa-md-3
 
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import FollowMe from '../components/FollowMe'
 import Search from '@/components/Search'
 import clipboard from '../assets/clipboard'
@@ -112,7 +111,7 @@ export default {
         theme: $store.state.settings['theme.is_dark'] ? 'dark' : 'light',
         sidebar: 'true'
       },
-      filters: { tags: [], places: [], show_recurrent: $store.state.settings.recurrent_event_visible },
+      filters: { tags: [], places: [], collection: undefined, show_recurrent: $store.state.settings.recurrent_event_visible },
       events: []
     }
   },
@@ -123,6 +122,7 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    ...mapGetters(['is_dark']),
     code () {
       const params = [`baseurl="${this.settings.baseurl}"`]
 
@@ -130,12 +130,16 @@ export default {
         params.push(`title="${this.list.title}"`)
       }
 
-      if (this.filters.places.length) {
-        params.push(`places="${this.filters.places.join(',')}"`)
-      }
+      if (this.filters.collection) {
+        params.push(`collection="${this.filters.collection}"`)
+      } else {
+        if (this.filters.places.length) {
+          params.push(`places="${this.filters.places.join(',')}"`)
+        }
 
-      if (this.filters.tags.length) {
-        params.push(`tags="${this.filters.tags.join(',')}"`)
+        if (this.filters.tags.length) {
+          params.push(`tags="${this.filters.tags.join(',')}"`)
+        }
       }
 
       if (this.filters.show_recurrent) {
@@ -158,12 +162,17 @@ export default {
       const typeMap = ['rss', 'ics']
       const params = []
 
-      if (this.filters.tags.length) {
-        params.push(`tags=${this.filters.tags.map(encodeURIComponent).join(',')}`)
-      }
 
-      if (this.filters.places.length) {
-        params.push(`places=${this.filters.places.join(',')}`)
+      if (this.filters.collection) {
+        return `${this.settings.baseurl}/feed/${typeMap[this.type]}/collection/${encodeURIComponent(this.filters.collection)}`
+      } else {
+        if (this.filters.tags.length) {
+          params.push(`tags=${this.filters.tags.map(encodeURIComponent).join(',')}`)
+        }
+
+        if (this.filters.places.length) {
+          params.push(`places=${this.filters.places.join(',')}`)
+        }
       }
 
       if (this.filters.show_recurrent) {

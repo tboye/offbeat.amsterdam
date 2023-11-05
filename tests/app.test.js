@@ -207,6 +207,49 @@ describe('Events', () => {
 
   })
 
+
+
+  test('should not allow start_datetime greater than end_datetime', async () => {
+    const event = {
+      title: ' test title 5',
+      place_id: places[0],
+      start_datetime: dayjs().unix() + 1000,
+      end_datetime: dayjs().unix(),
+    }
+
+    const response = await request(app).post('/api/event')
+      .send(event)
+      .expect(400)
+    
+    expect(response.text).toBe('start datetime is greater than end datetime')
+  })
+
+  test('should not allow start_datetime greater than 3000', async () => {
+    const event = {
+      title: ' test title 5',
+      start_datetime: dayjs().set('year', 4000).unix(),
+      place_id: places[0],
+    }
+
+    const response = await request(app).post('/api/event')
+      .send(event)
+      .expect(400)
+
+    expect(response.text).toBe('are you sure?')
+  })
+
+  test('should validate start_datime', async () => {
+    const event = {
+      title: ' test title 5',
+      start_datetime: "antani",
+      place_id: places[0],
+    }
+
+    const response = await request(app).post('/api/event')
+      .send(event)
+      .expect(400)
+  })
+
   test('should trim tags and title', async () => {
     const event = {
       title: ' test title 4 ',
@@ -239,9 +282,9 @@ describe('Events', () => {
       .send(event)
       .expect(200)
       .expect('Content-Type', /json/)
-      
+
     expect(response.body.description).toBe(`<p>inside paragraph</p><a href="https://test.com/?query=true">link with fb reference</a>`)
-    
+
   })
 
 })
@@ -384,7 +427,7 @@ describe('Collection', () => {
   })
 
   test('shoud get collection\'s filters using withFilters parameter', async () => {
-    const response = await request(app)
+    let response = await request(app)
       .get('/api/collections?withFilters=true')
       .expect(200)
 
@@ -393,6 +436,18 @@ describe('Collection', () => {
     expect(response.body[0].filters.length).toBe(1)
     expect(response.body[0].filters[0].tags.length).toBe(1)
     expect(response.body[0].filters[0].tags[0]).toBe('test')
+
+    response = await request(app)
+      .get('/api/collections')
+      .expect(200)
+    expect(response.body[0].filters).toBeUndefined()
+
+
+    response = await request(app)
+      .get('/api/collections?withFilters=false')
+      .expect(200)
+    expect(response.body[0].filters).toBeUndefined()
+
   })
 
   test('should get collection events', async () => {

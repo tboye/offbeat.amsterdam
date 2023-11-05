@@ -1,4 +1,56 @@
-All notable changes to this project will be documented in this file.
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.6.19](https://framagit.org/les/gancio/compare/v1.6.18...v1.6.19) (2023-11-04)
+
+
+### Bug Fixes
+
+* issue displaying recurrent event string ([a94ccda](https://framagit.org/les/gancio/commit/a94ccda049f7571a9caa90507141a0aac30331a9))
+
+### 1.6.18 - 3 Nov '23
+  - [feat] allow to specify password while create new user via CLI to [support yunohost](https://github.com/YunoHost-Apps/gancio_ynh/pull/2#discussion_r1364285417)
+  - [feat] check if I'm reachable to myself to help in [#298](https://framagit.org/les/gancio/-/issues/298)
+  - [feat] improve recover and user_confirm error messages
+  - [feat] improve export and allow to export `collections` in rss/ics/widget
+  - [fix] fix postgres image version in docker-compose [#303](https://framagit.org/les/gancio/-/issues/303)
+  - [fix] Improve json-ld representation of events [#33](https://framagit.org/les/gancio/-/merge_requests/33)
+  - [fix] Add description field to admin's new user form, closes [#307](https://framagit.org/les/gancio/-/issues/307)
+  - [fix] use tls SSLv3 to send email, fix [#192](https://framagit.org/les/gancio/-/issues/192)
+  - [fix] notify user when accepted, fix [#308](https://framagit.org/les/gancio/-/issues/308)
+  - [fix] forgot password on active user only
+  - [fix] make search case insensitive, fix [#301](https://framagit.org/les/gancio/-/issues/301)
+
+### 1.6.17 - 4 Oct '23
+  - [fix] typo
+
+### 1.6.16 - 4 Oct '23
+  - [feat] add Czech locale
+  - [fix] improve datetime validation
+
+### 1.6.15 - 3 Oct '23
+  - [feat] clone event
+  - [feat] am/pm / 24hr support, fix [#294](https://framagit.org/les/gancio/-/issues/294) [#264](https://framagit.org/les/gancio/-/issues/264)
+  - [feat] update telegram plugin bridge to v1.0.3, [#299](https://framagit.org/les/gancio/-/issues/299)
+  - [feat] include Brazilian Portuguese (pt-br) and Portugual Portuguese (pt-pt) [#292](https://framagit.org/les/gancio/-/issues/292)
+  - [fix] MariaDB JSON fields manual fix
+  - [fix] improve some corner case with SMTP From field [#297](https://framagit.org/les/gancio/-/issues/297)
+  - [fix] CLI has to fail when configuration not present [#284](https://framagit.org/les/gancio/-/issues/284)
+  - [minor] remove html2text dep from client
+  - [minor] RSS item's title format is now YYYY-MM-DD, [#300](https://framagit.org/les/gancio/-/issues/300)
+
+### 1.6.14 - 30 June '23
+  - improve CLI accounts operations ([documentation](https://gancio.org/usage/cli))
+  - allow plugins to expose API ([documentation](http://gancio.org/dev/plugins))
+  - allow plugins to access DB ([documentation](http://gancio.org/dev/plugins))
+  - show map on the places page, #276 #30
+  - add node v18 support, #278
+  - fix media update, #285
+  - fix nodejs v14 compatibility in export
+  - fix invalid event microdata, #277
+  - fix recurrent event, #280
+  - update deps and locales
 
 ### 1.6.13 - 16 may '23
   - fix feed, ics, json exports
