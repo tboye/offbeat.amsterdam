@@ -11,7 +11,7 @@ const Col = helpers.col
 const notifier = require('../../notifier')
 const { htmlToText } = require('html-to-text')
 
-const { Event, Resource, Tag, Place, Notification, APUser } = require('../models/models')
+const { Event, Resource, Tag, Place, Notification, APUser, Collection } = require('../models/models')
 
 
 const exportController = require('./export')
@@ -48,7 +48,7 @@ const eventController = {
   },
 
   async searchMeta(req, res) {
-    const search = req.query.search
+    const search = req.query.search.toLocaleLowerCase()
 
     const places = await Place.findAll({
       order: [[Sequelize.col('w'), 'DESC']],
@@ -74,6 +74,7 @@ const eventController = {
       group: ['tag.tag'],
       raw: true
     })
+
 
     const ret = places.map(p => {
       p.type = 'place'
@@ -316,6 +317,26 @@ const eventController = {
       if (missing_field) {
         log.warn(`${missing_field} required`)
         return res.status(400).send(`${missing_field} required`)
+      }
+
+      // validate start_datetime and end_datetime
+      if (body.end_datetime) {
+        if (body.start_datetime > body.end_datetime) {
+          return res.status(400).send(`start datetime is greater than end datetime`)
+        }
+
+        if (Number(body.end_datetime) > 1000*24*60*60*365) {
+          return res.status(400).send('are you sure?')
+        }
+  
+      }
+
+      if (!Number(body.start_datetime)) {
+        return res.status(400).send(`Wrong format for start datetime`)
+      }
+
+      if (Number(body.start_datetime) > 1000*24*60*60*365) {
+        return res.status(400).send('are you sure?')
       }
 
       // find or create the place
@@ -600,6 +621,8 @@ const eventController = {
     }
 
     if (query) {
+      query = query.toLocaleLowerCase()
+      replacements.push(query)
       replacements.push(query)
       where[Op.or] =
         [

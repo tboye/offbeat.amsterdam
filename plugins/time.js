@@ -4,6 +4,22 @@ export default ({ app, store }, inject) => {
   Settings.defaultLocale = app.i18n.locale || store.state.settings.instance_locale
   const time = {
 
+    timeFormat () {
+      const time = DateTime.fromObject({ hour: 14 }, {
+        zone: store.state.settings.instance_timezone,
+        locale: app.i18n.locale || store.state.settings.instance_locale
+      }).toLocaleString({ hour: 'numeric'})
+      return time === '2 PM' ? 'ampm' : '24hr'
+    },
+
+    formatHour (value, format) {
+      if (!value) return ''
+      return DateTime.fromFormat(value, 'HH:mm', {
+        zone: store.state.settings.instance_timezone,
+        locale: app.i18n.locale || store.state.settings.instance_locale
+      }).toLocaleString({ hour: '2-digit', minute: '2-digit'})
+    },
+
     format (date, format) {
       return DateTime.fromISO(date, {
         zone: store.state.settings.instance_timezone,
@@ -46,11 +62,11 @@ export default ({ app, store }, inject) => {
       }
       
       const start = DateTime.fromSeconds(event.start_datetime, opt)
-      let time = start.toFormat('EEEE d MMMM HH:mm')
+      let time = start.toLocaleString({ weekday: 'long', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' })
       const end = event.end_datetime && DateTime.fromSeconds(event.end_datetime, opt)
       
       if (end) {
-        time += event.multidate ? ` → ${end.toFormat('EEEE d MMMM')}` : `-${end.toFormat('HH:mm')}`
+        time += event.multidate ? ` → ${end.toLocaleString({ weekday: 'long', month: 'short', day: '2-digit'})}` : `-${end.toLocaleString({hour: '2-digit', minute: '2-digit'})}`
       }
 
       if (currentYear !== start.year) {
@@ -63,7 +79,7 @@ export default ({ app, store }, inject) => {
       const opt = {
         zone,
         locale: app.i18n.locale || store.state.settings.instance_locale
-      }      
+      }
       return DateTime.local(opt).toUnixInteger()
     },
 
@@ -73,14 +89,18 @@ export default ({ app, store }, inject) => {
 
 
     recurrentDetail (event) {
+      const opt = {
+        zone,
+        locale: app.i18n.locale || store.state.settings.instance_locale
+      }      
       const parent = event.parent
       if (!parent.recurrent || !parent.recurrent.frequency) return 'error!'
       const { frequency, type } = parent.recurrent
       let recurrent
       if (frequency === '1w' || frequency === '2w') {
-        recurrent = app.i18n.t(`event.recurrent_${frequency}_days`, { days: DateTime.fromSeconds(parent.start_datetime).toFormat('EEEE') })
+        recurrent = app.i18n.t(`event.recurrent_${frequency}_days`, { days: DateTime.fromSeconds(parent.start_datetime, opt).toFormat('EEEE')})
       } else if (frequency === '1m' || frequency === '2m') {
-        const d = type === 'ordinal' ? DateTime.fromSeconds(parent.start_datetime).day : DateTime.fromSeconds(parent.start_datetime).toFormat('EEEE')
+        const d = type === 'ordinal' ? DateTime.fromSeconds(parent.start_datetime, opt).day : DateTime.fromSeconds(parent.start_datetime, opt).toFormat('EEEE')
         if (type === 'ordinal') {
           recurrent = app.i18n.t(`event.recurrent_${frequency}_days`, { days: d })
         } else {
@@ -116,6 +136,7 @@ export default ({ app, store }, inject) => {
       const now = DateTime.local(opt).toUnixInteger()
       for (const e of events) {
         const tmp = DateTime.fromSeconds(e.start_datetime, opt)
+        if (!tmp || !tmp.year) continue
         const start = DateTime.local().set({ year: tmp.year, month: tmp.month, day: tmp.day })
         // merge events with same date
         const key = `${start.month}${start.day}`

@@ -52,7 +52,7 @@ v-col(cols=12)
             :clear-icon='mdiClose'
             @click:clear='() => change("fromHour")'
             :label="$t('event.from')"
-            :value="value.fromHour"
+            :value="$time.formatHour(value.fromHour)"
             :disabled='!value.from'
             readonly
             :prepend-icon="mdiClockTimeFourOutline"
@@ -64,7 +64,7 @@ v-col(cols=12)
           :value="value.fromHour"
           :allowedMinutes='allowedMinutes'
           full-width
-          format='24hr'
+          :format='$time.timeFormat()'
           @click:minute='menuFromHour = false'
           @input='hr => change("fromHour", hr)')
 
@@ -84,7 +84,7 @@ v-col(cols=12)
             :clear-icon='mdiClose'
             @click:clear='() => change("dueHour")'
             :label="$t('event.due')"
-            :value="value.dueHour"
+            :value="$time.formatHour(value.dueHour)"
             :disabled='!value.fromHour'
             readonly
             :prepend-icon="mdiClockTimeEightOutline"
@@ -95,7 +95,7 @@ v-col(cols=12)
           :value="value.dueHour"
           full-width
           :allowedMinutes='allowedMinutes'
-          format='24hr'
+          :format='$time.timeFormat()'
           @click:minute='menuDueHour = false'
           @input='hr => change("dueHour", hr)')
 

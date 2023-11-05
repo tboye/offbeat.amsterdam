@@ -71,6 +71,7 @@ module.exports = () => {
     ```
     */
     api.get('/ping', (_req, res) => res.sendStatus(200))
+    api.get('/reachable', helpers.reachable)
     api.get('/user', isAuth, (req, res) => res.json(req.user))
 
     api.post('/user/recover', SPAMProtectionApiRateLimiter, userController.forgotPassword)
@@ -82,7 +83,7 @@ module.exports = () => {
     api.post('/user', isAdmin, userController.create)
 
     // update user
-    api.put('/user', isAuth, userController.update)
+    api.put('/user', isAdmin, userController.update)
 
     // delete user
     api.delete('/user/:id', isAdmin, userController.remove)
@@ -146,7 +147,7 @@ module.exports = () => {
     // remove event
     api.delete('/event/:id', isAuth, eventController.remove)
 
-    // get tags/places
+    // get tags/places/collection
     api.get('/event/meta', eventController.searchMeta)
 
     // add event notification TODO

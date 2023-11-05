@@ -11,7 +11,7 @@ const userController = {
 
   async forgotPassword (req, res) {
     const email = req.body.email
-    const user = await User.findOne({ where: { email: { [Op.eq]: email } } })
+    const user = await User.findOne({ where: { email, is_active: true } })
     if (!user) { return res.sendStatus(200) }
 
     user.recover_code = crypto.randomBytes(16).toString('hex')
@@ -62,13 +62,9 @@ const userController = {
 
     if (!user) { return res.status(404).json({ success: false, message: 'User not found!' }) }
 
-    if (req.body.id !== req.user.id && !req.user.is_admin) {
-      return res.status(400).json({ succes: false, message: 'Not allowed' })
-    }
-
     if (!req.body.password) { delete req.body.password }
 
-    if (!user.is_active && req.body.is_active && user.recover_code) {
+    if ((!user.is_active && req.body.is_active) || user.recover_code) {
       mail.send(user.email, 'confirm', { user, config }, res.locals.settings.locale)
     }
 
@@ -89,6 +85,7 @@ const userController = {
       }
 
       req.body.is_active = false
+      req.body.is_admin = false
 
       // check email
       if (!linkify.test(req.body.email, 'email')) {
