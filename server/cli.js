@@ -2,6 +2,7 @@
 const pkg = require('../package.json')
 const path = require('path')
 const usersCLI = require('./cli/users')
+const eventsCLI = require('./cli/events')
 
 process.env.cwd = process.env.GANCIO_DATA || path.resolve('./')
 
@@ -30,6 +31,7 @@ require('yargs')
     }})
   .command(['start', 'run', '$0'], 'Start gancio', {}, start)
   .command(['users'], 'Manage users', usersCLI)
+  .command(['events'], 'Manage events', eventsCLI)
   .help('h')
   .alias('h', 'help')
   .epilog('Made with ❤ by underscore hacklab - https://gancio.org')
