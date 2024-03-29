@@ -25,7 +25,7 @@ mkdir -p /opt/gancio
 cd /opt/gancio
 ```
 
-Download `docker-compose.yml` choosing your preferred database dialect between `sqlite`, `postgres` and `mariadb`:
+Download `docker-compose.yml` from [this link](https://framagit.org/les/gancio/-/tree/master/docs/docker) while choosing your preferred database dialect between `sqlite`, `postgres` and `mariadb`:
 ```bash
 DB=sqlite
 wget {{site.url}}/docker/$DB/docker-compose.yml
