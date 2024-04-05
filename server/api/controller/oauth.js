@@ -22,7 +22,16 @@ passport.serializeUser((user, done) =>  done(null, user.id))
 
 passport.deserializeUser(async (id, done) => {
   const user = await User.findByPk(id)
-  done(null, user)
+  const userInfo = {
+    id: user.id,
+    settings: user.settings,
+    email: user.email,
+    role: user.role,
+    is_admin: user.role === 'admin',
+    is_editor: user.role === 'editor',
+    is_active: user.is_active,
+  }
+  done(null, userInfo)
 })
 
 /**
@@ -80,7 +89,7 @@ passport.use(new ClientPublicStrategy(verifyPublicClient))
 
 async function verifyToken (req, accessToken, done) {
   const token = await OAuthToken.findByPk(accessToken,
-      { include: [{ model: User, attributes: { exclude: ['password'] } }, { model: OAuthClient, as: 'client' }] })
+      { include: [{ required: true, where: { is_active: true } , model: User, attributes: { exclude: ['password'] } }, { model: OAuthClient, as: 'client' }] })
 
   if (!token) return done(null, false)
   if (token.userId) {
@@ -258,7 +267,10 @@ const oauthController = {
       }
       next()
     },
-    passport.authenticate(['bearer', 'oauth2-client-password', 'anonymous'], { session: false })
+    passport.authenticate(['bearer', 'oauth2-client-password', 'anonymous'], { session: false }),
+    (req, res, next) => { // retrocompatibility
+      next()
+    }
   ],
 
   login: [

@@ -15,7 +15,7 @@ sudo apt install curl gcc g++ make wget libpq-dev
 
 1. Install Node.js & yarn
 ```bash
-curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+curl -sL https://deb.nodesource.com/setup_18.x | sudo bash -
 sudo apt-get install -y nodejs
 sudo npm install -g yarn
 ```
@@ -52,6 +52,14 @@ sudo adduser --group --system --shell /bin/false --home /opt/gancio gancio
 ```bash
 sudo yarn global add --network-timeout 1000000000 --silent {{site.url}}/latest.tgz
 ```
+
+> info "Install another release"
+> You can found old releases at [{{site.url}}/releases]({{site.url}}/releases)
+
+> info "Package verification"
+> Distributed packages are signed with [this key](/assets/underscore_to.hacklab.asc) you can verify the signature using:  
+> `gpg --verify latest.tgz.sig`
+
 
 1. Setup systemd service and reload systemd
 ```bash

@@ -16,11 +16,15 @@ v-container
       v-card-title {{$t('common.new_user')}}
       v-card-text
         v-form(v-model='valid' ref='user_form' lazy-validation @submit.prevent='createUser')
-          v-text-field(v-model='new_user.email'
-            :label="$t('common.email')"
-            :rules="$validators.email")
+          v-col
+            v-text-field.col-4(v-model='new_user.email'
+              :label="$t('common.email')"
+              :rules="$validators.email")
+          v-col
+            v-select.col-4(v-model='new_user.role' :label="$t('common.role')" :items="['admin', 'editor', 'user']")
           v-text-field(v-model='new_user.description' :label="$t('common.description')")
-          v-switch(v-model='new_user.is_admin' :label="$t('common.admin')" inset)
+          //- v-switch.d-inline-block.mr-5(v-model='new_user.is_admin' :label="$t('common.admin')" inset)
+          //- v-switch.d-inline-block(v-if='!new_user.is_admin' v-model='new_user.is_editor' :label="$t('common.editor')" inset)
         v-alert(type='info' :closable='false' :icon='mdiInformation') {{$t('admin.user_add_help')}}
         v-card-actions
           v-spacer
@@ -37,15 +41,18 @@ v-container
       :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
       :search='search')
       template(v-slot:item.is_active='{item}')
-        v-icon(v-if='item.is_active' color='success' v-text='mdiCheck')
-        v-icon(v-else color='warning' v-text='mdiClose')
+        v-switch(:input-value='item.is_active' readonly @click.native.prevent="toggle(item)" inset hide-details)
+      template(v-slot:item.role='{item}')
+        v-menu(offset-y)
+          template(v-slot:activator="{ on, attrs }")
+            v-btn(:color='role_colors[item.role ]' v-bind='attrs' v-on="on" small label) {{ item.role }}
+          v-list(width=100 nav)
+            v-list-item(v-for="role in ['admin', 'editor', 'user'].filter(r => r !== item.role)" :key='role' link @click='changeRole(item, role)')
+              v-list-item-content
+                v-list-item-title {{ role }}
+
       template(v-slot:item.actions='{item}')
-        v-btn(text small @click='toggle(item)'
-          :color='item.is_active?"warning":"success"') {{item.is_active?$t('common.disable'):$t('common.enable')}}
-        v-btn(text small @click='toggleAdmin(item)'
-          :color='item.is_admin?"warning":"error"') {{item.is_admin?$t('common.remove_admin'):$t('common.admin')}}
-        v-btn(text small @click='deleteUser(item)'
-          color='error') {{$t('admin.delete_user')}}
+        v-btn(text small @click='deleteUser(item)' color='error' ) {{$t('admin.delete_user')}}
 
 </template>
 <script>
@@ -62,6 +69,8 @@ export default {
     return {
       mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown,
       newUserDialog: false,
+      changeRoleDialog: false,
+      role_colors: { admin: 'error', editor: 'secondary', user: 'success' },
       valid: false,
       new_user: {
         email: '',
@@ -69,10 +78,12 @@ export default {
       },
       search: '',
       headers: [
-        { value: 'email', text: this.$t('common.email') },
+        { value: 'email', text: this.$t('common.email'), width: 150 },
         { value: 'description', text: this.$t('common.description') },
-        { value: 'is_active', text: 'Active' },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+        { value: 'is_active', text: 'Active', width: 50 },
+        { value: 'role', text: 'Role', width: 150 },
+        // { value: 'is_editor', text: 'Editor' },
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100 }
       ]
     }
   },
@@ -93,22 +104,26 @@ export default {
       }
     },
     async toggle (user) {
+      // ask confirmation only to disable
       if (user.is_active) {
+
         const ret = await this.$root.$confirm('admin.disable_user_confirm', { user: user.email })
         if (!ret) { return }
       }
       user.is_active = !user.is_active
       this.$axios.$put('/user', user)
     },
-    async toggleAdmin (user) {
+    async changeRole (user, role) {
+      // ask confirmation?
+      const ret = await this.$root.$confirm('admin.change_role_confirm', { user: user.email, from_role: user.role, to_role: role })
+      if (!ret) { return }
       try {
-        const configMsg = user.is_admin ? 'admin.disable_admin_user_confirm' : 'admin.enable_admin_user_confirm'
-        const ret = await this.$root.$confirm(configMsg, { user: user.email })
-        if (!ret) { return }
-        user.is_admin = !user.is_admin
-        await this.$axios.$put('/user', user)
+        await this.$axios.$put('/user', { ...user, role })
+        user.role = role
       } catch (e) {
+        console.error(e)
       }
+      return false
     },
     async createUser () {
       if (!this.$refs.user_form.validate()) { return }

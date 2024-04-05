@@ -14,7 +14,7 @@ const notifier = {
 
   emitter: new events.EventEmitter(),
 
-  sendNotification (notification, event) {
+  async sendNotification (notification, event) {
     const promises = []
     log.info(`Send ${notification.type} notification ${notification.action}`)
     let p
@@ -22,7 +22,10 @@ const notifier = {
       // case 'mail': TODO: locale?
       //   return mail.send(notification.email, 'event', { event, notification })
       case 'admin_email':
-        p = mail.send(settingsController.settings.admin_email, 'event',
+        const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
+        let emails = [settingsController.settings.admin_email]
+        emails = emails.concat(admins?.map(a => a.email))
+        p = mail.send(emails, 'event',
           { event, to_confirm: !event.is_visible, notification })
         promises.push(p)
         break
@@ -68,7 +71,7 @@ const notifier = {
     })
     
     notifier.emitter.emit(action, event.get({ plain: true, raw: true }))
-    log.debug(action, event.title)
+    log.debug('[NOTIFY] %s, %s [%d]', action, event.title, event.id)
 
     // insert notifications
     const notifications = await notifier.getNotifications(event, action)

@@ -19,7 +19,7 @@
         "search": "Bilatu",
         "edit": "Editatu",
         "info": "Informazioa",
-        "confirm": "Baieztatu",
+        "confirm": "Onartu",
         "admin": "Administratu",
         "users": "Erabiltzaileak",
         "events": "Ekitaldiak",
@@ -49,7 +49,7 @@
         "disable": "Desgaitu",
         "me": "Zu",
         "password_updated": "Pasahitza aldatu da.",
-        "activate_user": "Baieztatuta",
+        "activate_user": "Onartuta",
         "displayname": "Erakutsitako izena",
         "federation": "Federazioa",
         "set_password": "Ezarri pasahitza",
@@ -106,7 +106,13 @@
         "online": "Online",
         "test": "Proba",
         "show_preview": "Erakutsi aurrebista",
-        "clone": "Klonatu"
+        "clone": "Klonatu",
+        "actors": "Nodoa",
+        "trusted_instances": "Instantzia fidagarriak",
+        "pin": "Finkatu",
+        "collection_in_home": "Erakutsi bilduma bat hasieran",
+        "editor": "Editorea",
+        "my_events": "Nire ekitaldiak"
     },
     "login": {
         "description": "Saioa hasten baduzu ekitaldi berriak sortu ahal izango dituzu.",
@@ -126,26 +132,27 @@
         "insert_your_address": "Sartu zure eposta helbidea",
         "feed_description": "Eguneraketak sakelekoan edo ordenagailuan jaso nahi badituzu webgune hau bisitatu gabe, RSS jarioa erabiltzea gomendatzen dizugu.</p>\n\n<p>RSS jarioarentzat aplikazio berezi bat erabiliko duzu gogoko dituzun weguneetatik berriak jasotzeko. Oso modu egokia da gune askotako berriak erraz eta azkar jasotzeko eta ez da konturik sortu behar! </p>\n\n<li>Android baldin badaukazu <a href=\"https://play.google.com/store/apps/details?id=net.frju.flym\">Flym</a> edo Feeder gomendatzen dizugu</li>\n<li>iPhone/iPad-erako eskuragarri daukazu <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a></li>\n<li>Ordenagailuaren kasuan Feedbro iradokitzen dugu, <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefoxeko</a> edo <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chromeko</a> gehigarri gisa instalatzen da eta sistema gehienetan dabil.</li>\n<br/>\nHonako esteka jario irakurgailuan sartuta, eguneraketa guztiak jasoko dituzu.",
         "ical_description": "Ordenagailuak eta telefonoak maiz egutegiak inportatzeko eta kudeatzeko aplikazioekin datoz.",
-        "list_description": "Webgune bat baduzu eta ekitaldien zerrenda erakutsi nahi baduzu, ondorengo kodea erabili"
+        "list_description": "Webgune bat baduzu eta ekitaldien zerrenda erakutsi nahi baduzu, ondorengo kodea erabili",
+        "filter_description": "Esportazioa etiketen, lekuaren edo aurrez ezarritako bilduma baten arabera iragaz dezakezu hemen"
     },
     "register": {
         "description": "Gizarte mugimenduak beraien kabuz antolatu behar dira.<br/>\n<br/>Argitaratzen hasi baino lehen <strong>zure kontu berria onartua izan behar da</strong>, beraz, <strong>webgune honen atzean hezur-haragizko pertsonak</strong> gaudela kontuan izanik, azal iezaguzu mesedez pare bat lerrotan zer nolako ekitaldiak argitaratu nahi dituzun.",
         "error": "Errorea: ",
-        "complete": "Izen-ematea baieztatua izan behar da.",
+        "complete": "Izen-ematea onartu beharra dago.",
         "first_user": "Administratzailea sortu da"
     },
     "event": {
         "anon": "Anonimoa",
-        "anon_description": "Ekitaldi bat sor dezakezu saioa hasi edo izena eman gabe, baina norbaitek berau irakurri eta\ngune honetarako egokia dela baieztatu arte itxaron beharko duzu. Ez da posible izango ekitaldia aldatzerik.<br/><br/>\nHorren ordez <a href='/login'>saioa hasi</a> edo <a href='/register'>izena eman</a> dezakezu. Bestela, jarraitu aurrera eta ahalik azkarren erantzuten saiatuko gara. ",
+        "anon_description": "Saioa hasi edo izena eman gabe sor dezakezu ekitaldi bat, baina norbaitek berau irakurri eta\ngune honetarako egokia dela baieztatu arte itxaron beharko duzu. Ezingo da ekitaldia aldatu.<br/><br/>\nHorren ordez, <a href='/login'>saioa hasi</a> edo <a href='/register'>izena eman</a> dezakezu. Bestela, jarraitu aurrera eta ahal bezain azkarren erantzuten saiatuko gara. ",
         "same_day": "egun berean",
         "what_description": "Izenburua",
         "description_description": "Deskripzioa",
         "tag_description": "Etiketa",
         "media_description": "Irudi bat gehi dezakezu (hautazkoa)",
         "added": "Ekitaldia gehitu da",
-        "added_anon": "Ekitaldia gehitu da, baina baieztatzeko zain dago.",
+        "added_anon": "Ekitaldia gehitu da, baina onarpenaren zain dago.",
         "where_description": "Non da ekitaldia? Agertzen ez bada zuk sor dezakezu.",
-        "confirmed": "Ekitaldia egiaztatu da",
+        "confirmed": "Ekitaldia onartu da",
         "not_found": "Ezin da ekitaldia aurkitu",
         "remove_confirmation": "Ziur al zaude ekitaldi hau ezabatu nahi duzula?",
         "remove_recurrent_confirmation": "Ziur al zaude ekitaldi errepikari hau ezabatu nahi duzula?\nIragandako ekitaldiak mantenduko dira, baina ez da ekitaldi berririk sortuko.",
@@ -180,7 +187,7 @@
         "edit_recurrent": "Editatu ekitaldi errepikaria:",
         "updated": "Ekitaldia eguneratu da",
         "saved": "Ekitaldia gorde da",
-        "remove_media_confirmation": "Irudiaren ezabaketa baieztatzen duzu?",
+        "remove_media_confirmation": "Ziur irudia ezabatu nahi duzula?",
         "alt_text_description": "Ikusmen-urritasunak dituztenentzako deskripzioa",
         "choose_focal_point": "Aukeratu arretagunea",
         "download_flyer": "Deskargatu eskuorria",
@@ -195,14 +202,14 @@
     },
     "admin": {
         "place_description": "Lekua edo helbidea oker badago, alda dezakezu.<br/>Leku honekin lotutako iraganeko eta etorkizuneko ekitaldien helbidea aldatuko da.",
-        "event_confirm_description": "Erabiltzaile anonimoek sortutako ekitaldiak hemen baieztatu ditzakezu",
+        "event_confirm_description": "Erabiltzaile anonimoek sortutako ekitaldiak hemen onartu ditzakezu",
         "delete_user": "Ezabatu",
         "remove_admin": "Kendu administratzaile baimena",
         "delete_user_confirm": "Ziur al zaude {user} ezabatu nahi duzula?",
         "user_remove_ok": "Erabiltzailea ezabatu da",
         "user_create_ok": "Erabiltzailea sortu da",
         "allow_registration_description": "Izen-emateak ahalbidetu?",
-        "allow_anon_event": "Anonimoek ekitaldiak sortzea ahalbidetu (baieztatu ondoren)?",
+        "allow_anon_event": "Erabiltzaile anonimoei ekitaldiak sortzea ahalbidetu utzi nahi diezu? Lehenengo, onartu egin beharko dituzu",
         "allow_recurrent_event": "Ekitaldi errepikariak ahalbidetu",
         "recurrent_event_visible": "Erakutsi ekitaldi errepikariak modu lehenetsian",
         "federation": "Federazioa / ActivityPub",
@@ -216,7 +223,7 @@
         "hide_boost_bookmark_help": "Fedibertsotik datozen bultzada eta laster-marka kopuruaren ikonotxoak ezkutatzen ditu",
         "block": "Blokeatu",
         "unblock": "Desblokeatu",
-        "user_add_help": "Eposta bat bidaliko diogu erabiltzaile berriari harpidetza baieztatzeko eta pasahitz bat aukeratzeko argibideekin",
+        "user_add_help": "Eposta bat bidaliko diogu erabiltzaile berriari harpidetza berresteko eta pasahitz bat aukeratzeko argibideekin",
         "resources": "Baliabideak",
         "hide_resource": "Ezkutatu baliabidea",
         "show_resource": "Erakutsi baliabidea",
@@ -238,14 +245,14 @@
         "title_description": "Orrialdearen izenburuan, ICS jarioetan eta RSS-ak esportatzeko epostaren gaian erabiltzen da.",
         "description_description": "Goiburuan agertzen da izenburutik gertu",
         "instance_name_help": "Jarraitu beharreko ActivityPub kontua",
-        "enable_trusted_instances": "Gaitu instantzia adiskidetsuak",
-        "trusted_instances_help": "Kideak diren instantzien zerrenda goiburuan erakutsiko da",
-        "trusted_instances_label": "Nabigazio etiketa lagunarteko instantzietarako",
-        "trusted_instances_label_default": "Instantzia atseginak",
-        "trusted_instances_label_help": "Etiketa lehenetsia 'Instantzia atseginak' da",
-        "add_trusted_instance": "Gehitu kide den instantzia bat",
-        "instance_place_help": "Beste instantzietan agertuko den izena",
-        "delete_trusted_instance_confirm": "Ziur al zaude instantzia hau menuko zerrendatik kendu nahi duzula?",
+        "enable_trusted_instances": "Gaitu instantzia fidagarriak",
+        "trusted_instances_help": "Instantzia fidagarrien zerrenda goiburuan erakutsiko da",
+        "trusted_instances_label": "Nabigazio etiketa instantzia fidagarrietan",
+        "trusted_instances_label_default": "Nodo fidagarriak",
+        "trusted_instances_label_help": "Etiketa lehenetsia 'Nodo fidagarriak' da",
+        "add_trusted_instance": "Gehitu instantzia fidagarri bat",
+        "instance_place_help": "Beste nodoetan agertuko den izena",
+        "delete_trusted_instance_confirm": "Ziur al zaude nodo fidagarri hau kendu nahi duzula?",
         "new_announcement": "Iragarpen berria",
         "edit_place": "Editatu lekua",
         "delete_footer_link_confirm": "Ziur al zaude esteka hau kendu nahi duzula?",
@@ -260,7 +267,7 @@
         "smtp_test_success": "Probako eposta bidali da {admin_email}-(e)ra, begiratu zure sarrera-ontzia",
         "admin_email": "Administratzailearen eposta",
         "smtp_hostname": "SMTP hostname",
-        "smtp_description": "<ul><li>Administratzaileak eposta bat jaso beharko luke anonimo batek ekitaldi bat gehitzen duenean (gaituta badago).</li><li>Administratzaileak eposta bat jaso beharko luke izena emateko eskari bakoitzeko (gaituta badago).</li><li>Erabiltzaileak eposta bat jaso beharko luke izena emateko eskariarekin.</li><li>Erabiltzaileak eposta bat jaso beharko luke izen ematea baieztatzean.</li><li>Erabiltzaileak eposta bat jaso beharko luke administratzaileak zuzenean izena emanez gero.</li><li>Erabiltzaileek eposta bat jaso beharko lukete pasahitza ahazten dutenean.</li></ul>",
+        "smtp_description": "<ul><li>Administratzaileak eposta bat jaso beharko luke anonimo batek ekitaldi bat gehitzen duenean (gaituta badago).</li><li>Administratzaileak eposta bat jaso beharko luke izena emateko eskari bakoitzeko (gaituta badago).</li><li>Erabiltzaileak eposta bat jaso beharko luke izena emateko eskariarekin.</li><li>Erabiltzaileak eposta bat jaso beharko luke izen ematea berrestean.</li><li>Erabiltzaileak eposta bat jaso beharko luke administratzaileak zuzenean izena emanez gero.</li><li>Erabiltzaileek eposta bat jaso beharko lukete pasahitza ahazten dutenean.</li></ul>",
         "widget": "Tresna",
         "event_remove_ok": "Ekitaldia ezabatu da",
         "wrong_domain_warning": "config.json-en konfiguratuta dagoen baseurl <b>({baseurl})</b> ez da bisitatzen ari zaren berbera <b>({url})</b>",
@@ -310,10 +317,14 @@
         "edit_tag": "Editatu etiketa",
         "allow_online_event_hint": "URLak eskatu ",
         "allow_online_event": "Online ekitaldiak ahalbidetu",
-        "delete_tag_confirm": "Ziur al zaude \"{tag}\" etiketa ezabatu nahi duzula? Etiketa {n} ekitalditik ezabatuko da."
+        "delete_tag_confirm": "Ziur al zaude \"{tag}\" etiketa ezabatu nahi duzula? Etiketa {n} ekitalditik ezabatuko da.",
+        "edit_tag_help": "Etiketa alda dezakezu, berria jarriz edo lehendik dagoen batekin bat eginez. Lotutako {n} ekitaldiak ere aldatu egingo dira.",
+        "tag_renamed": "\"{newTag}\" izen berria jarri zaio \"{oldTag}\" etiketari",
+        "instance_removed": "Instantzia ezabatu egin da",
+        "delete_collection_confirm": "Ziur <u>{collection}</u> bilduma ezabatu nahi duzula?"
     },
     "auth": {
-        "not_confirmed": "Oraindik baieztatu gabe dago…",
+        "not_confirmed": "Oraindik ez da berretsi…",
         "fail": "Ezin izan da saioa hasi. Ziur al zaude pasahitza zuzena dela?"
     },
     "settings": {
@@ -329,9 +340,9 @@
         "email_taken": "Eposta hau dageneko hartuta dago."
     },
     "confirm": {
-        "title": "Erabiltzaile-baieztapena",
+        "title": "Erabiltzailea onartzea",
         "not_valid": "Zerbaitek huts egiten du.",
-        "valid": "Zure kontua baieztatua izan da, orain <a href=\"/login\">saioa hasi</a> dezakezu"
+        "valid": "Zure kontua onartua izan da, orain <a href=\"/login\">saioa hasi</a> dezakezu"
     },
     "ordinal": {
         "1": "lehen",
@@ -344,7 +355,7 @@
     "about": "\n  <p><a href='https://gancio.org'>Gancio</a> Tokiko komunitateentzako agenda partekatua da.</p>\n  ",
     "oauth": {
         "authorization_request": "<code>{app}</code> aplikazioak ondorengo baimena eskatu du <code>{instance_name}</code>(e)n:",
-        "redirected_to": "Baieztatu ondoren hona birbideratua izango zara: <code>{url}</code>",
+        "redirected_to": "Berretsi ondoren, webgune honetara joango zara: <code>{url}</code>",
         "scopes": {
             "event:write": "Sortu eta editatu zure ekitaldiak"
         }

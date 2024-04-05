@@ -54,7 +54,7 @@ module.exports = {
 
   sanitizeHTML(html) {
     return domPurify.sanitize(html, {
-      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'br', 'i', 'span',
+      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'br', 'i', 'span', 'em',
         'h6', 'b', 'a', 'li', 'ul', 'ol', 'code', 'blockquote', 'u', 's', 'strong'],
       ALLOWED_ATTR: ['href', 'target']
     })
@@ -74,10 +74,11 @@ module.exports = {
       instance_timezone: settings.instance_timezone,
       instance_locale: settings.instance_locale,
       instance_name: settings.instance_name,
-      instance_place: settings.instance_place,
       allow_registration: settings.allow_registration,
       allow_anon_event: settings.allow_anon_event,
       allow_recurrent_event: settings.allow_recurrent_event,
+      enable_moderation: settings.enable_moderation,
+      enable_report: settings.enable_report,
       allow_multidate_event: settings.allow_multidate_event,
       allow_online_event: settings.allow_online_event,
       recurrent_event_visible: settings.recurrent_event_visible,
@@ -99,7 +100,9 @@ module.exports = {
       tilelayer_provider: settings.tilelayer_provider,
       tilelayer_provider_attribution: settings.tilelayer_provider_attribution,
       footerLinks: settings.footerLinks,
+      admin_email: settings.admin_email,
       about: settings.about,
+      collection_in_home: settings.collection_in_home
     }
     next()
   },
@@ -198,7 +201,7 @@ module.exports = {
   async importURL(req, res) {
     const url = req.query.URL
     try {
-      const response = await axios.get(url)
+      const response = await axios.get(url, { headers: { Accept: 'text/html, text/calendar'}})
       const contentType = response.headers['content-type']
 
       if (contentType.includes('text/html')) {
@@ -241,6 +244,9 @@ module.exports = {
             end_datetime: dayjs(get(event, 'endDate', null)).unix()
           }
         }))
+      } else {
+        log.debug('[IMPORT URL] %s -> Content type not supported %s', url, contentType)
+        return res.status(400).json('Content type not supported')
       }
     } catch (e) {
       log.error('[Import URL]', e)
@@ -269,19 +275,22 @@ module.exports = {
 
   async APRedirect(req, res, next) {
     const eventController = require('../server/api/controller/event')
-    const acceptJson = req.accepts('html', 'application/activity+json') === 'application/activity+json'
+    const acceptJson = req.accepts('html', 'application/activity+json', 'application/ld+json', 'application/json') !== 'html'
+
     if (acceptJson) {
       const event = await eventController._get(req.params.slug)
       if (event) {
+        log.debug('[FEDI] APRedirect for %s', event.title)
         return res.redirect(`/federation/m/${event.id}`)
       }
+      log.warn('[FEDI] Accept JSON but event not found: %s', req.params.slug)
     }
     next()
   },
 
   async feedRedirect(req, res, next) {
     const accepted = req.accepts('html', 'application/rss+xml', 'text/calendar')
-    if (['application/rss+xml', 'text/calendar'].includes(accepted) && /^\/(tag|place|collection)\/.*/.test(req.path)) {
+    if (['application/rss+xml', 'text/calendar'].includes(accepted) && (/^\/(tag|place|collection)\/.*/.test(req.path) || req.path === '/')) {
       return res.redirect((accepted === 'application/rss+xml' ? '/feed/rss' : '/feed/ics') + req.path)
     }
     next()
@@ -289,10 +298,11 @@ module.exports = {
 
   async reachable(req, res) {
     try {
-      const response = await axios({ url: config.baseurl })
+      await axios(config.baseurl + '/api/ping')
       return res.sendStatus(200)
     } catch(e) {
-      return res.status(400).json(e)
+      log.debug(e)
+      return res.sendStatus(400)
     }
   },
 
@@ -300,7 +310,7 @@ module.exports = {
     if (res.locals.settings.allow_geolocation) {
       next()
     } else {
-      res.sendStatus(403)
+      return res.sendStatus(403)
     }
   },
 

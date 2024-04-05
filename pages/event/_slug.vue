@@ -1,22 +1,19 @@
 <template lang="pug">
-v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }")
+#event.h-event.pa-2.pa-sm-2.pt-0.pt-sm-0.container(v-touch="{ left: goNext, right: goPrev }" itemscope itemtype="https://schema.org/Event")
     //- EVENT PAGE
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
-
-    v-row(itemscope itemtype="https://schema.org/Event")
-      v-col.col-12.col-md-8
+    .title.text-center.text-md-h4.text-h5.pa-6
+      strong.p-name.text--primary(itemprop="name") {{event.title}}
+    v-row
+      v-col.col-12.col-md-8.pr-sm-2.pr-md-0
         MyPicture(v-if='hasMedia' :event='event')
-        .p-description.text-body-1.pa-3.rounded(v-if='!hasMedia && event.description' itemprop='description' v-html='event.description')
+        .p-description.text-body-1.pa-3.rounded(v-if='event.description' itemprop='description' v-html='event.description')
 
       v-col.col-12.col-md-4
         v-card(outlined)
-          v-card-text
-            v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
-            .title.text-h5
-              strong.p-name.text--primary(itemprop="name") {{event.title}}
-          v-divider
           v-container.eventDetails
+            v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
             time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
               v-icon(v-text='mdiCalendar' small)
               span.ml-2.text-uppercase {{$time.when(event)}}
@@ -26,16 +23,19 @@ v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }"
 
             .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
               v-icon(v-text='mdiMapMarker' small)
-              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(itemprop="name" :to='`/place/${encodeURIComponent(event.place.name)}`') {{event.place && event.place.name}}
-              .font-weight-light.p-street-address(v-if='event.place.name !=="online"' itemprop='address') {{event.place && event.place.address}}
+              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${encodeURIComponent(event?.place?.name)}`') 
+                span(itemprop='name') {{event?.place?.name}}
+              .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
+
+            //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
+            a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
 
           //- tags, hashtags
-          v-container.pt-0(v-if='event.tags && event.tags.length')
+          v-container.pt-0(v-if='event?.tags?.length')
             v-chip.p-category.ml-1.mt-1(v-for='tag in event.tags' small label color='primary'
               outlined :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
           //- online events
-          //- v-divider(v-if='hasOnlineLocations')
           v-list(nav dense v-if='hasOnlineLocations')
             v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
               v-list-item-icon
@@ -55,18 +55,11 @@ v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }"
                   v-list-item-title(v-text="$t('common.copy_link')")
 
               //- map
-              v-list-item(v-if='settings.allow_geolocation && event.place.latitude && event.place.longitude' @click="mapModal = true")
+              v-list-item(v-if='settings.allow_geolocation && event.place?.latitude && event.place?.longitude' @click="mapModal = true")
                 v-list-item-icon
                   v-icon(v-text='mdiMap')
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.show_map')")
-
-              //- embed
-              v-list-item(@click='showEmbed=true')
-                v-list-item-icon
-                  v-icon(v-text='mdiCodeTags')
-                v-list-item-content
-                  v-list-item-title(v-text="$t('common.embed')")
 
               //- calendar
               v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
@@ -75,6 +68,13 @@ v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }"
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.add_to_calendar')")
 
+              //- Report
+              v-list-item(v-if='settings.enable_moderation && settings.enable_report && !showModeration' @click='report')
+                v-list-item-icon
+                  v-icon(v-text='mdiMessageTextOutline')
+                v-list-item-content
+                  v-list-item-title(v-text="$t('common.report')")
+
               //- download flyer
               v-list-item(v-if='hasMedia' :href='$helper.mediaURL(event, "download")')
                 v-list-item-icon
@@ -82,84 +82,21 @@ v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }"
                 v-list-item-content
                   v-list-item-title(v-text="$t('event.download_flyer')")
 
-          v-divider(v-if='is_mine')
+              //- embed
+              v-list-item(@click='showEmbed=true')
+                v-list-item-icon
+                  v-icon(v-text='mdiCodeTags')
+                v-list-item-content
+                  v-list-item-title(v-text="$t('common.embed')")
+
+
 
           //- admin actions
-          eventAdmin(v-if='is_mine' :event='event')
-
-
-    .p-description.text-body-1.pa-3.rounded(v-if='hasMedia && event.description' itemprop='description' v-html='event.description')
+          template(v-if='can_edit')
+            EventAdmin(:event='event' @openModeration='openModeration=true')
 
     //- resources from fediverse
-    #resources.mt-1(v-if='settings.enable_federation')
-      div.mb-3(v-if='!settings.hide_boosts && (event.boost?.length || event.likes?.length) ')
-        client-only
-          v-menu(open-on-hover top offset-y)
-            template( v-slot:activator="{ on, attrs }")
-              span.mr-3(v-bind='attrs' v-on='on') <v-icon color='primary' v-text='mdiBookmark' /> {{event.likes.length}}
-            v-list
-              v-list-item(v-for='(like, idx) in event.likes' :key='idx')
-                v-list-item-title(v-text='like')
-          v-menu(open-on-hover top offset-y)
-            template( v-slot:activator="{ on, attrs }")
-              span(v-bind='attrs' v-on='on') <v-icon v-text='mdiShareAll' /> {{event.boost.length}}
-            v-list
-              v-list-item(v-for='(boost, idx) in event.boost' :key='idx')
-                v-list-item-title(v-text='boost')
-          template(slot='placeholder')
-            span.mr-3 <v-icon color='primary' v-text='mdiBookmark' /> {{event.likes.length}}
-            span <v-icon v-text='mdiShareAll' /> {{event.boost.length}}
-
-      v-dialog(v-model='showResources' max-width="900" width="900" :fullscreen='$vuetify.breakpoint.xsOnly'
-        destroy-on-close)
-        v-card
-          v-btn.ma-2(icon dark @click='showResources = false')
-            v-icon(v-text='mdiClose')
-          v-carousel.pa-5(:interval='10000'
-            :next-icon='mdiArrowRight'
-            :prev-icon='mdiArrowLeft'
-            ref='carousel' hide-delimiters v-model='currentAttachment'
-            height='100%' show-arrows-on-over)
-            v-carousel-item(v-for='attachment in selectedResource.data.attachment'
-              v-if='isImg(attachment)'
-              :key='attachment.url')
-              v-img(:src='attachment.url' contain max-height='90%')
-          v-card-actions.align-center.justify-center
-            span {{currentAttachmentLabel}}
-
-      v-card.mb-3.resources(v-if='settings.enable_resources' v-for='resource in event.resources'
-        :key='resource.id' elevation='10' :flat='resource.hidden' outlined)
-          v-card-title
-            v-menu(v-if='$auth.user && $auth.user.is_admin' offset-y)
-              template(v-slot:activator="{ on }")
-                v-btn.mr-2(v-on='on' color='primary' small icon)
-                  v-icon(v-text='mdiDotsVertical')
-              v-list
-                v-list-item(v-if='!resource.hidden' @click='hideResource(resource, true)')
-                  v-list-item-title <v-icon left v-text='mdiEyeOff'></v-icon> {{$t('admin.hide_resource')}}
-                v-list-item(v-else @click='hideResource(resource, false)')
-                  v-list-item-title <v-icon left v-text='mdiEye'></v-icon> {{$t('admin.show_resource')}}
-                v-list-item(@click='deleteResource(resource)')
-                  v-list-item-title <v-icon left v-text='mdiDelete'></v-icon> {{$t('admin.delete_resource')}}
-                v-list-item(@click='blockUser(resource)')
-                  v-list-item-title <v-icon left v-text='mdiLock'></v-icon> {{$t('admin.block_user')}}
-
-            v-icon.mr-1(v-show='resource.hidden' v-text='mdiEyeOff')
-
-            a(:href='resource.data.url || resource.data.context')
-              small {{$time.format(resource.data.published,'ff')}}
-
-          v-card-text
-
-            div.mt-1(v-html='resource_filter(resource.data.content)')
-            div.d-flex.flex-wrap
-              span.mr-1(v-for='attachment in resource.data.attachment' :key='attachment.url')
-                audio(v-if='isAudio(attachment)' controls)
-                  source(:src='attachment.url')
-                v-img.cursorPointer(v-if='isImg(attachment)' :src='attachment.url' @click='showResource(resource)'
-                  max-height="250px"
-                  max-width="250px"
-                  contain :alt='attachment.name')
+    EventResource#resources.mt-3(:event='event' v-if='showResources')
 
     //- Next/prev arrow
     .text-center.mt-5.mb-5
@@ -173,29 +110,35 @@ v-container#event.h-event.pa-2.pa-sm-2(v-touch="{ left: goNext, right: goPrev }"
     v-dialog(v-model='showEmbed' width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
       EmbedEvent(:event='event' @close='showEmbed=false')
 
-    v-dialog(v-show='settings.allow_geolocation && event.place.latitude && event.place.longitude' v-model='mapModal' :fullscreen='$vuetify.breakpoint.xsOnly' destroy-on-close)
+    v-dialog(v-show='settings.allow_geolocation && event.place?.latitude && event.place?.longitude' v-model='mapModal' :fullscreen='$vuetify.breakpoint.xsOnly' destroy-on-close)
       EventMapDialog(:place='event.place' @close='mapModal=false')
+
+    v-navigation-drawer(v-model='openModeration' :fullscreen='$vuetify.breakpoint.xsOnly' fixed top right width=400 temporary)
+      EventModeration(:event='event' v-if='openModeration' @close='openModeration=false')
 
 </template>
 <script>
 import { mapState } from 'vuex'
-import get from 'lodash/get'
 import { DateTime } from 'luxon'
 import clipboard from '../../assets/clipboard'
 import MyPicture from '~/components/MyPicture'
-import EventAdmin from '@/components/eventAdmin'
+import EventAdmin from '@/components/EventAdmin'
+import EventResource from '@/components/EventResource'
 import EmbedEvent from '@/components/embedEvent'
 import EventMapDialog from '@/components/EventMapDialog'
+import EventModeration from '@/components/EventModeration'
 
-import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap,
+import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap, mdiMessageTextOutline,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark } from '@mdi/js'
+  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar } from '@mdi/js'
 
 export default {
   name: 'Event',
   mixins: [clipboard],
   components: {
     EventAdmin,
+    EventResource,
+    EventModeration,
     EmbedEvent,
     MyPicture,
     EventMapDialog
@@ -210,15 +153,14 @@ export default {
   },
   data ({$store}) {
     return {
-      mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline,
-      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiLock, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiShareAll,
+      mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline,
+      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll,
       currentAttachment: 0,
       event: {},
-      diocane: '',
       showEmbed: false,
-      showResources: false,
-      selectedResource: { data: { attachment: [] } },
-      mapModal: false
+      mapModal: false,
+      openModeration: false,
+      reporting: false
     }
   },
   head () {
@@ -234,8 +176,8 @@ export default {
     const place_feed = {
       rel: 'alternate',
       type: 'application/rss+xml',
-      title: `${this.settings.title} events  @${this.event.place && this.event.place.name}`,
-      href: this.settings.baseurl + `/feed/rss?places=${this.event.place && this.event.place.id}`
+      title: `${this.settings.title} events  @${this.event?.place?.name}`,
+      href: this.settings.baseurl + `/feed/rss?places=${this.event?.place?.id}`
     }
 
     return {
@@ -302,8 +244,11 @@ export default {
     hasOnlineLocations () {
       return this.event.online_locations && this.event.online_locations.length
     },
+    showModeration () {
+      return this.settings.enable_moderation && this.$auth?.user && (this.event.isMine || this.$auth?.user?.is_admin || this.$auth?.user?.is_editor)
+    },
     showMap () {
-      return this.settings.allow_geolocation && this.event.place.latitude && this.event.place.longitude
+      return this.settings.allow_geolocation && this.event.place?.latitude && this.event.place?.longitude
     },
     hasMedia () {
       return this.event.media && this.event.media.length
@@ -311,16 +256,18 @@ export default {
     plainDescription () {
       return this.event.plain_description || ''
     },
-    currentAttachmentLabel () {
-      return get(this.selectedResource, `data.attachment[${this.currentAttachment}].name`, '')
-    },
-    is_mine () {
+    can_edit () {
       if (!this.$auth.user) {
         return false
       }
       return (
-        this.event.userId === this.$auth.user.id || this.$auth.user.is_admin
+        this.event.isMine || this.$auth.user.is_admin || this.$auth.user.is_editor
       )
+    },
+    showResources () {
+      return this.settings.enable_federation &&
+      ( (!this.settings.hide_boosts && (this.event.boost?.length || this.event?.likes?.length)) ||
+      ( this.settings.enable_resources && this.event?.resources?.length))      
     }
   },
   mounted () {
@@ -330,15 +277,24 @@ export default {
     window.removeEventListener('keydown', this.keyDown)
   },
   methods: {
-    isImg (attachment) {
-      const type = attachment.mediaType.split('/')[0]
-      return type === 'image'
-    },
-    isAudio (attachment) {
-      const type = attachment.mediaType.split('/')[0]
-      return type === 'audio'
+    async report () {
+      this.reporting = true
+      const message = await this.$root.$prompt(this.$t('event.report_message_confirmation'), { title: this.$t('common.report') })
+      if (!message) {
+        return
+      }
+      this.reporting = false
+      try {
+        await this.$axios.$post(`/event/messages/${this.event.id}`, { message })
+        this.$root.$message('common.sent', { color: 'success' })
+      } catch (e) {
+        this.$root.$message(e, { color: 'warning' })
+      }
     },
     keyDown (ev) {
+      if (this.openModeration || this.reporting) {
+        return
+      }
       if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) { return }
       if (ev.key === 'ArrowRight' && this.event.next) {
         this.goNext()
@@ -357,49 +313,9 @@ export default {
         this.$router.replace(`/event/${this.event.next}`)
       }
     },
-    showResource (resource) {
-      this.showResources = true
-      this.selectedResource = resource
-      // document.getElementById('resourceDialog').focus()
-    },
-    async hideResource (resource, hidden) {
-      await this.$axios.$put(`/resources/${resource.id}`, { hidden })
-      resource.hidden = hidden
-    },
-    async blockUser (resource) {
-      try {
-        const ret = await this.$root.$confirm('admin.user_block_confirm', { user: resource.ap_user.ap_id })
-        if (!ret) { return }
-        await this.$axios.post('/instances/toggle_user_block', { ap_id: resource.ap_user.ap_id })
-        this.$root.$message('admin.user_blocked', { user: resource.ap_user.ap_id, color: 'success' })
-      } catch (e) { }
-    },
-    async deleteResource (resource) {
-      try {
-        const ret = await this.$root.$confirm('admin.delete_resource_confirm')
-        if (!ret) { return }
-        await this.$axios.delete(`/resources/${resource.id}`)
-        this.event.resources = this.event.resources.filter(r => r.id !== resource.id)
-      } catch (e) { }
-    },
     copyLink () {
       this.$root.$message('common.copied', { color: 'success' })
     },
-    // TOFIX
-    resource_filter (value) {
-      return value.replace(
-        /<a.*href="([^">]+).*>(?:.(?!<\/a>))*.<\/a>/,
-        (orig, url) => {
-          // get extension
-          const ext = url.slice(-4)
-          if (['.mp3', '.ogg'].includes(ext)) {
-            return `<audio controls><source src='${url}'></audio>`
-          } else {
-            return orig
-          }
-        }
-      )
-    }
   }
 }
 </script>

@@ -5,6 +5,11 @@ const cors = require('cors')()
 const config = require('../config')
 const log = require('../log')
 
+// REMOVE ME
+// const federationController = require('../federation')
+// const federationControllerUsers = require('../federation/users')
+// const federationHelpers = require('../federation/helpers')
+
 const collectionController = require('./controller/collection')
 const setupController = require('./controller/setup')
 const settingsController = require('./controller/settings')
@@ -24,7 +29,6 @@ const localeController = require('./controller/locale')
 const { DDOSProtectionApiRateLimiter, SPAMProtectionApiRateLimiter } = require('./limiter')
 const helpers = require('../helpers')
 const storage = require('./storage')
-
 
 module.exports = () => {
 
@@ -47,7 +51,7 @@ module.exports = () => {
 
   } else {
 
-    const { isAuth, isAdmin } = require('./auth')
+    const { isAuth, isAdmin, isAdminOrEditor } = require('./auth')
     const upload = multer({ storage })
 
     /**
@@ -99,19 +103,21 @@ module.exports = () => {
      * @type GET
      * @param {integer} [start] - start timestamp (default: now)
      * @param {integer} [end] - end timestamp (optional)
-     * @param {string}  [query] - search for this string
+     * @param {string}  [query] - search for this string ()
      * @param {array} [tags] - List of tags
      * @param {array} [places] - List of places id
-     * @param {array} [online_locations] - List of online locations
-     * @param {integer} [max] - Limit events
+     * @param {boolean} [show_multidate] - Show also multidate events (default: true)
      * @param {boolean} [show_recurrent] - Show also recurrent events (default: as choosen in admin settings)
+     * @param {integer} [max] - Limit events
      * @param {integer} [page] - Pagination
      * @param {boolean} [older] - select <= start instead of >=
+     * @param {boolean} [reverse] - reverse order
      * @example ***Example***
      * [https://demo.gancio.org/api/events](https://demo.gancio.org/api/events)
      * [usage example](https://framagit.org/les/gancio/-/blob/master/webcomponents/src/GancioEvents.svelte#L18-42)
      */
 
+    api.get('/events/mine', isAuth, eventController.mine)
     api.get('/events', cors, eventController.select)
 
     /**
@@ -162,12 +168,17 @@ module.exports = () => {
     api.post('/settings/smtp', isAdmin, settingsController.testSMTP)
     api.get('/settings/smtp', isAdmin, settingsController.getSMTPSettings)
 
+    // moderation
+    api.post('/event/messages/:event_id', SPAMProtectionApiRateLimiter, eventController.report)
+    api.get('/event/messages/:event_id', isAuth, eventController.getMessages)
+    
     // get unconfirmed events
-    api.get('/event/unconfirmed', isAdmin, eventController.getUnconfirmed)
+    api.get('/event/unconfirmed', isAdminOrEditor, eventController.getUnconfirmed)
 
     // [un]confirm event
     api.put('/event/confirm/:event_id', isAuth, eventController.confirm)
     api.put('/event/unconfirm/:event_id', isAuth, eventController.unconfirm)
+    api.put('/event/disable_author/:event_id', isAdminOrEditor, eventController.disableAuthor)
 
     // get event
     api.get('/event/detail/:event_slug.:format?', cors, eventController.get)
@@ -195,13 +206,18 @@ module.exports = () => {
 
 
     // - FEDIVERSE INSTANCES, MODERATION, RESOURCES
-    api.get('/instances', isAdmin, instanceController.getAll)
-    api.get('/instances/:instance_domain', isAdmin, instanceController.get)
-    api.post('/instances/toggle_block', isAdmin, instanceController.toggleBlock)
-    api.post('/instances/toggle_user_block', isAdmin, apUserController.toggleBlock)
-    api.put('/resources/:resource_id', isAdmin, resourceController.hide)
-    api.delete('/resources/:resource_id', isAdmin, resourceController.remove)
-    api.get('/resources', isAdmin, resourceController.getAll)
+    api.get('/instances', isAdminOrEditor, instanceController.getAll)
+    api.get('/instances/trusted', instanceController.getTrusted)
+    api.get('/instances/stats', isAdminOrEditor, instanceController.stats)
+    api.put('/instances/follow', isAdminOrEditor, instanceController.toggleFollow)
+    api.post('/instances/toggle_block', isAdminOrEditor, instanceController.toggleBlock)
+    api.post('/instances/toggle_user_block', isAdminOrEditor, apUserController.toggleBlock)
+    api.get('/instances/:instance_domain', isAdminOrEditor, instanceController.get)
+    api.post('/instances/add_trust', isAdmin, instanceController.addTrust)
+    api.delete('/instances/trust', isAdmin, instanceController.removeTrust)
+    api.put('/resources/:resource_id', isAdminOrEditor, resourceController.hide)
+    api.delete('/resources/:resource_id', isAdminOrEditor, resourceController.remove)
+    api.get('/resources', isAdminOrEditor, resourceController.getAll)
 
     // - ADMIN ANNOUNCEMENTS
     api.get('/announcements', isAdmin, announceController.getAll)
@@ -214,6 +230,7 @@ module.exports = () => {
     api.get('/collections', collectionController.getAll)
     api.post('/collections', isAdmin, collectionController.add)
     api.delete('/collection/:id', isAdmin, collectionController.remove)
+    api.put('/collection/toggle/:id', isAdmin, collectionController.togglePin)
     api.get('/filter/:collection_id', isAdmin, collectionController.getFilters)
     api.post('/filter', isAdmin, collectionController.addFilter)
     api.delete('/filter/:id', isAdmin, collectionController.removeFilter)
@@ -222,7 +239,6 @@ module.exports = () => {
     api.get('/plugins', isAdmin, pluginController.getAll)
     api.post('/plugin/test/:plugin', isAdmin, pluginController.testPlugin)
     api.put('/plugin/:plugin', isAdmin, pluginController.togglePlugin)
-
     api.use('/plugin/:plugin', pluginController.routeAPI)
 
     // OAUTH

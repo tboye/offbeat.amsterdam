@@ -24,6 +24,7 @@ const models = {
   Setting: require('./setting'),
   Tag: require('./tag'),
   User: require('./user'),
+  Message: require('./message')
 }
 
 const db = {
@@ -37,7 +38,7 @@ const db = {
   },
   associates () {
     const { Filter, Collection, APUser, Instance, User, Event, EventNotification, Tag,
-      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification } = DB
+      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification, Message } = DB
 
     Filter.belongsTo(Collection)
     Collection.hasMany(Filter)
@@ -56,6 +57,9 @@ const db = {
 
     Event.belongsTo(Place)
     Place.hasMany(Event)
+
+    Message.belongsTo(Event)
+    Event.hasMany(Message)
     
     Event.belongsTo(User)
     User.hasMany(Event)
@@ -68,7 +72,10 @@ const db = {
     
     Event.hasMany(Resource)
     Resource.belongsTo(Event)
-    
+
+    APUser.hasMany(Event)
+    Event.belongsTo(APUser)
+
     Event.hasMany(Event, { as: 'child', foreignKey: 'parentId' })
     Event.belongsTo(Event, { as: 'parent' })
     
@@ -145,7 +152,7 @@ const db = {
         wrap: fun => {
           return () =>
             fun(db.sequelize.queryInterface, Sequelize).catch(e => {
-              // log.error(e)
+              log.warn(e)
               return false
             })
         },

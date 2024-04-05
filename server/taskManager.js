@@ -1,10 +1,11 @@
 const log = require('./log')
 const placeHelpers = require('./helpers/place')
 const tagHelpers = require('./helpers/tag')
+const apHelpers = require('./helpers/ap.js')
 // const notifier = require('./notifier')
 
-const loopInterval = 1 // process.env.NODE_ENV === 'production' ? 1 : 1
-const minute = 60 / loopInterval
+const loopInterval = 10 // process.env.NODE_ENV === 'production' ? 1 : 1
+const minute = 6 / loopInterval
 const hour = minute * 60
 const day = hour * 24
 
@@ -43,6 +44,8 @@ class Task {
  * - Create recurrent events
  * - Sync AP federation profiles
  * - Remove unused tags/places
+ * - Remove past federated events and related resources
+ * - Remove unused ap actors
  */
 
 class TaskManager {
@@ -75,7 +78,23 @@ class TaskManager {
     this.add(new Task({
       name: 'CLEAN_UNUSED_TAGS',
       method: tagHelpers._cleanUnused,
-      repeatDelay: day,
+      repeatDelay: day+minute,
+      repeat: true,
+      callAtStart: true
+    }))
+
+    this.add(new Task({
+      name: 'CLEAN_FEDIVERSE_PAST_EVENT',
+      method: apHelpers._cleanPastEvents,
+      repeatDelay: 6*hour+5*minute,
+      repeat: true,
+      callAtStart: true
+    }))
+
+    this.add(new Task({
+      name: 'CLEAN_FEDIVERSE_AP_USERS',
+      method: apHelpers._cleanUnusedAPUser,
+      repeatDelay: day+10*minute,
       repeat: true,
       callAtStart: true
     }))

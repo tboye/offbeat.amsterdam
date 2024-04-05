@@ -8,7 +8,7 @@ const log = require('../../log')
 const linkify = require('linkifyjs')
 
 const userController = {
-
+  
   async forgotPassword (req, res) {
     const email = req.body.email
     const user = await User.findOne({ where: { email, is_active: true } })
@@ -64,7 +64,7 @@ const userController = {
 
     if (!req.body.password) { delete req.body.password }
 
-    if ((!user.is_active && req.body.is_active) || user.recover_code) {
+    if ((!user.is_active && req.body.is_active)) {
       mail.send(user.email, 'confirm', { user, config }, res.locals.settings.locale)
     }
 
@@ -80,6 +80,7 @@ const userController = {
       // the first registered user will be an active admin
       if (n_users === 0) {
         req.body.is_active = req.body.is_admin = true
+        req.body.role = 'admin'
         const user = await User.create(req.body)
         return res.json(user)
       }
@@ -120,6 +121,7 @@ const userController = {
   async remove (req, res) {
     try {
       let user
+      // TODO: has to unset events first!
       if (req.user.is_admin && req.params.id) {
         user = await User.findByPk(req.params.id)
       } else {

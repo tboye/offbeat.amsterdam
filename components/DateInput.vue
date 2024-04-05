@@ -145,7 +145,7 @@ export default {
     todayEvents() {
       const start = this.$time.startOfDay(this.value.from)
       const end = this.$time.endOfDay(this.value.from)
-      return this.events.filter(e => e.start_datetime >= start && e.start_datetime <= end)
+      return this.events.filter(e => e.id !== this.event.id && e.start_datetime >= start && e.start_datetime <= end)
     },
     attributes() {
       return this.$time.attributesFromEvents(this.events.filter(e => e.id !== this.event.id))
@@ -215,7 +215,7 @@ export default {
       if (what === 'type') {
         if (typeof value === 'undefined') { this.type = 'normal' }
         if (value === 'recurrent') {
-          this.$emit('input', { ...this.value, recurrent: { frequency: '1w' }, multidate: false })
+          this.$emit('input', { ...this.value, due: null, recurrent: { frequency: '1w' }, multidate: false })
         } else if (value === 'multidate') {
           this.$emit('input', { ...this.value, recurrent: null, multidate: true })
         } else {
@@ -276,6 +276,14 @@ export default {
         } else {
           let from = value
           let due = this.value.due
+          // recalculated end date
+          if (this.value.from) {
+            let newDueDate = new Date(value).toDateString()
+            if (this.value.dueHour < this.value.fromHour) {
+              newDueDate = new Date(DateTime.fromJSDate(from, {zone: this.settings.instance_timezone}).plus({day: 1}).toJSDate()).toDateString()
+            }
+            due = new Date(newDueDate + " " + this.value.dueHour)
+          }
           this.$emit('input', { ...this.value, from, due })
         }
       }

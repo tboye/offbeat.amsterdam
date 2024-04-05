@@ -11,13 +11,14 @@ const Col = helpers.col
 const notifier = require('../../notifier')
 const { htmlToText } = require('html-to-text')
 
-const { Event, Resource, Tag, Place, Notification, APUser, Collection } = require('../models/models')
+const { Event, Resource, Tag, Place, Notification, APUser, EventNotification, Message, User } = require('../models/models')
 
 
 const exportController = require('./export')
 const tagController = require('./tag')
 
 const log = require('../../log')
+const collectionController = require('./collection')
 
 const eventController = {
 
@@ -32,7 +33,7 @@ const eventController = {
 
     const place_name = body.place_name && body.place_name.trim()
     const place_address = body.place_address && body.place_address.trim()
-    if (!place_name || !place_address && place_name !== 'online') {
+    if (!place_name || !place_address && place_name?.toLocaleLowerCase() !== 'online') {
       throw new Error(`place_id or place_name and place_address are required`)
     }
     let place = await Place.findOne({ where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), Sequelize.Op.eq, place_name.toLocaleLowerCase()) })
@@ -42,6 +43,9 @@ const eventController = {
         address: place_address || '',
         latitude: Number(body.place_latitude) || null,
         longitude: Number(body.place_longitude) || null
+      }).catch(e => {
+        console.error(e)
+        console.error(e?.errors)
       })
     }
     return place
@@ -49,7 +53,6 @@ const eventController = {
 
   async searchMeta(req, res) {
     const search = req.query.search.toLocaleLowerCase()
-
     const places = await Place.findAll({
       order: [[Sequelize.col('w'), 'DESC']],
       where: {
@@ -118,11 +121,12 @@ const eventController = {
           }
         },
         attributes: {
-          exclude: ['createdAt', 'updatedAt', 'placeId']
+          exclude: ['createdAt', 'updatedAt', 'placeId', 'ap_id', 'apUserApId']
         },
         include: [
           { model: Tag, required: false, attributes: ['tag'], through: { attributes: [] } },
           { model: Place, attributes: ['name', 'address', 'latitude', 'longitude', 'id'] },
+          { model: User, required: false, attributes: ['is_active'] },
           {
             model: Resource,
             where: !is_admin && { hidden: false },
@@ -130,9 +134,9 @@ const eventController = {
             required: false,
             attributes: ['id', 'activitypub_id', 'data', 'hidden']
           },
-          { model: Event, required: false, as: 'parent', attributes: ['id', 'recurrent', 'is_visible', 'start_datetime'] }
+          { model: Event, required: false, as: 'parent', attributes: ['id', 'recurrent', 'is_visible', 'start_datetime'] },
         ],
-        order: [[Resource, 'id', 'DESC']]
+        order: [[Resource, 'id', 'DESC']],
       })
     } catch (e) {
       log.error('[EVENT]', e)
@@ -180,6 +184,12 @@ const eventController = {
 
     if (event && (event.is_visible || is_admin)) {
       event = event.get()
+      event.isMine = event.userId === req.user?.id
+      event.isAnon = event.userId === null || !event?.user?.is_active
+      event.original_url = event?.ap_object?.url || event?.ap_object?.id
+      delete event.ap_object
+      delete event.user
+      delete event.userId
       event.next = next && (next.slug || next.id)
       event.prev = prev && (prev.slug || prev.id)
       event.tags = event.tags.map(t => t.tag)
@@ -200,6 +210,117 @@ const eventController = {
     }
   },
 
+  async disableAuthor (req, res) {
+    const eventId = Number(req.params.event_id)
+    log.warn('[EVENT] Disable author of the event %d', eventId)
+
+    if (!res.locals.settings.enable_moderation) {
+      log.warn('[EVENT] Cannot disable author, moderation is not enabled (eventId: %d)', eventId)
+      return res.sendStatus(403)
+    }
+
+    const event = await Event.findByPk(eventId, { include: [{ model: User, required: true } ]})
+    if (!event) {
+      log.warn('[EVENT] Disable author of not found event (eventId: %d)', eventId)
+      return res.sendStatus(404)
+    }
+
+    if (event.user) {
+      try {
+        await event.user.update({ is_active: false })
+      } catch (e) {
+        log.warn('[EVENT] Error on disable author for eventId: %d', eventId)
+      }
+      res.sendStatus(200)
+    } else {
+      log.warn('[EVENT] Author not found for eventId: %d', eventId)
+      res.sendStatus(404)
+    }
+
+  },
+
+  // get all event moderation messages if we are admin || editor
+  // get mine and to_author moderation messages if I'm the event author
+  async getMessages (req, res) {
+
+    if (!res.locals.settings.enable_moderation) {
+      return res.sendStatus(403)
+    }
+
+    const eventId = Number(req.params.event_id)
+
+    // in case we are admin or editor return all moderation messages related to this event
+    if (req.user.is_admin || req.user.is_editor) {
+      const messages = await Message.findAll({ where: { eventId }, order: [['createdAt', 'DESC']]})
+      return res.json(messages)
+    }
+
+    const event = await Event.findByPk(eventId)
+    if (!event) {
+      return res.sendStatus(404)
+    }
+
+    if (event.userId === req.user.id) {
+      const messages = await Message.findAll({ where: { eventId, is_author_visible: true }, order: [['createdAt', 'DESC']]})
+      return res.json(messages)      
+    }
+
+    return res.sendStatus(400)
+
+  },
+
+  async report (req, res) {
+    const mail = require('../mail')
+    if (!res.locals.settings.enable_moderation) {
+      return res.sendStatus(403)
+    }
+
+    const eventId = Number(req.params.event_id)
+    const event = await Event.findByPk(eventId, { include: [{ model: User, required: false }], raw: true })
+    if (!event) {
+      log.warn(`[REPORT] Event does not exists: ${eventId}`)
+      return res.sendStatus(404)
+    }
+
+    const body = req.body
+    const isMine = req.user?.id === event.userId
+    const isAdminOrEditor = req.user?.is_editor || req.user?.is_admin
+
+    if (!isAdminOrEditor && !isMine && !res.locals.settings.enable_report) {
+      log.warn(`[REPORT] Someone not allowed is trying to report an event -> "${event.title}" isMine: ${isMine} `)
+      return res.sendStatus(403)
+    }
+
+    const author = isAdminOrEditor ? 'ADMIN' : isMine ? 'AUTHOR' : 'ANON'
+    try {
+      const message = await Message.create({
+        eventId,
+        message: body.message,
+        is_author_visible: body.is_author_visible || isMine,
+        author
+      })
+
+      const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
+      let emails = [res.locals.settings.admin_email]
+      emails = emails.concat(admins?.map(a => a.email))
+      log.info('[EVENT] Report event to %s', emails)
+
+      // notify admins
+      mail.send(emails, 'report', { event, message: body.message, author })
+
+      // notify author
+      if (event['user.email'] && body.is_author_visible && !isMine) {
+        mail.send(event['user.email'], 'report', { event, message: body.message, author })
+      }
+
+      return res.json(message)
+    } catch (e) {
+      log.warn(`[EVENT] ${e}`)
+      return res.sendStatus(403)
+    }
+
+  },
+
   /** confirm an anonymous event
    * and send related notifications
    */
@@ -210,7 +331,7 @@ const eventController = {
       log.warn(`Trying to confirm a unknown event, id: ${id}`)
       return res.sendStatus(404)
     }
-    if (!req.user.is_admin && req.user.id !== event.userId) {
+    if (!req.user.is_editor && !req.user.is_admin && req.user.id !== event.userId) {
       log.warn(`Someone not allowed is trying to confirm -> "${event.title} `)
       return res.sendStatus(403)
     }
@@ -235,7 +356,7 @@ const eventController = {
     const id = Number(req.params.event_id)
     const event = await Event.findByPk(id)
     if (!event) { return req.sendStatus(404) }
-    if (!req.user.is_admin && req.user.id !== event.userId) {
+    if (!req.user.is_editor && !req.user.is_admin && req.user.id !== event.userId) {
       log.warn(`Someone not allowed is trying to unconfirm -> "${event.title} `)
       return res.sendStatus(403)
     }
@@ -431,9 +552,40 @@ const eventController = {
     try {
       const body = req.body
       const event = await Event.findByPk(body.id)
-      if (!event) { return res.sendStatus(404) }
+      if (!event) {
+        log.debug('[UPDATE] Event not found: %s', body?.id)
+        return res.sendStatus(404)
+      }
+
       if (!req.user.is_admin && event.userId !== req.user.id) {
+        log.debug('[UPDATE] the user is neither an admin nor the owner of the event')
         return res.sendStatus(403)
+      }
+
+      const start_datetime = body.start_datetime || event.start_datetime
+      const end_datetime = body.end_datetime || event.end_datetime || null
+
+      // // validate start_datetime and end_datetime
+      if (end_datetime) {
+        if (start_datetime > end_datetime) {
+          log.debug('[UPDATE] start_datetime is greated than end_datetime')
+          return res.status(400).send(`start datetime is greater than end datetime`)
+        }
+
+        if (Number(end_datetime) > 1000*24*60*60*365) {
+        log.debug('[UPDATE] end_datetime is too much in the future')
+          return res.status(400).send('are you sure?')
+        }
+      }
+
+      if (!Number(start_datetime)) {
+        log.debug('[UPDATE] start_datetime has to be a number')
+        return res.status(400).send(`Wrong format for start datetime`)
+      }
+
+      if (Number(start_datetime) > 1000*24*60*60*365) {
+        log.debug('[UPDATE] start_datetime is too much in the future')
+        return res.status(400).send('are you sure?')
       }
 
       const recurrent = body.recurrent ? JSON.parse(body.recurrent) : null
@@ -442,8 +594,8 @@ const eventController = {
         // sanitize and linkify html
         description: helpers.sanitizeHTML(linkifyHtml(body.description || '', { target: '_blank' })) || event.description,
         multidate: body.multidate,
-        start_datetime: body.start_datetime || event.start_datetime,
-        end_datetime: body.end_datetime || null,
+        start_datetime,
+        end_datetime,
         online_locations: body.online_locations,
         recurrent
       }
@@ -495,9 +647,11 @@ const eventController = {
       try {
         place = await eventController._findOrCreatePlace(body)
         if (!place) {
+          log.info('[UPDATE] Place not found')
           return res.status(400).send(`Place not found`)
         }
       } catch (e) {
+        log.info('[UPDATE] %s', e?.message ?? String(e))
         return res.status(400).send(e.message)
       }
       await event.setPlace(place)
@@ -520,8 +674,10 @@ const eventController = {
       if (event.recurrent) {
         eventController._createRecurrent()
       } else {
-        const notifier = require('../../notifier')
-        notifier.notifyEvent('Update', event.id)
+        if (!event.ap_id) {
+          const notifier = require('../../notifier')
+          notifier.notifyEvent('Update', event.id)
+        }
       }
     } catch (e) {
       log.error('[EVENT UPDATE]', e)
@@ -532,7 +688,7 @@ const eventController = {
   async remove(req, res) {
     const event = await Event.findByPk(req.params.id)
     // check if event is mine (or user is admin)
-    if (event && (req.user.is_admin || req.user.id === event.userId)) {
+    if (event && (req.user.is_editor || req.user.is_admin || req.user.id === event.userId)) {
       if (event.media && event.media.length && !event.recurrent) {
         try {
           const old_path = path.join(config.upload_path, event.media[0].url)
@@ -543,15 +699,29 @@ const eventController = {
           log.info(e.toString())
         }
       }
-      const notifier = require('../../notifier')
-      await notifier.notifyEvent('Delete', event.id)
+
+      // notify local events only
+      if (!event.ap_id) {
+        const notifier = require('../../notifier')
+        await notifier.notifyEvent('Delete', event.id)
+      }
 
       // unassociate child events
       if (event.recurrent) {
         await Event.update({ parentId: null }, { where: { parentId: event.id } })
       }
       log.debug('[EVENT REMOVED] ' + event.title)
-      await event.destroy()
+      try {
+        // remove related resources
+        await Resource.destroy({ where: { eventId: event.id }})
+        await EventNotification.destroy({ where: { eventId: event.id }})
+        
+        // and finally remove the event
+        await event.destroy()
+      } catch (e) {
+        console.error(e)
+      }
+
       res.sendStatus(200)
     } else {
       res.sendStatus(403)
@@ -573,19 +743,34 @@ const eventController = {
     limit,
     page,
     older,
-    reverse }) {
+    reverse,
+    user_id,
+    include_unconfirmed = false,
+    include_parent = false,
+    include_description=false }) {
 
     const where = {
-      // do not include _parent_ recurrent event
-      recurrent: null,
 
-      // confirmed event only
-      is_visible: true,
+      apUserApId: null,
 
       [Op.or]: {
         start_datetime: { [older ? Op.lte : Op.gte]: start },
         end_datetime: { [older ? Op.lte : Op.gte]: start }
       }
+    }
+
+    if (user_id) {
+      where.userId = user_id
+    }
+
+    if (include_parent !== true) {
+      // do not include _parent_ recurrent event
+      where.recurrent = null
+    }
+
+    if (include_unconfirmed !== true) {
+      // confirmed event only
+      where.is_visible = true
     }
 
     // include recurrent events?
@@ -603,32 +788,31 @@ const eventController = {
 
     // normalize tags
     if (tags) {
-      tags = tags.split(',').map(t => t.trim().toLocaleLowerCase())
+      tags = tags.split(',').map(t => t.trim())
     }
 
     const replacements = []
     if (tags && places) {
       where[Op.and] = [
         { placeId: places ? places.split(',') : [] },
-        Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND LOWER(${Col('tagTag')}) in (?)`))
+        Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND ${Col('tagTag')} in (?)`))
       ]
       replacements.push(tags)
     } else if (tags) {
-      where[Op.and] = Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND LOWER(${Col('tagTag')}) in (?)`))
+      where[Op.and] = Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND ${Col('tagTag')} in (?)`))
       replacements.push(tags)
     } else if (places) {
       where.placeId = places.split(',')
     }
 
     if (query) {
-      query = query.toLocaleLowerCase()
       replacements.push(query)
       replacements.push(query)
       where[Op.or] =
         [
           { title: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('title')), 'LIKE', '%' + query + '%') },
           Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), 'LIKE', '%' + query + '%'),
-          Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND LOWER(${Col('tagTag')}) = ?`))
+          Sequelize.fn('EXISTS', Sequelize.literal(`SELECT 1 FROM event_tags WHERE ${Col('event_tags.eventId')}=${Col('event.id')} AND LOWER(${Col('tagTag')}) = LOWER(?)`))
         ]
     }
 
@@ -643,7 +827,12 @@ const eventController = {
     const events = await Event.findAll({
       where,
       attributes: {
-        exclude: ['likes', 'boost', 'userId', 'is_visible', 'createdAt', 'description', 'resources', 'recurrent', 'placeId', 'image_path']
+        exclude: [
+          'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path',
+          ...(!include_parent ? ['recurrent']: []),
+          ...(!include_unconfirmed ? ['is_visible']: []),
+          ...(!include_description ? ['description']: [])
+        ]
       },
       order: [['start_datetime', reverse ? 'DESC' : 'ASC']],
       include: [
@@ -669,6 +858,49 @@ const eventController = {
     })
   },
 
+  async mine (req, res) {
+
+    const start = DateTime.local().toUnixInteger()
+
+    const where = {
+      userId: req.user.id,
+      apUserApId: null,
+      [Op.or]: {
+        [Op.or]: {
+          start_datetime: { [Op.gte]: start },
+          end_datetime: { [Op.gte]: start }
+        },
+        recurrent: { [Op.not]: null }
+      }
+    }
+    
+    const events = await Event.findAll({
+      where,
+      attributes: {
+        exclude: ['likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'description']
+      },
+      order: [['start_datetime', 'DESC']],
+      include: [
+        {
+          model: Tag,
+          attributes: ['tag'],
+          through: { attributes: [] }
+        },
+        { model: Place, required: true, attributes: ['id', 'name', 'address', 'latitude', 'longitude'] }
+      ],
+    }).catch(e => {
+      log.error('[EVENT]' + String(e))
+      return []
+    })
+
+    return res.json(events.map(e => {
+      e = e.get()
+      e.tags = e.tags ? e.tags.map(t => t && t.tag) : []
+      return e
+    }))
+
+  },
+
   /**
    * Select events based on params
    */
@@ -683,15 +915,25 @@ const eventController = {
     const page = Number(req.query.page) || 0
     const older = req.query.older || false
 
-    const show_multidate = settings.allow_multidate_event &&
-    typeof req.query.show_multidate !== 'undefined' ? req.query.show_multidate !== 'false' : true
+    const show_multidate = settings.allow_multidate_event && helpers.queryParamToBool(req.query.show_multidate, true)
 
-    const show_recurrent = settings.allow_recurrent_event &&
-      typeof req.query.show_recurrent !== 'undefined' ? req.query.show_recurrent === 'true' : settings.recurrent_event_visible
+    const show_recurrent = settings.allow_recurrent_event && helpers.queryParamToBool(req.query.show_recurrent, settings.recurrent_event_visible)
 
-    res.json(await eventController._select({
-      start, end, query, places, tags, show_recurrent, show_multidate, limit, page, older
-    }))
+    let events = []
+    if (settings.collection_in_home && !(tags || places)) {
+      events = await collectionController._getEvents({
+        name: settings.collection_in_home,
+        start,
+        end,
+        limit
+      })
+    } else {
+      events = await eventController._select({
+        start, end, query, places, tags, show_recurrent, show_multidate, limit, page, older
+      })
+    }
+
+    return res.json(events)
   },
 
   /**
