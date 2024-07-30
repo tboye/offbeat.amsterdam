@@ -27,7 +27,7 @@ v-container
           accept='image/*')
           template(slot='append-outer')
             v-btn(color='warning' text @click='resetLogo') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
-        v-img.mt-2(:src='`/logo.png?${logoKey}`' max-height="60px" contain)
+        v-img.mt-2(:src='`logo.png?${logoKey}`' max-height="60px" contain)
 
       v-col(cols='4')
         //- FALLBACK IMAGE
@@ -38,7 +38,7 @@ v-container
           accept='image/*')
           template(slot='append-outer')
             v-btn(color='warning' text @click='resetFallbackImage') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
-        v-img.mt-2(:src='`/fallbackimage.png?${fallbackImageKey}`' max-height="150px" contain)
+        v-img.mt-2(:src='`fallbackimage.png?${fallbackImageKey}`' max-height="150px" contain)
 
       v-col(cols='4')
         //- HEADER IMAGE
@@ -49,7 +49,7 @@ v-container
           accept='image/*')
           template(slot='append-outer')
             v-btn(color='warning' text @click='resetHeaderImage') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
-        v-img.mt-2(:src='`/headerimage.png?${headerImageKey}`' max-height="150px" contain)          
+        v-img.mt-2(:src='`headerimage.png?${headerImageKey}`' max-height="150px" contain)          
 
 
   v-card-title {{$t('admin.colors')}}

@@ -1,13 +1,13 @@
 <template>
   <div class='d-flex pa-4'>
     <v-btn icon large nuxt to='/'>
-      <img src='/logo.png' height='40' />
+      <img src='logo.png' height='40' />
     </v-btn>
 
     <v-spacer/>
 
     <div class='d-flex'>
-      <v-btn icon large href='/about' :title='$t("common.about")' :aria-label='$t("common.about")'>
+      <v-btn icon large href='about' :title='$t("common.about")' :aria-label='$t("common.about")'>
         <v-icon v-text='mdiInformation' />
       </v-btn>
       <v-btn icon large @click='toggleDark'>

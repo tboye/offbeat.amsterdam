@@ -317,7 +317,7 @@
     "hide_thumbs": "Hide thumbs",
     "hide_calendar": "Hide calendar",
     "default_images": "Default images",
-    "default_images_help": "You have to <a href='/admin?tab=theme'>refresh</a> the page to see the changes.",
+    "default_images_help": "You have to <a href='admin?tab=theme'>refresh</a> the page to see the changes.",
     "blocked": "Blocked",
     "domain": "Domain",
     "known_users": "Known users",
@@ -368,7 +368,7 @@
   "confirm": {
     "title": "User confirmation",
     "not_valid": "Something went wrong.",
-    "valid": "Your account is confirmed, you can now <a href=\"/login\">log in</a>"
+    "valid": "Your account is confirmed, you can now <a href=\"login\">log in</a>"
   },
   "ordinal": {
     "1": "first",

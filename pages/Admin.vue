@@ -98,7 +98,7 @@ export default {
   async asyncData ({ $axios, req }) {
     let url
     if (process.client) {
-      url = window.location.protocol + '//' + window.location.host
+      url = document.baseURI
     } else {
       url = req.protocol + '://' + req.headers.host
     }
