@@ -13,6 +13,7 @@ const { htmlToText } = require('html-to-text')
 
 const { Event, Resource, Tag, Place, Notification, APUser, EventNotification, Message, User } = require('../models/models')
 
+import PlaceService from '../../services/place'
 
 const exportController = require('./export')
 const tagController = require('./tag')
@@ -21,35 +22,6 @@ const log = require('../../log')
 const collectionController = require('./collection')
 
 const eventController = {
-
-  async _findOrCreatePlace (body) {
-    if (body.place_id) {
-      const place = await Place.findByPk(body.place_id)
-      if (!place) {
-        throw new Error(`Place not found`)
-      }
-      return place
-    }
-
-    const place_name = body.place_name && body.place_name.trim()
-    const place_address = body.place_address && body.place_address.trim()
-    if (!place_name || !place_address && place_name?.toLocaleLowerCase() !== 'online') {
-      throw new Error(`place_id or place_name and place_address are required`)
-    }
-    let place = await Place.findOne({ where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), Sequelize.Op.eq, place_name.toLocaleLowerCase()) })
-    if (!place) {
-      place = await Place.create({
-        name: place_name,
-        address: place_address || '',
-        latitude: Number(body.place_latitude) || null,
-        longitude: Number(body.place_longitude) || null
-      }).catch(e => {
-        console.error(e)
-        console.error(e?.errors)
-      })
-    }
-    return place
-  },
 
   async searchMeta(req, res) {
     const search = req.query.search.toLocaleLowerCase()
@@ -496,7 +468,7 @@ const eventController = {
       // find or create the place
       let place
       try {
-        place = await eventController._findOrCreatePlace(body)
+        place = await PlaceService.findOrCreate(body)
         if (!place) {
           return res.status(400).send(`Place not found`)
         }
