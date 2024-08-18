@@ -1,56 +1,23 @@
-<template>
-  <v-app>
-    <Appbar/>
-    <v-main>
-      <Snackbar/>
-      <Confirm/>
-      <v-fade-transition hide-on-leave>
-        <nuxt />
-      </v-fade-transition>
-    </v-main> 
-    <Footer/>
+<script setup>
 
-  </v-app>
+// const { serviceConfig } = useAuth()
 
+const openSidebar = ref()
+const config = useRuntimeConfig()
 
-</template>
-<script>
-import Appbar from '../components/Appbar.vue'
-import Snackbar from '../components/Snackbar.vue'
-import Footer from '../components/Footer.vue'
-import Confirm from '../components/Confirm.vue'
-import { mapState, mapGetters } from 'vuex'
-
-export default {
-  head () {
-    const custom_script = [{ type: 'application/javascript', defer: true, src: '/custom_js', body: true }]
-    const custom_style = [{ rel: 'stylesheet', href: this.settings.baseurl + '/custom_css'}]
-    return {
-      htmlAttrs: {
-        lang: this.locale
-      },
-      link: [
-        { rel: 'icon', type: 'image/png', href: this.settings.baseurl + '/logo.png' },
-        ...custom_style
-      ],
-      script: [
-        { src: '/gancio-events.es.js', body: true, defer: true },
-        ...custom_script
-      ]
-    }
-  },
-  name: 'Default',
-  components: { Appbar, Snackbar, Footer, Confirm },
-  computed: {
-    ...mapState(['settings']),
-    ...mapGetters(['is_dark'])
-  },
-  created () {
-    try {
-      this.$vuetify.theme.dark = this.is_dark
-    } catch (e) {
-      console.error(e)
-    }
-  }
-}
 </script>
+<template>
+    <v-app>
+        <!-- <CoreSideBar v-model="openSidebar" /> -->
+        <!-- <CoreNavBar @toggleSidebar="openSidebar = !openSidebar" /> -->
+        <v-main class="bg-blue-grey-lighten-5" style="height:100vh;overflow:auto">
+            <v-container fluid class="pa-3" style="height:100%">
+                <slot />
+            </v-container>
+        </v-main>
+        <!-- <CoreDialog /> -->
+        <!-- <CoreNotification /> -->
+        <v-footer app height="40"><v-spacer />v.{{config.public.version}} © 2023 Trialsh, made with ❤️ for a better world</v-footer>
+    </v-app>
+</template>
+
