@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ca: 'Català',
   cs: 'Czech',
   de: 'Deutsch',

@@ -1,37 +1,217 @@
-import { DataTypes, Sequelize, Model, 
-    InferAttributes,
-    InferCreationAttributes } from '@sequelize/core'
-import { SqliteDialect } from '@sequelize/sqlite3'
+import bcrypt from 'bcrypt'
+import {
+    Sequelize,
+    type HasManyCreateAssociationMixin,
+    type InferAttributes,
+    type InferCreationAttributes,
+    type Options,
+} from "@sequelize/core"
 
-// import AnnouncementModel from '../models/announcement'
-// import EventModel from '../models/event'
+import {
+    DataTypes,
+    Model,
+    type CreationOptional,
+    type NonAttribute,
+} from "@sequelize/core"
 
-class Announcement extends Model<InferAttributes<Announcement>,  InferCreationAttributes<Announcement>> {
-    declare title: string
-    declare announcement: string | null
-    declare visible: boolean
-}
+import {
+    Attribute,
+    HasMany,
+    NotNull,
+    Table,
+    CreatedAt,
+    UpdatedAt,
+    PrimaryKey,
+    AutoIncrement,
+    BeforeCreate,
+    BeforeUpsert,
+    Index,
+    Unique,
+    BeforeSave,
+} from "@sequelize/core/decorators-legacy"
 
-  const Announcement = sequelize.define('announcement', {
-    title: DataTypes.STRING,
-    announcement: DataTypes.STRING,
-    visible: DataTypes.BOOLEAN
-  })
+// import type { SqliteDialect } from "@sequelize/sqlite3";
+//   import bcrypt from "bcrypt";
+const environment = process.env.NODE_ENV || "development";
 
-const db = new Sequelize({
-    dialect: "sqlite",
-    storage: "./gancio2.sqlite",
-    models: [Announcement]
+//   const options = config[environment as keyof typeof config];
+//   export const sequelize = new Sequelize({
+//     ...options,
+//   } as Options<SqliteDialect>);
+
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './gancio2.sqlite'    
 })
 
-// export const Announcement = AnnouncementModel(db, DataTypes)
-// export const Events = EventModel(db, DataTypes)
+export default sequelize
 
-try {
-    db.authenticate()
-} catch (e) {
-    console.error(e)
+@Table({
+    tableName: 'announcements',
+})
+export class Announcement extends Model<
+InferAttributes<Announcement>,
+InferCreationAttributes<Announcement>
+>    {
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @PrimaryKey
+    @AutoIncrement
+    declare readonly id: CreationOptional<number>;
+    
+    @Attribute(DataTypes.STRING)
+    @NotNull
+    declare title: string;
+    
+    @Attribute(DataTypes.STRING)
+    declare announcement: string;
+    
+    @Attribute(DataTypes.BOOLEAN)
+    declare visible: string;
+    
 }
 
-export default db
+@Table({
+    tableName: 'events'
+})
+export class Event extends Model<
+InferAttributes<Event>,
+InferCreationAttributes<Event>
+> {    
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @PrimaryKey
+    @AutoIncrement
+    declare readonly id: CreationOptional<number>
+ 
+    @Attribute(DataTypes.STRING)
+    @NotNull
+    declare title: string
 
+    @Attribute(DataTypes.STRING)
+    @Index
+    @Unique
+    declare slug: string
+
+    @Attribute(DataTypes.TEXT)
+    declare description: string
+
+}
+
+type Role = "admin" | "editor" | "user"
+
+  @Table({
+    tableName: "Users",
+    indexes: [{ fields: ["email"], unique: true }],
+  })
+  export class User extends Model<
+    InferAttributes<User>,
+    InferCreationAttributes<User>
+  > {
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @PrimaryKey
+    @AutoIncrement
+    declare readonly id: CreationOptional<number>;
+
+    @Attribute(DataTypes.STRING)
+    declare display_name: string;
+
+    @Attribute(DataTypes.STRING)
+    @NotNull
+    declare email: string;
+
+    @Attribute(DataTypes.STRING)
+    @NotNull
+    declare password: string
+
+    @Attribute(DataTypes.STRING)
+    declare recover_code: string
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare is_active: Boolean
+
+    @Attribute(DataTypes.STRING)
+    declare description: string
+
+    @Attribute(DataTypes.ENUM(['admin','editor', 'user']))
+    declare role: Role
+
+
+    @CreatedAt
+    declare readonly createdAt: CreationOptional<Date>;
+
+    @UpdatedAt
+    declare readonly updatedAt: CreationOptional<Date>;
+
+
+    async comparePassword (pwd: string) {
+        if (!this.password) { return false }
+        return bcrypt.compare(pwd, this.password)        
+    }
+    // @HasMany(() => Post, {
+    //   foreignKey: "userId",
+    //   inverse: {
+    //     as: "author",
+    //   },
+    // })
+    // declare posts?: NonAttribute<Post[]>;
+
+    // declare createPost: HasManyCreateAssociationMixin<Post, "userId">;
+
+    @BeforeSave
+    static async hashPassword(instance: User) {
+        if(instance.changed('password')) {
+            const password = instance.getDataValue('password')
+            if (password) {
+                const hashedPassword = bcrypt.hashSync(password, 10)
+                instance.setDataValue("password", hashedPassword)              
+            }
+        }
+    }
+    // @BeforeCreate
+    // static async hashPassword(instance: User) {
+    //   const password = instance.getDataValue("password");
+    //   if (password) {
+    //     const hashedPassword = bcrypt.hashSync(password, 10);
+    //     instance.setDataValue("password", hashedPassword);
+    //   }
+    // }
+  }
+
+//   @Table({
+//     tableName: "Posts",
+//   })
+//   export class Post extends Model<
+//     InferAttributes<Post>,
+//     InferCreationAttributes<Post>
+//   > {
+//     @Attribute(DataTypes.INTEGER.UNSIGNED)
+//     @PrimaryKey
+//     @AutoIncrement
+//     declare readonly id: CreationOptional<number>;
+
+//     @Attribute(DataTypes.STRING)
+//     @NotNull
+//     declare title: string;
+
+//     @Attribute(DataTypes.STRING)
+//     @NotNull
+//     declare content: string;
+
+//     @Attribute({
+//       type: DataTypes.INTEGER.UNSIGNED,
+//       references: { table: "Users", key: "id" },
+//       onUpdate: "CASCADE",
+//       onDelete: "CASCADE",
+//     })
+//     declare userId: number;
+
+//     @CreatedAt
+//     declare readonly createdAt: CreationOptional<Date>;
+
+//     @UpdatedAt
+//     declare readonly updatedAt: CreationOptional<Date>;
+
+//     /** Declared by {@link User#posts} */
+//     declare author?: NonAttribute<User>;
+//   }
+
+sequelize.addModels([Announcement, Event]);

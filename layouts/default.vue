@@ -17,7 +17,7 @@ const config = useRuntimeConfig()
         </v-main>
         <!-- <CoreDialog /> -->
         <!-- <CoreNotification /> -->
-        <v-footer app height="40"><v-spacer />v.{{config.public.version}} © 2023 Trialsh, made with ❤️ for a better world</v-footer>
+        <v-footer app height="40"><v-spacer />v.{{config.public.version}}</v-footer>
     </v-app>
 </template>
 

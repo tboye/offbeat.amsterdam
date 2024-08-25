@@ -1,4 +1,6 @@
+import { Event } from "~/server/utils/sequelize"
+
 export default defineEventHandler((event) => {
-    return Events.findAll()
+    return Event.findAll()
   })
   
