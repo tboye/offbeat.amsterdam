@@ -2,12 +2,13 @@
   - show future events by default
 -->
 <script setup lang="ts">
-  const { data: announcements } = useFetch('/api/announcements')
-  const { data: events } = useFetch('/api/events')
+import type { Announcement, Event } from '#build/types/nitro-imports'
+
+  const { data: announcements } = await useFetch<Announcement[]>('/api/announcements')
+  const { data: events } = await useFetch<Event[]>('/api/events')
 </script>
 <template>
   <v-container class='px-2 px-sm-6 pt-0' id='home'>
-    
     <!-- Announcements -->
     <section id='announcements' class='mt-2 mt-sm-4' v-if='announcements?.length'>
       <Announcement v-for='announcement in announcements' :key='`a_${announcement.id}`' :announcement='announcement' />
@@ -15,10 +16,10 @@
     
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2'>
-      <v-lazy class='event v-card' :value='idx<9'
+      <v-lazy class='event v-card' 
       v-for='(event, idx) in events' :key='event.id'
       :options="{ threshold: .5, rootMargin: '500px' }">
-      <span>{{ event.title }}</span>
+      <NuxtLink :to="`e/${event.slug}`">{{ event.title }}</NuxtLink>
       <!-- <Event :event='event' :lazy='idx>9' /> -->
       </v-lazy>
     </section>

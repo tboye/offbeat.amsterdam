@@ -1,6 +1,8 @@
-// import { Announcement } from "~/server/utils/sequelize"
-// return an announcement
-export default defineEventHandler((event) => {
-    return Announcement.findByPk(event.context.params?.id)
-  })
-  
+export default defineEventHandler(async event => {
+  const announcement = await Announcement.findByPk(event.context.params?.id)
+  if (announcement) {
+    return announcement
+  } else {
+    throw createError({ status: 404, message: 'Not found' })
+  }
+})
