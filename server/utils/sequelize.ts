@@ -28,6 +28,9 @@ import {
     Index,
     Unique,
     BeforeSave,
+    AllowNull,
+    BelongsToMany,
+    BelongsTo,
 } from "@sequelize/core/decorators-legacy"
 
 // import type { SqliteDialect } from "@sequelize/sqlite3";
@@ -94,12 +97,73 @@ InferCreationAttributes<Event>
     @Attribute(DataTypes.TEXT)
     declare description: string
 
+    @Attribute({
+      type: DataTypes.INTEGER.UNSIGNED,
+      references: { table: "places", key: "id" },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    })
+    declare placeId: number;
+
+    // @BelongsTo(() => Place, 'id')
+    // declare places
+
+    @BelongsToMany(() => Tag, { through: 'event_tags '})
+    declare tags?: NonAttribute<Tag[]>
+
+}
+
+@Table({
+    tableName: 'tags'
+})
+export class Tag extends Model<
+InferAttributes<User>,
+InferCreationAttributes<User>
+> {
+    @Attribute(DataTypes.STRING)
+    @Index
+    @Unique
+    declare tag: string;
+
+    // @BelongsToMany(() => Event, { through: 'event_tags' })
+    // declare events?: NonAttribute<Event[]>
+}
+
+@Table({
+    tableName: 'places'
+})
+export class Place extends Model<
+    InferAttributes<User>,
+    InferCreationAttributes<User>
+> {
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @PrimaryKey
+    @AutoIncrement
+    declare readonly id: CreationOptional<number>;
+
+    @Attribute(DataTypes.STRING)
+    @Index
+    @Unique
+    declare name: string;
+
+    @Attribute(DataTypes.STRING)
+    declare address: string;
+
+    @Attribute(DataTypes.FLOAT)
+    declare latitude: number;
+
+    @Attribute(DataTypes.FLOAT)
+    declare longitude: number;
+
+    @HasMany(() => Event, /* foreign key */ 'placeId')
+    declare events?: NonAttribute<Event[]>;
+
 }
 
 type Role = "admin" | "editor" | "user"
 
   @Table({
-    tableName: "Users",
+    tableName: "users",
     indexes: [{ fields: ["email"], unique: true }],
   })
   export class User extends Model<
@@ -214,4 +278,4 @@ type Role = "admin" | "editor" | "user"
 //     declare author?: NonAttribute<User>;
 //   }
 
-sequelize.addModels([Announcement, Event]);
+sequelize.addModels([Announcement, Place, Event, Tag]);

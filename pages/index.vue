@@ -19,8 +19,7 @@ import type { Announcement, Event } from '#build/types/nitro-imports'
       <v-lazy class='event v-card' 
       v-for='(event, idx) in events' :key='event.id'
       :options="{ threshold: .5, rootMargin: '500px' }">
-      <NuxtLink :to="`e/${event.slug}`">{{ event.title }}</NuxtLink>
-      <!-- <Event :event='event' :lazy='idx>9' /> -->
+      <Event :event='event' :lazy='idx>9' />
       </v-lazy>
     </section>
     <!-- <section class='text-center' v-else> -->
