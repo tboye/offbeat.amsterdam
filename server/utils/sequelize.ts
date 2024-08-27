@@ -44,7 +44,7 @@ const environment = process.env.NODE_ENV || "development";
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: './gancio2.sqlite'    
+    storage: './gancio3.sqlite'
 })
 
 export default sequelize
@@ -105,10 +105,7 @@ InferCreationAttributes<Event>
     })
     declare placeId: number;
 
-    // @BelongsTo(() => Place, 'id')
-    // declare places
-
-    @BelongsToMany(() => Tag, { through: 'event_tags '})
+    @BelongsToMany(() => Tag, { through: 'event_tags', inverse: { as: 'events' } })
     declare tags?: NonAttribute<Tag[]>
 
 }
@@ -121,12 +118,13 @@ InferAttributes<User>,
 InferCreationAttributes<User>
 > {
     @Attribute(DataTypes.STRING)
+    @PrimaryKey
     @Index
     @Unique
     declare tag: string;
 
     // @BelongsToMany(() => Event, { through: 'event_tags' })
-    // declare events?: NonAttribute<Event[]>
+    declare events?: NonAttribute<Event[]>
 }
 
 @Table({
