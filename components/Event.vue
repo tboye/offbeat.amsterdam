@@ -2,7 +2,7 @@
     <article class='h-event' itemscope itemtype="https://schema.org/Event">
         <nuxt-link :to='`/event/${event.slug || event.id}`' itemprop="url">
             <!-- <MyPicture v-if='!hide_thumbs' :event='event' thumb :lazy='lazy' /> -->
-            <v-icon class='float-right mr-1' v-if='event.parentId' color='success' v-text='mdiRepeat' />
+            <v-icon class='float-right mr-1' v-if='event.parentId' color='success' icon='mdi-repeat' />
             <h1 class='title p-name' itemprop="name">{{ event.title }}</h1>
         </nuxt-link>
         
@@ -19,7 +19,7 @@
             <nuxt-link class='place d-block p-location pl-0' text
                 :to='`/place/${encodeURIComponent(event.place.name)}`'
                 itemprop="location" itemscope itemtype="https://schema.org/Place">
-                <v-icon v-text='mdiMapMarker'></v-icon>
+                <v-icon icon="mdi-map-marker"/>
                 <span itemprop='name'>{{ event.place.name }}</span>
             </nuxt-link>
             <div class='d-none' itemprop='address'>{{ event.place.address }}</div>
@@ -27,7 +27,7 @@
         </v-card-text>
 
         <v-card-actions class='flex-wrap'>
-            <v-chip class='ml-1 mt-1' v-for='tag in event.tags.slice(0, 6)' small label :to='`/tag/${encodeURIComponent(tag)}`'
+            <v-chip class='ml-1 mt-1' v-for='tag in event?.tags?.slice(0, 6)' small label :to='`/tag/${encodeURIComponent(tag)}`'
                 :key='tag' outlined color='primary'>{{ tag }}</v-chip>
         </v-card-actions>
 
