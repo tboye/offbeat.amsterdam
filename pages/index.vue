@@ -4,8 +4,8 @@
 <script setup lang="ts">
 import type { Announcement, Event } from '#build/types/nitro-imports'
 
-  const { data: announcements } = await useFetch<Announcement[]>('/api/announcements')
-  const { data: events } = await useFetch<Event[]>('/api/events')
+const { data: announcements } = await useFetch<Announcement[]>('/api/announcements')
+const { data: events } = await useFetch<Event[]>('/api/events')
 </script>
 <template>
   <v-container class='px-2 px-sm-6 pt-0' id='home'>
@@ -17,9 +17,9 @@ import type { Announcement, Event } from '#build/types/nitro-imports'
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2'>
       <v-lazy class='event v-card' 
-      v-for='(event, idx) in events' :key='event.id'
-      :options="{ threshold: .5, rootMargin: '500px' }">
-      <Event :event='event' :lazy='idx>9' />
+        v-for='(event, idx) in events' :key='event.id'
+        :options="{ threshold: .5, rootMargin: '500px' }">
+        <Event :event='event' :lazy='idx>9' />
       </v-lazy>
     </section>
     <!-- <section class='text-center' v-else> -->

@@ -41,8 +41,8 @@
     </v-container>
 </template>
     
-<script setup>
-const valid = ref('')
+<script setup lang="ts">
+const valid = ref(false)
 const email = ref('')
 const password = ref('')
 

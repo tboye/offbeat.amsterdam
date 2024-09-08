@@ -1,5 +1,3 @@
-
-
 import { test }from "linkifyjs"
 export default defineNuxtPlugin((nuxtApp) => {
 

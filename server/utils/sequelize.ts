@@ -94,8 +94,25 @@ InferCreationAttributes<Event>
     @Unique
     declare slug: string
 
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @Index
+    declare start_datetime: number
+
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @Index
+    declare end_datetime: number    
+
+    @Attribute(DataTypes.JSON)
+    declare media: string
+
     @Attribute(DataTypes.TEXT)
     declare description: string
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare is_visible: boolean
+
+    @Attribute(DataTypes.JSON)
+    declare online_locations: string
 
     @Attribute({
       type: DataTypes.INTEGER.UNSIGNED,
@@ -131,8 +148,8 @@ InferCreationAttributes<User>
     tableName: 'places'
 })
 export class Place extends Model<
-    InferAttributes<User>,
-    InferCreationAttributes<User>
+    InferAttributes<Place>,
+    InferCreationAttributes<Place>
 > {
     @Attribute(DataTypes.INTEGER.UNSIGNED)
     @PrimaryKey
@@ -142,6 +159,7 @@ export class Place extends Model<
     @Attribute(DataTypes.STRING)
     @Index
     @Unique
+    @NotNull
     declare name: string;
 
     @Attribute(DataTypes.STRING)
@@ -276,4 +294,118 @@ type Role = "admin" | "editor" | "user"
 //     declare author?: NonAttribute<User>;
 //   }
 
-sequelize.addModels([Announcement, Place, Event, Tag]);
+
+@Table({
+    tableName: 'instances'
+})
+export class Instance extends Model<
+    InferAttributes<Instance>,
+    InferCreationAttributes<Instance>
+> {
+    @Attribute(DataTypes.STRING)
+    @PrimaryKey
+    declare domain: string
+
+    @Attribute(DataTypes.STRING)
+    declare name: string
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare blocked: boolean
+
+    @Attribute(DataTypes.JSON)
+    declare data: string;
+
+    @Attribute(DataTypes.STRING)
+    declare applicationActor: string;
+
+    // @HasMany(() => Event, /* foreign key */ 'placeId')
+    // declare events?: NonAttribute<Event[]>;
+
+}
+
+
+type APUserObject = { 
+    name: string,
+    icon: { url: string },
+    summary?: string,
+    preferredUsername: string,
+
+}
+
+@Table({
+    tableName: 'ap_users'
+})
+export class APUser extends Model<
+    InferAttributes<APUser>,
+    InferCreationAttributes<APUser>
+> {
+    @Attribute(DataTypes.STRING)
+    @PrimaryKey
+    declare ap_id: string
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare follower: boolean
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare following: boolean
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare trusted: boolean
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare blocked: boolean
+
+    @Attribute(DataTypes.JSON)
+    declare object: APUserObject;
+
+    // @HasMany(() => Event, /* foreign key */ 'placeId')
+    // declare events?: NonAttribute<Event[]>;
+
+}
+
+@Table({
+    tableName: 'settings'
+})
+export class Setting extends Model<
+    InferAttributes<Setting>,
+    InferCreationAttributes<Setting>
+> {
+    @Attribute(DataTypes.STRING)
+    @PrimaryKey
+    declare key: string
+
+    @Attribute(DataTypes.JSON)
+    declare value: boolean
+
+    @Attribute(DataTypes.BOOLEAN)
+    declare is_secret: boolean
+}
+
+@Table({
+    tableName: 'collections',
+    timestamps: false
+})
+export class Collection extends Model<
+    InferAttributes<Collection>,
+    InferCreationAttributes<Collection>
+> {
+
+    @Attribute(DataTypes.INTEGER.UNSIGNED)
+    @PrimaryKey
+    @AutoIncrement
+    declare readonly id: CreationOptional<number>
+
+    @Attribute(DataTypes.STRING)
+    @Unique
+    @Index
+    @NotNull
+    declare name: string
+
+    @Attribute(DataTypes.BOOLEAN) // not used yet
+    declare isActor: boolean
+
+    @Attribute(DataTypes.BOOLEAN) // is this collection shown in top navbar in home page?
+    declare isTop: boolean
+}
+
+sequelize.addModels([Announcement, Place, Event, Tag, User, Instance, APUser, Setting, Collection]);

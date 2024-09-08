@@ -1,7 +1,7 @@
-import { Event } from "#imports"
+import { Event, Place, Tag } from "~/server/utils/sequelize"
 
 export default defineEventHandler(async event => {
-    const element = await Event.findOne({ where: { slug: event.context.params?.slug } })
+    const element = await Event.findOne({ where: { slug: event.context.params?.slug }, include: [Tag, Place] })
     if (element) {
         return element
     } else {
