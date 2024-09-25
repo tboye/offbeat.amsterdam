@@ -1,9 +1,8 @@
-export default () => {
-    type SettingsType =
-    | { [key: string]: string }
+// import type { KeyValueType } from "~/server/utils/settings"
 
-    // const { data: Settings } = await useFetch('/api/setting')
-    const Settings = useState<SettingsType>('settings', () => reactive({ }))
+export default () => {
+
+    const Settings = useState<KeyValueType>('settings', () => reactive({ }))
   
     const loadSettings = async () => {
       Settings.value = await $fetch('/api/settings')
@@ -11,9 +10,8 @@ export default () => {
   
     const saveSetting = async (key: string, value: string) => {
       Settings.value[key] = value
-      await $fetch(`/api/setting`, { method: 'POST', body: { key, value } })
+      await $fetch(`/api/settings`, { method: 'PUT', body: { key, value } })
     }
   
     return { Settings, saveSetting, loadSettings }
   }
-  

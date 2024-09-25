@@ -16,11 +16,11 @@ const { data: events } = await useFetch<Event[]>('/api/events')
     
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2'>
-      <v-lazy class='event v-card' 
+      <Event v-for='(event, idx) in events' :key='event.id' :event='event' :lazy='idx>9' />
+      <!-- <v-lazy class='event v-card' 
         v-for='(event, idx) in events' :key='event.id'
         :options="{ threshold: .5, rootMargin: '500px' }">
-        <Event :event='event' :lazy='idx>9' />
-      </v-lazy>
+      </v-lazy> -->
     </section>
     <!-- <section class='text-center' v-else> -->
       <!-- <v-progress-circular class='mt-5 justify-center align-center mx-auto' color='primary' indeterminate model-value='20' /> -->
@@ -28,6 +28,14 @@ const { data: events } = await useFetch<Event[]>('/api/events')
     
   </v-container>
 </template>
+<style>
+#events {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(350px,1fr));
+}
+</style>
 <!-- <script setup lang="ts"> -->
 // import { mapState, mapActions, mapGetters  } from 'vuex'
 // import { DateTime } from 'luxon'

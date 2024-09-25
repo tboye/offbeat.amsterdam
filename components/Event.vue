@@ -1,5 +1,5 @@
 <template>
-    <article class='h-event' itemscope itemtype="https://schema.org/Event">
+    <article class='h-event b-1 border-1' itemscope itemtype="https://schema.org/Event">
         <nuxt-link :to='`/event/${event.slug || event.id}`' itemprop="url">
             <!-- <nuxt-picture/> -->
              

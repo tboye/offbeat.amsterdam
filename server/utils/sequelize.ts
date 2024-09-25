@@ -31,6 +31,7 @@ import {
     AllowNull,
     BelongsToMany,
     BelongsTo,
+    Default,
 } from "@sequelize/core/decorators-legacy"
 
 // import type { SqliteDialect } from "@sequelize/sqlite3";
@@ -375,9 +376,10 @@ export class Setting extends Model<
     declare key: string
 
     @Attribute(DataTypes.JSON)
-    declare value: boolean
+    declare value: string
 
     @Attribute(DataTypes.BOOLEAN)
+    @Default(false)
     declare is_secret: boolean
 }
 
