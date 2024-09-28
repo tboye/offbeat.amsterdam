@@ -132,8 +132,8 @@ InferCreationAttributes<Event>
     tableName: 'tags'
 })
 export class Tag extends Model<
-InferAttributes<User>,
-InferCreationAttributes<User>
+InferAttributes<Tag>,
+InferCreationAttributes<Tag>
 > {
     @Attribute(DataTypes.STRING)
     @PrimaryKey

@@ -1,5 +1,5 @@
 <!-- HOMEPAGE
-  - show future events by default
+The homepage shows future events by default.
 -->
 <script setup lang="ts">
 import type { Announcement, Event } from '#build/types/nitro-imports'
@@ -9,14 +9,15 @@ const { data: events } = await useFetch<Event[]>('/api/events')
 </script>
 <template>
   <v-container class='px-2 px-sm-6 pt-0' id='home'>
+
     <!-- Announcements -->
     <section id='announcements' class='mt-2 mt-sm-4' v-if='announcements?.length'>
-      <Announcement v-for='announcement in announcements' :key='`a_${announcement.id}`' :announcement='announcement' />
+      <Announcement v-for='announcement in announcements' :key='announcement.id' :announcement='announcement' />
     </section>
     
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2'>
-      <Event v-for='(event, idx) in events' :key='event.id' :event='event' :lazy='idx>9' />
+      <EventCard v-for='(event, idx) in events' :key='event.id' :event='event' :lazy='idx>9' />
       <!-- <v-lazy class='event v-card' 
         v-for='(event, idx) in events' :key='event.id'
         :options="{ threshold: .5, rootMargin: '500px' }">
@@ -34,6 +35,7 @@ const { data: events } = await useFetch<Event[]>('/api/events')
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(350px,1fr));
+  gap: 10px;
 }
 </style>
 <!-- <script setup lang="ts"> -->

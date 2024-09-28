@@ -1,22 +1,22 @@
 <template>
     <div class='d-flex pa-4'>
-        <v-btn icon large nuxt to='/'>
-            <!-- <img src='/logo.png' height='40' /> -->
+        <v-btn icon large nuxt to='/' variant="text">
+            <img src='/static/logo.png' height='40' />
         </v-btn>
         
         <v-spacer/>
         
         <div class='d-flex'>
-            <v-btn icon large href='/about' :title='$t("common.about")' :aria-label='$t("common.about")'>
+            <v-btn icon large href='/about' :title='$t("common.about")' :aria-label='$t("common.about")' variant="text">
                 <v-icon icon='mdi-information' />
             </v-btn>
-            <v-btn icon large @click='toggleDark'>
+            <v-btn variant="text" icon large @click='toggleDark'>
                 <v-icon icon='mdi-contrast-circle' />
             </v-btn>
             <client-only>
                 <v-menu offset-y transition="slide-y-transition">
                     <template v-slot:activator="{ props }">
-                        <v-btn icon large v-bind='props' aria-label='Language' v-text="$i18n.locale" />
+                        <v-btn variant="text" icon large v-bind='props' aria-label='Language' v-text="$i18n.locale" />
                     </template>
                     <v-list dense>
                         <v-list-item v-for='locale in $i18n.locales' @click.prevent.stop="$i18n.setLocale(locale.code)" :key='locale.code'>
@@ -27,13 +27,13 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-btn slot='placeholder' large  icon arial-label='Language'>{{$i18n.locale}}</v-btn>
+                <v-btn variant="text" slot='placeholder' large  icon arial-label='Language'>{{$i18n.locale}}</v-btn>
             </client-only> 
             
             <client-only>
                 <v-menu v-if='$auth.loggedIn' offset-y transition="slide-y-transition">
                     <template v-slot:activator="{ props }">
-                        <v-btn class='mr-0' large icon v-bind='props' title='Menu' aria-label='Menu'>
+                        <v-btn variant="text" class='mr-0' large icon v-bind='props' title='Menu' aria-label='Menu'>
                             <v-icon icon='mdi-dots-vertical' />
                         </v-btn>
                     </template>
@@ -60,14 +60,14 @@
                     </v-list>
                 </v-menu>
                 <template #placeholder>
-                    <v-btn v-if='$auth.loggedIn' large icon aria-label='Menu' title='Menu'>
+                    <v-btn variant="text" v-if='$auth.loggedIn' large icon aria-label='Menu' title='Menu'>
                         <v-icon icon='mdi-dots-vertical' />
                     </v-btn>
                 </template>
             </client-only>
             
             <!-- login button -->
-            <v-btn class='mr-0' v-if='!$auth.loggedIn' large icon nuxt  to='/login' :title='$t("common.login")' :aria-label='$t("common.login")'>
+            <v-btn variant="text" class='mr-0' v-if='!$auth.loggedIn' large icon nuxt  to='/login' :title='$t("common.login")' :aria-label='$t("common.login")'>
                 <v-icon icon='mdi-login' />
             </v-btn>
         </div>
