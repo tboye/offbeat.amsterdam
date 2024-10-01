@@ -2,7 +2,7 @@ import { test }from "linkifyjs"
 export default defineNuxtPlugin((nuxtApp) => {
 
   const $t = nuxtApp.vueApp.$nuxt.$i18n.t.bind(nuxtApp.vueApp.$nuxt.$i18n)
-  const validators = {
+  const valid = {
     required (fieldName: string) {
       return (v: string) => !(v===undefined || v===null || v.length <= 0) || $t('validators.required', { fieldName: $t(fieldName) })
     },
@@ -21,6 +21,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     ]
   }
 
-  nuxtApp.provide("valid", validators)
+  nuxtApp.provide("valid", valid)
 
 })

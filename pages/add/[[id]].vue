@@ -4,8 +4,8 @@
 <script setup lang="ts">
 import { Tag } from '#build/types/nitro-imports';
 
-const event = ref({ title: '', tags: [] })
-
+const event = ref({ title: '', tags: [], place: {} })
+const date = ref()
 const valid = ref(false)
 const edit = ref(false)
 const loading = ref(false)
@@ -43,12 +43,19 @@ function done () {
                 <!-- @change='v => event?.title = v'
                 :value = 'event?.title' -->
                 <v-text-field v-model="event.title"
-                prepend-icon='mdi-format-title'
-                :label="$t('common.title')"
-                :rules="[$valid.required('common.title')]"
-                autofocus ref='title' />
-                </v-col>
+                  prepend-icon='mdi-format-title'
+                  :label="$t('common.title')"
+                  :rules="[$valid.required('common.title')]"
+                  autofocus ref='title' />
+              </v-col>
 
+              <!-- Where -->
+              <v-col cols=12>
+                <WhereInput ref='where' v-model='event.place' :event='event' />
+              </v-col>
+
+              <!-- When -->
+              <!-- <DateInput ref="when" v-model="date" :event="event" /> -->
 
               <!-- TAGS -->
               <v-col cols=12 md=6>
