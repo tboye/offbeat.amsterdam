@@ -376,7 +376,7 @@ export class Setting extends Model<
     declare key: string
 
     @Attribute(DataTypes.JSON)
-    declare value: string
+    declare value: string | boolean
 
     @Attribute(DataTypes.BOOLEAN)
     @Default(false)

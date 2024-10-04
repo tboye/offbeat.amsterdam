@@ -1,5 +1,5 @@
 export type KeyValueType =
-| { [key: string]: string }
+| { [key: string]: string | boolean }
 
 import { z } from 'zod'
 // import { SettingType } from './sequelize'
@@ -7,7 +7,7 @@ import { z } from 'zod'
 export const settingSchema = z.object({
     key: z.string(),
     is_secret: z.boolean().default(false),
-    value: z.string()
+    value: z.union([z.string(), z.boolean()])
 })
 
 

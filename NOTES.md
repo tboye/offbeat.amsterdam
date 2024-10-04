@@ -11,3 +11,4 @@
 - [ ] event card
 - [ ] $auth
 - [ ] dialog / confirm / snackbar
+- [ ] settings
