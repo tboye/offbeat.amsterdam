@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     locales: Object.keys(locales).map((key: string) => ({
       code: key,
       // name: locales[key],
-      file:  `${key}.json`,// 'loader.ts',
+      file:  `./${key}.json`,// 'loader.ts',
       language: key
     })),
     langDir: 'locales',
