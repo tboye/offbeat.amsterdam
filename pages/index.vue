@@ -1,4 +1,5 @@
-<!-- HOMEPAGE
+<!--
+HOMEPAGE
 The homepage shows future events by default.
 -->
 <script setup lang="ts">
