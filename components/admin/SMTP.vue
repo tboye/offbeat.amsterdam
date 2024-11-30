@@ -88,7 +88,8 @@ export default {
         if (!smtp.auth.user) {
           delete smtp.auth
         }
-        if (smtp.auth.user && smtp.auth.pass == "***") {
+        // Remove pass before being sent to the backend
+        if (smtp.auth.pass && smtp.auth.pass == "***") {
           delete smtp.auth.pass
         }
         if (!smtp.secure) {
