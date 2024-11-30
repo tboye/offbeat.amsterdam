@@ -88,6 +88,9 @@ export default {
         if (!smtp.auth.user) {
           delete smtp.auth
         }
+        if (smtp.auth.user && smtp.auth.pass == "***") {
+          delete smtp.auth.pass
+        }
         if (!smtp.secure) {
           smtp.secure = false
           smtp.ignoreTLS = true
