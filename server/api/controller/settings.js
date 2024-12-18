@@ -113,20 +113,77 @@ const settingsController = {
     pluginController._load()
   },
 
-  async set (key, value, is_secret = false) {
-    log.info(`SET ${key} ${is_secret ? '*****' : value}`)
+  async set(key, value, is_secret = false) {
+    // If the key is 'smtp', handle it specially
+    if (key === 'smtp') {
+      const sanitizedValue = {...value};
+      // Extract and save password separately if it exists
+      if (sanitizedValue.auth && sanitizedValue.auth.pass) {
+        await this.set('smtp_password', sanitizedValue.auth.pass, true);
+        delete sanitizedValue.auth.pass;
+      }
+
+      log.info(`SET ${key} ${JSON.stringify(sanitizedValue)}`)
+      
+      try {
+        const [setting, created] = await DB.Setting.findOrCreate({
+          where: { key },
+          defaults: { value: sanitizedValue, is_secret: false }
+        })
+        
+        if (!created) { 
+          await setting.update({ value: sanitizedValue }) 
+        }
+        
+        settingsController.settings[key] = sanitizedValue
+        return true
+      } catch (e) {
+        log.error('[SETTING SET]', e)
+        return false
+      }
+    }
+    
+    const sanitizedValue = this.sanitizeSensitiveFields(value, ["pass"]);
+    
+    log.info(`SET ${key} ${is_secret ? '*****' : JSON.stringify(sanitizedValue)}`)
     try {
       const [setting, created] = await DB.Setting.findOrCreate({
         where: { key },
-        defaults: { value, is_secret }
+        defaults: { value: sanitizedValue, is_secret }
       })
-      if (!created) { setting.update({ value, is_secret }) }
-      settingsController[is_secret ? 'secretSettings' : 'settings'][key] = value
+      if (!created) { 
+        await setting.update({ value: sanitizedValue, is_secret }) 
+      }
+      settingsController[is_secret ? 'secretSettings' : 'settings'][key] = sanitizedValue
       return true
     } catch (e) {
       log.error('[SETTING SET]', e)
       return false
     }
+  },
+  
+  // Helper method to sanitize sensitive fields
+  sanitizeSensitiveFields(obj, sensitiveKeys) {
+    if (typeof obj !== 'object' || obj === null) return obj;
+    // Create a deep copy to avoid modifying the original
+    const sanitized = JSON.parse(JSON.stringify(obj));
+    // Recursive function to mask sensitive fields
+    const maskSensitive = (item) => {
+      if (typeof item !== 'object' || item === null) return item;
+      for (const [key, value] of Object.entries(item)) {
+        if (sensitiveKeys.some(sensitiveKey => 
+          key.toLowerCase().includes(sensitiveKey)
+        )) {
+          item[key] = '*****';
+        } else if (typeof value === 'object' && value !== null) {
+          // Recursively check nested objects
+          maskSensitive(value);
+        }
+      }
+      return item;
+    };
+    
+    return maskSensitive(sanitized);
   },
 
   async setRequest (req, res) {
@@ -166,7 +223,14 @@ const settingsController = {
   },
 
   getSMTPSettings (_req, res) {
-    return res.json(settingsController['settings']['smtp'])
+    const smtpSettings = {...settingsController.settings.smtp};
+  
+    const savedPassword = settingsController.secretSettings.smtp_password;
+    if (savedPassword) {
+      smtpSettings.auth.pass = "***";
+    }
+    
+    return res.json(smtpSettings);
   },
 
   getAll (_req, res) {

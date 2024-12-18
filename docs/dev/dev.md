@@ -19,6 +19,8 @@ has_children: true
 
 ### Testing on your own machine
 
+#### Standalone
+
 2. Download source
 ```bash
 git clone https://framagit.org/les/gancio
@@ -37,6 +39,23 @@ yarn
 5. Hacking
 ```bash
 yarn dev
+```
+
+#### Using Docker
+
+1. Build the container
+```bash
+docker build -f Dockerfile.dev -t gancio .
+```
+
+2. Install dependencies
+```bash
+docker run -v $PWD:/home/node -it gancio yarn install
+```
+
+3. Hacking
+```bash
+docker run -v $PWD:/home/node -it gancio
 ```
 
 > warning "Warning"
