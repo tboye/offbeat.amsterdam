@@ -86,7 +86,9 @@ server {
 
   location / {
 
-    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' blob: data: https://*.openstreetmap.org";
+    # Resources loading restrictions,
+    # add/modify your users mastodon/fediverse servers in 'img-src' list below to allow showing images from their fediverse replies:
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' blob: data: https://*.openstreetmap.org https://mastodon.cisti.org https://todon.eu https://kolektiva.social";
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
     # reverse proxy
