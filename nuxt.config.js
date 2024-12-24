@@ -62,7 +62,9 @@ module.exports = {
     '@nuxtjs/sitemap',
     ['cookie-universal-nuxt', { alias: 'cookies' }],
   ],
-
+  router: {
+    base: new URL(config?.baseurl)?.pathname ?? '/'
+  },
   sitemap: {
     hostname: config.baseurl,
     gzip: true,

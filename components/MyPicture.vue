@@ -10,7 +10,7 @@
       :height="height" :width="width"
       :style="{ 'object-position': thumbnailPosition }">
 
-    <img v-else-if='!media && thumb' class='thumb' src="/fallbackimage.png" alt=''>
+    <img v-else-if='!media && thumb' class='thumb' src="fallbackimage.png" alt=''>
   </div>
 </template>
 <script>
@@ -32,7 +32,7 @@ export default {
     },
     srcset () {
       if (this.thumb) return ''
-      return `/media/thumb/${this.media.url} 500w, /media/${this.media.url} 1200w`
+      return `media/thumb/${this.media.url} 500w, media/${this.media.url} 1200w`
     },
     media () {
       return this.event.media && this.event.media[0]
@@ -45,7 +45,7 @@ export default {
     },
     src () {
       if (this.media) {
-        return '/media/thumb/' + this.media.url
+        return 'media/thumb/' + this.media.url
       }
       if (this.thumb) {
         return '/noimg.svg'
