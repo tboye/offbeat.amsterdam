@@ -248,7 +248,13 @@
         "allow_event_without_end_time": "Permitir eventos sem hora final",
         "show_download_media": "Exibir ação de baixar media",
         "show_download_media_hint": "Exibir botão de baixar media na página do evento",
-        "plugins_description": "Plugins são pequenos códigos que fornecem funcionalidades adicionais à aplicação principal. Eles são geralmente escrito por desenvolvedoras externas ao projeto que se aproveitam do <a href=\"https://gancio.org/dev/plugins\">sistema de plugins</a>, principalmente, mas não limitado a enviar eventos para outras plataformas e canais."
+        "plugins_description": "Plugins são pequenos códigos que fornecem funcionalidades adicionais à aplicação principal. Eles são geralmente escrito por desenvolvedoras externas ao projeto que se aproveitam do <a href=\"https://gancio.org/dev/plugins\">sistema de plugins</a>, principalmente, mas não limitado a enviar eventos para outras plataformas e canais.",
+        "custom_js": "Código Javascript customizado",
+        "custom_css": "Estilo CSS customizado",
+        "custom_js_help": "Você pode integrar algum código Javascript que será carregado para cada usuária, preenchendo a área de texto abaixo. Você provavelmente deveria ler a <a href='https://gancio.org/usage/custom_js'>documentação</a> primeiro.",
+        "custom_css_help": "Você pode customizar alguns estilos também, veja alguns exemplos <a href='https://gancio.org/usage/custom_css'>aqui</a>.",
+        "default_fedi_hashtags": "Hashtags padrão do Fediverso",
+        "default_fedi_hashtags_help": "As tags especificadas será adicionadas aos eventos enviados ao Fediverso"
     },
     "event": {
         "follow_me_description": "Uma das maneiras de se manter atualizado com os eventos publicados aqui em {title},\né seguir a conta <u>{account}</u> no Fediverso, por exemplo, via Mastodon, e possivelmente adicionar recursos para um evento a partir de lá.<br/><br/>\nSe nunca ouviu falar sobre Mastodon ou no Fediverso nós recomendamos ler <a href='https://www.savjee.be/videos/simply-explained/mastodon-and-fediverse-explained/'>este artigo</a>.<br/><br/>Entre com o seu domínio abaixo (e.g. mastodon.social)",
@@ -307,7 +313,7 @@
         "where_advanced_options_description": "Defina aqui propriedades do local adicionais",
         "online_locations": "Localizações online",
         "address_geocoded_disclaimer": "Se não conseguir encontrar o <strong>endereço da rua</strong> ou a <strong>porta da casa</strong> que procura nos resultados da geocodificação, pode inseri-los manualmente no campo “Endereço” sem perder as coordenadas. Considere também que o projeto <a target=\"_blank\" href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> está aberto a contribuições. Se tiver Android, recomendamos o <a target=\"_blank\" href=\"https://f-droid.org/en/packages/de.westnordost.streetcomplete/\">StreetComplete</a>. ",
-        "online_locations_help": "Por exemplo, um link para uma sala de video-conferência e um link para outros recursos (máx. 3)",
+        "online_locations_help": "URL de uma sala de videoconferência ou URL para confirmação de presença (máx. 3)",
         "online_locations_fallback_urls": "Links de retorno",
         "message": "Mensagem",
         "message_hint": "Você pode enviar uma mensagem para outras admins e opcionalmente para a pessoa que criou o evento.",
