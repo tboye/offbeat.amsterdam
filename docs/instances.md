@@ -47,6 +47,6 @@ nav_order: 7
 - [berlin.askapunk.de](https://berlin.askapunk.de) (diy shows and similar events in berlin)
 
 
-You can also check federated instances [here](http://demo.fedilist.com/instance?q=&ip=&software=gancio&registrations=&onion=)
+You can also check federated instances on [fedidb.org](https://fedidb.org/software/gancio) or on [fediverse.observer](https://gancio.fediverse.observer/list)
 
 <small>Do you want your instance to appear here or to be removed? [Write us]({% link contact.md %}).</small>
