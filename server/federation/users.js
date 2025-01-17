@@ -10,8 +10,11 @@ const get = require('lodash/get')
 
 module.exports = {
   get (req, res) {
+    if (req.accepts(['html','json']) === 'html') {
+      log.debug('[FEDI] Get actor but prefer text/html, redirect to homepage')
+      return res.redirect(301, '/')
+    }
     log.debug('[FEDI] Get actor')
-    // if (req.accepts('html')) { return res.redirect(301, '/') }
     const settings = settingsController.settings
     const name = req.params.name
     if (!name) { return res.status(400).send('Bad request.') }
