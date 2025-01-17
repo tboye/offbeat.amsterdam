@@ -148,7 +148,7 @@ const eventController = {
           },
           { model: Event, required: false, as: 'parent', attributes: ['id', 'recurrent', 'is_visible', 'start_datetime'] },
         ],
-        order: [[Resource, 'id', 'DESC']],
+        order: [[Resource, 'id', 'ASC']],
       })
     } catch (e) {
       log.error('[EVENT]', e)
@@ -885,7 +885,7 @@ const eventController = {
       where,
       attributes: {
         exclude: [
-          'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
+        'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
           ...(!include_parent ? ['recurrent']: []),
           ...(!include_unconfirmed ? ['is_visible']: []),
           ...(!include_description ? ['description']: [])
