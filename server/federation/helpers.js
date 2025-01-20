@@ -1,3 +1,4 @@
+const escape = require('lodash/escape')
 const axios = require('axios')
 const crypto = require('crypto')
 const config = require('../config')
@@ -495,9 +496,19 @@ const Helpers = {
    */
   async verifySignature (req, res, next) {
 
+    const name = req.params.name
     const actor_url = req?.body?.actor
-
     const isDelete = req?.body?.type === 'Delete'
+    const settings = settingsController.settings
+
+    if (!name) {
+      log.info('[AP] Bad /inbox request')
+      return res.status(400).send('Bad request.')
+    }
+    if (name !== settings.instance_name) {
+      log.info(`[FEDI] No record found for ${name} (applicationActor is ${settings.instance_name})`)
+      return res.status(404).send(`No record found for ${escape(name)}`)
+    }
 
     // do we have an actor?
     if (!actor_url) {
