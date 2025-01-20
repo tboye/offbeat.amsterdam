@@ -1,5 +1,4 @@
 const events = require('events')
-
 const mail = require('./api/mail')
 const log = require('./log')
 const fediverseHelpers = require('./federation/helpers')
@@ -22,11 +21,7 @@ const notifier = {
       // case 'mail': TODO: locale?
       //   return mail.send(notification.email, 'event', { event, notification })
       case 'admin_email':
-        const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
-        let emails = [settingsController.settings.admin_email]
-        emails = emails.concat(admins?.map(a => a.email))
-        p = mail.send(emails, 'event',
-          { event, to_confirm: !event.is_visible, notification }, undefined, true)
+        p = notifier.notifyAdmins('event', { event, to_confirm: !event.is_visible, notification })
         promises.push(p)
         break
       case 'ap':
@@ -62,7 +57,19 @@ const notifier = {
 
     // get notification that matches with selected event
     return notifications.filter(notification => match(event, notification.filters))
-  },  
+  },
+
+  /**
+   * Send admins an email notification
+   * @param {String} template The template to use to build the email (./server/emails/)
+   * @param {Object} locals   Locals key/value object used in templates
+   */
+  async notifyAdmins (template, locals) {
+    const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
+    let emails = [settingsController.settings.admin_email]
+    emails = emails.concat(admins?.map(a => a.email))
+    return mail.send(emails, template, locals)
+  },
 
   async notifyEvent (action, eventId) {
 

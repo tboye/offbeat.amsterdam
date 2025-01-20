@@ -315,13 +315,9 @@ const eventController = {
         author
       })
 
-      const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
-      let emails = [res.locals.settings.admin_email]
-      emails = emails.concat(admins?.map(a => a.email))
-      log.info('[EVENT] Report event to %s', emails)
-
       // notify admins
-      mail.send(emails, 'report', { event, message: body.message, author }, undefined, true)
+      notifier.notifyAdmins('report', { event, message: body.message, author })
+      log.info('[EVENT] Report event to admins')
 
       // notify author
       if (event['user.email'] && body.is_author_visible && !isMine) {

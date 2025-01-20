@@ -6,6 +6,7 @@ const { User } = require('../models/models')
 const settingsController = require('./settings')
 const log = require('../../log')
 const linkify = require('linkifyjs')
+const notifier = require('../../notifier')
 
 const userController = {
   
@@ -95,9 +96,9 @@ const userController = {
 
       log.info('Register user ', req.body.email)
       const user = await User.create(req.body)
-      log.info(`Sending registration email to ${user.email}`)
+      log.info(`Sending registration email to ${user.email} and registration confirmation to admins`)
       mail.send(user.email, 'register', { user, config }, res.locals.locale)
-      mail.send(settingsController.settings.admin_email, 'admin_register', { user, config })
+      notifier.notifyAdmins('admin_register', { user, config })
       res.sendStatus(200)
     } catch (e) {
       log.error('Registration error:', e)
