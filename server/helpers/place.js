@@ -14,7 +14,7 @@ module.exports = {
     log.debug(`Remove ${places.length} unrelated places: %s`, places.map(p => p.name).join(', '))
 
     const ids = places.map(p => p.id)
-    await Place.destroy({
+    return Place.destroy({
       where: { id: { [Sequelize.Op.in]: ids } }
     })
   }

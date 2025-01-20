@@ -2,6 +2,8 @@ const log = require('./log')
 const placeHelpers = require('./helpers/place')
 const tagHelpers = require('./helpers/tag')
 const apHelpers = require('./helpers/ap.js')
+const { Duration } = require('luxon')
+
 // const notifier = require('./notifier')
 
 const loopInterval = 10 // process.env.NODE_ENV === 'production' ? 1 : 1
@@ -24,13 +26,15 @@ class Task {
     if (this.processInNTick > 0) {
       return
     }
+    log.debug(`[TASK] Process ${this.name}`)
     this.processInNTick = this.repeatDelay
     try {
       const ret = this.method.apply(this, this.args)
-      if (ret && typeof ret.then === 'function') {
+      if (ret && typeof ret.catch === 'function') {
         ret.catch(e => log.error(`TASK ERROR [${this.name}]: ${e} ${e.stack}`))
         return ret
       }
+      return ret
     } catch (e) {
       log.error(`TASK ERROR [${this.name}]: ${e} ${e.stack}`)
     }
@@ -113,7 +117,7 @@ class TaskManager {
   }
 
   add (task) {
-    log.info(`[TASK] Add ${task.name} (${task.repeatDelay * this.interval} seconds)`)
+    log.info(`[TASK] Add ${task.name} (${Duration.fromMillis(task.repeatDelay * this.interval * 1000).rescale().toHuman({ listStyle: "long" })})`)
     this.tasks.push(task)
   }
 
