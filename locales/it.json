@@ -106,7 +106,14 @@
         "online": "Online",
         "show_preview": "Mostra anteprima",
         "clone": "Clona",
-        "actors": "Nodo"
+        "actors": "Nodo",
+        "collection_in_home": "Mostra una collezione in prima pagina",
+        "editor": "Editor",
+        "report": "Segnala evento",
+        "test": "Prova",
+        "my_events": "I miei eventi",
+        "role": "Ruolo",
+        "sent": "Inviato"
     },
     "login": {
         "description": "Entrando puoi pubblicare nuovi eventi.",
@@ -126,7 +133,8 @@
         "insert_your_address": "Inserisci il tuo indirizzo e-mail",
         "feed_description": "Per seguire gli aggiornamenti da computer o smartphone senza la necessità di aprire periodicamente il sito, il metodo consigliato è quello dei Feed RSS.</p>\n\n <p>Con i feed rss utilizzi un'apposita applicazione per ricevere aggiornamenti dai siti che più ti interessano. È un buon metodo per seguire anche molti siti in modo molto rapido, senza necessità di creare un account o altre complicazioni.</p>\n\n<li>Se hai Android, ti consigliamo <a href=\"https://f-droid.org/en/packages/net.frju.flym\">Flym</a> o Feeder</li>\n<li>Per iPhone/iPad puoi usare <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a></li>\n<li>Per il computer fisso/portatile consigliamo Brief, da installare all'interno <a href=\"https://addons.mozilla.org/it/firefox/addon/brief/\">di Firefox </a> e compatibile con tutti i principali sistemi operativi.</li>\n<br/>\nAggiungendo questo link al tuo lettore di feed, rimarrai aggiornata.",
         "ical_description": "I computer e gli smartphone sono comunemente attrezzati con un'applicazione per gestire un calendario. A questi programmi solitamente è possibile far importare un calendario remoto.",
-        "list_description": "Se hai un sito web e vuoi mostrare una lista di eventi, puoi usare il seguente codice"
+        "list_description": "Se hai un sito web e vuoi mostrare una lista di eventi, puoi usare il seguente codice",
+        "filter_description": "Puoi filtrare gli eventi per tag, luoghi o per una collezione predefinita"
     },
     "register": {
         "description": "I movimenti hanno bisogno di organizzarsi e autofinanziarsi. <br/>\nUsatelo solo per eventi non commerciali, antifascisti, antisessisti, antirazzisti. <br/>Prima di poter pubblicare <strong>dobbiamo approvare l'account</strong>, considera che <strong>dietro questo sito ci sono delle persone</strong> di carne e sangue, scrivici quindi due righe per farci capire che eventi vorresti pubblicare.",
@@ -192,15 +200,25 @@
         "where_advanced_options_description": "Puoi definire qui ulteriori proprietà del luogo",
         "online_locations": "Indirizzi web",
         "online_locations_help": "Per esempio un link ad una videoconferenza",
-        "address_geocoded_disclaimer": "Se non riesci a trovare l'<strong>indirizzo</strong> o il <strong>numero civico</strong> che stai cercando puoi inserirlo manualmente nel campo \"Indirizzo\" senza perdere le coordinate. Considera che puoi aggiungerlo collaborando a <a target=\"_blank\" href=\"https://www.openstreetmap.org/\">OpenStreetMap</a>: se hai Android raccomandiamo <a target=\"_blank\" href=\"https://f-droid.org/en/packages/de.westnordost.streetcomplete/\">StreetComplete</a> "
+        "address_geocoded_disclaimer": "Se non riesci a trovare l'<strong>indirizzo</strong> o il <strong>numero civico</strong> che stai cercando puoi inserirlo manualmente nel campo \"Indirizzo\" senza perdere le coordinate. Considera che puoi aggiungerlo collaborando a <a target=\"_blank\" href=\"https://www.openstreetmap.org/\">OpenStreetMap</a>: se hai Android raccomandiamo <a target=\"_blank\" href=\"https://f-droid.org/en/packages/de.westnordost.streetcomplete/\">StreetComplete</a> ",
+        "report_message_confirmation": "Pensi che questo evento non dovrebbe essere qui? Scrivici perché",
+        "send_to_admins": "Invia allǝ admin",
+        "send_to_author_too": "Invia allǝ admin e all'autorǝ",
+        "disable_author": "Disabilita l'autorǝ",
+        "disable_author_confirm": "Sicurǝ di voler disabilitare l'autorǝ di questo evento?",
+        "assign_to_user": "Assegna all'utente",
+        "assign_to_user_description": "Puoi assegnare un evento senza autore ad una persona che potrà quindi modificarlo.",
+        "message_hint": "Puoi inviare un messaggio allǝ altrǝ admin e a opzionalmente a chi ha inviato l'evento.",
+        "message": "Messaggio",
+        "message_author_hint": "Scrivi un messaggio per lǝ admin"
     },
     "admin": {
         "place_description": "Nel caso in cui un luogo sia errato o cambi indirizzo, puoi modificarlo.<br/>Considera che tutti gli eventi associati a questo luogo cambieranno indirizzo (anche quelli passati).",
         "event_confirm_description": "Puoi confermare qui gli eventi inseriti da utenti anonimi",
         "delete_user": "Elimina",
         "remove_admin": "Rimuovi admin",
-        "disable_user_confirm": "Vuoi disabilitare {user}?",
-        "delete_user_confirm": "Vuoi rimuovere {user}?",
+        "disable_user_confirm": "Vuoi disabilitare <strong>{user}</strong>?",
+        "delete_user_confirm": "Vuoi rimuovere <strong>{user}</strong>?",
         "user_remove_ok": "Utente eliminato",
         "user_create_ok": "Utente creato",
         "allow_registration_description": "Vuoi abilitare la registrazione?",
@@ -216,7 +234,7 @@
         "select_instance_timezone": "Fuso orario",
         "instance_timezone_description": "Gancio è pensato per raccogliere gli eventi di un luogo specifico come ad esempio una città. Scrivendo e selezionando il fuso orario di questo luogo, tutti gli orari saranno mostrati e inseriti secondo quanto scelto.",
         "enable_resources": "Abilita risorse",
-        "enable_resources_help": "Permette di aggiungere risorse agli eventi dal fediverso",
+        "enable_resources_help": "Permette di aggiungere audio, immagini e commenti agli eventi dal fediverso",
         "hide_boost_bookmark": "Nasconde n. condivisioni e segnalibri",
         "hide_boost_bookmark_help": "Nasconde le piccole icone che mostrano il numero di boost e segnalibri in arrivo dal fediverso",
         "block": "Blocca",
@@ -302,14 +320,20 @@
         "geolocation": "Geo e mappe",
         "colors": "Colori",
         "smtp_use_sendmail": "Usa sendmail",
-        "enable_admin_user_confirm": "Vuoi davvero dare a {user} i poteri di amministrazione?",
-        "disable_admin_user_confirm": "Vuoi davvero togliere i poteri di amministrazione a {user}?",
+        "enable_admin_user_confirm": "Vuoi davvero dare a <strong>{user}</strong> i poteri di amministrazione?",
+        "disable_admin_user_confirm": "Vuoi davvero togliere i poteri di amministrazione a <strong>{user}</strong>?",
         "event_remove_ok": "Evento rimosso",
         "allow_online_event": "Abilita eventi online",
         "delete_collection_confirm": "Vuoi davvero rimuovere la bolla <u>{collection}</u>?",
         "smtp_secure": "SMTP Sicuro (TLS o STARTTLS)",
         "delete_tag_confirm": "Vuoi davvero eliminare il tag \"{tag}\"? Questo tag verrà rimosso da {n} eventi.",
-        "smtp_port": "Porta SMTP"
+        "smtp_port": "Porta SMTP",
+        "enable_moderation": "Attiva moderazione",
+        "enable_moderation_hint": "Lǝ admin possono parlare tra loro di un evento, opzionalmente includendone l'autorǝ",
+        "enable_report": "Attiva la segnalazione degli eventi",
+        "enable_report_hint": "I visitatorǝ potranno segnalare gli eventi e lǝ admin riceveranno una mail",
+        "change_role_confirm": "Vuoi modificare il ruolo di <strong>{user}</strong> da <strong>{from_role}</strong> a <strong>{to_role}</strong>?",
+        "allow_event_without_end_time": "Permetti eventi senza un'orario di fine"
     },
     "auth": {
         "not_confirmed": "Non ancora confermato…",
