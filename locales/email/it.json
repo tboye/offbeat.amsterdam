@@ -25,5 +25,11 @@
     "test": {
         "subject": "La tua configurazione SMTP sta funzionando",
         "content": "Questa è una email di test, se la stai leggendo significa che la tua configurazione sta funzionando."
+    },
+    "report": {
+        "subject": "Segnalazione evento [{{event.title}}]",
+        "content_ADMIN": "Una persona con permessi di amministrazione ha commentato l'evento <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Apri moderazione</a>",
+        "content_ANON": "Una persona ha commentato l'evento <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Apri evento<a>",
+        "content_AUTHOR": "Chi ha inserito l'evento <strong>{{event.title}}</strong> ha scritto:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Apri evento</a>"
     }
 }
