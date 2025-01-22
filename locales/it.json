@@ -113,7 +113,8 @@
         "test": "Prova",
         "my_events": "I miei eventi",
         "role": "Ruolo",
-        "sent": "Inviato"
+        "sent": "Inviato",
+        "past_events": "Eventi passati"
     },
     "login": {
         "description": "Entrando puoi pubblicare nuovi eventi.",
@@ -331,7 +332,7 @@
         "enable_moderation": "Attiva moderazione",
         "enable_moderation_hint": "Lǝ admin possono parlare tra loro di un evento, opzionalmente includendone l'autorǝ",
         "enable_report": "Attiva la segnalazione degli eventi",
-        "enable_report_hint": "I visitatorǝ potranno segnalare gli eventi e lǝ admin riceveranno una mail",
+        "enable_report_hint": "Chi visita potra' segnalare gli eventi e chi amministra riceverà una mail",
         "change_role_confirm": "Vuoi modificare il ruolo di <strong>{user}</strong> da <strong>{from_role}</strong> a <strong>{to_role}</strong>?",
         "allow_event_without_end_time": "Permetti eventi senza un'orario di fine"
     },
