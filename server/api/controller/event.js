@@ -797,6 +797,7 @@ const eventController = {
     older,
     reverse,
     user_id,
+    show_federated = false,
     include_unconfirmed = false,
     include_parent = false,
     include_description=false }) {
@@ -809,7 +810,7 @@ const eventController = {
     }
 
     // do not include federated events in homepage
-    if (!query) {
+    if (!query && !show_federated) {
       where.apUserApId = null
     }
 

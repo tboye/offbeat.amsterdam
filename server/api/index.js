@@ -103,11 +103,12 @@ module.exports = () => {
      * @type GET
      * @param {integer} [start] - start timestamp (default: now)
      * @param {integer} [end] - end timestamp (optional)
-     * @param {string}  [query] - search for this string ()
+     * @param {string}  [query] - search for this string in title, place or tags
      * @param {array} [tags] - List of tags
      * @param {array} [places] - List of places id
      * @param {boolean} [show_multidate] - Show also multidate events (default: true)
      * @param {boolean} [show_recurrent] - Show also recurrent events (default: as choosen in admin settings)
+     * @param {boolean} [show_federated] - Show federated events too
      * @param {integer} [max] - Limit events
      * @param {integer} [page] - Pagination
      * @param {boolean} [older] - select <= start instead of >=
@@ -117,8 +118,8 @@ module.exports = () => {
      * [usage example](https://framagit.org/les/gancio/-/blob/master/webcomponents/src/GancioEvents.svelte#L18-42)
      */
 
-    api.get('/events/mine', isAuth, eventController.mine)
     api.get('/events', cors, eventController.select)
+    api.get('/events/mine', isAuth, eventController.mine)
 
     /**
      * Add a new event

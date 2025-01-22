@@ -115,7 +115,8 @@
     "my_events": "My Events",
     "contact_user": "Contact user",
     "report": "Report event",
-    "role": "Role"
+    "role": "Role",
+    "past_events": "Past Events"
   },
   "login": {
     "description": "By logging in you can publish new events.",

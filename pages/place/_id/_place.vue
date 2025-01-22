@@ -14,13 +14,19 @@
         <HowToArriveNav :place='place' class="justify-center" />
       </div>
     </div>
-
     <!-- Events -->
     <div id="events" class='mt-14'>
       <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in events' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
         <Event :event='event' :lazy='idx > 9' />
       </v-lazy>
     </div>
+
+    <h2 v-if="pastEvents.length">{{$t('common.past_events')}}</h2>
+    <div v-if="pastEvents.length" id="events" class='mt-14'>
+      <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in pastEvents' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
+        <Event :event='event' :lazy='idx > 9' />
+      </v-lazy>
+    </div>    
   </v-container>
 </template>
 <script>
@@ -55,8 +61,8 @@ export default {
   },
   async asyncData({ $axios, params, error }) {
     try {
-      const { events, place } = await $axios.$get(`/place/${params.id}`)
-      return { place, events }
+      const { events, pastEvents, place } = await $axios.$get(`/place/${params.id}`)
+      return { events, pastEvents, place }
     } catch (e) {
       error({ statusCode: 404, message: 'Place not found!' })
     }
