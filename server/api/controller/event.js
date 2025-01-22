@@ -896,7 +896,8 @@ const eventController = {
           attributes: ['tag'],
           through: { attributes: [] }
         },
-        { model: Place, required: true, attributes: ['id', 'name', 'address', 'latitude', 'longitude'] }
+        { model: Place, required: true, attributes: ['id', 'name', 'address', 'latitude', 'longitude'] },
+        { model: APUser, required: false, attributes: ['object'] }
       ],
       ...pagination,
       replacements
@@ -915,6 +916,15 @@ const eventController = {
       if (!e.image_path) {
         delete e.image_path
       }
+      if (!e.recurrent) {
+        delete e.recurrent
+      }
+      if (!e.parentId) {
+        delete e.parentId
+      }
+      if (e.ap_user) {
+        e.ap_user = { image: e.ap_user?.object?.icon?.url ?? `${e.ap_user?.url}/favicon.ico` }
+      }      
       return e
     })
   },
