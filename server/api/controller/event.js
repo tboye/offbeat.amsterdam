@@ -977,6 +977,7 @@ const eventController = {
     const page = Number(req.query.page) || 0
     const older = req.query.older || false
 
+    const show_federated = helpers.queryParamToBool(req.query.show_federated, false)
     const show_multidate = settings.allow_multidate_event && helpers.queryParamToBool(req.query.show_multidate, true)
     const show_recurrent = settings.allow_recurrent_event && helpers.queryParamToBool(req.query.show_recurrent, settings.recurrent_event_visible)
 
@@ -991,7 +992,7 @@ const eventController = {
       })
     } else {
       events = await eventController._select({
-        start, end, query, places, tags, show_recurrent, show_multidate, limit, page, older
+        start, end, query, places, tags, show_recurrent, show_multidate, limit, page, older, show_federated
       })
     }
 
