@@ -257,10 +257,15 @@ const Helpers = {
         throw new Error ('Wrong AP message: no object or type property')
       }
 
-      // supporting Announce of a Create
+      // TODO: supporting Announce of a Create (refactoring is needed to support boost)
       if (message.type === 'Announce' && message.object?.type === 'Create' && message.object?.object) {
         message.object = message.object.object
         message.type = 'Create'
+      }
+
+      if (message?.actor !== actor) {
+        log.warn(`[FEDI] This event is attributed to another actor? ${actor} / ${message?.actor}`)
+        return
       }
 
       // we only support Create / Event
@@ -315,11 +320,6 @@ const Helpers = {
           ap_id,
           ap_object: APEvent, 
           apUserApId: message?.actor,
-        }).catch(e => {
-          console.error(e)
-          console.error(e?.message)
-          console.error(e?.errors)
-          return false
         })
     
         if (place) {
@@ -332,6 +332,8 @@ const Helpers = {
           tags = await tagController._findOrCreate(APEvent.tag.map(t => t?.name?.substr(1)))
           await event.setTags(tags)
         }
+      } else {
+        log.info('[FEDI] This is not an Event')
       }
   },
 
@@ -357,8 +359,6 @@ const Helpers = {
     
     for(const event of events) {
       await Helpers.parseAPEvent(event, actor.ap_id).catch(e => {
-        console.error(e.message)
-        console.error(e.error)
         console.error(e)
       })
     }
@@ -425,9 +425,9 @@ const Helpers = {
     fedi_user = await Helpers.signAndSend('', URL, 'get')
 
     if (fedi_user) {
-      log.info('[FEDI] Create/Update a new AP User "%s" and associate it to instance "%s"', URL, instance.domain)
+      log.info('[FEDI] Create/Update a new AP User "%s" and associate it to instance "%s"', fedi_user?.id, instance.domain)
       try {
-        ([ fedi_user ] = await APUser.upsert({ ap_id: URL, object: fedi_user, instanceDomain: instance.domain, blocked: false }))
+        ([ fedi_user ] = await APUser.upsert({ ap_id: fedi_user?.id, object: fedi_user, instanceDomain: instance.domain, blocked: false }))
       } catch (e) {
         log.debug('[FEDI] Error in update/create ')
       }
