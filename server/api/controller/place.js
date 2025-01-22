@@ -50,7 +50,7 @@ module.exports = {
   },
 
   async search (req, res) {
-    const search = req.query.search.toLocaleLowerCase()
+    const search = req.query?.search?.toLocaleLowerCase() ?? ''
     const places = await Place.findAll({
       order: [[cast(fn('COUNT', col('events.placeId')),'INTEGER'), 'DESC']],
       where: {
@@ -60,7 +60,7 @@ module.exports = {
         ]
       },
       attributes: ['name', 'address', 'latitude', 'longitude', 'id'],
-      include: [{ model: Event, where: { is_visible: true }, required: true, attributes: [] }],
+      include: [{ model: Event, where: { is_visible: true, ap_id: null }, required: true, attributes: [] }],
       group: ['place.id'],
       raw: true,
       limit: 10,
