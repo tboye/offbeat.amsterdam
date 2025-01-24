@@ -49,7 +49,10 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     const datetime = DateTime.fromSeconds(this.start_datetime, opt).toLocaleString({ weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })
-    const summary = `${this.place && this.place.name}, ${datetime}`
+    
+    // https://framagit.org/les/gancio/-/issues/304
+    // https://www.w3.org/TR/activitystreams-vocabulary/#dfn-summary
+    const summary = `<p>${this.place && this.place.name}, ${datetime}</p>${this.description}`
     
     let attachment = []
     let location = []
