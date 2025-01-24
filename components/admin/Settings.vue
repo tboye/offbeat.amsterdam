@@ -9,6 +9,12 @@ v-container
       @blur='save("title", title)'
       persistent-hint)
 
+    v-text-field.mt-5(v-model='instance_name' v-if='setup'
+      :label="$t('admin.instance_name')"
+      :hint="$t('admin.instance_name_help')"
+      @blur='save("instance_name", instance_name)'
+      persistent-hint)      
+
     v-text-field.mt-5(v-model='description'
       :label="$t('common.description')"
       :hint="$t('admin.description_description')"
@@ -130,6 +136,10 @@ export default {
     instance_timezone: {
       get () { return this.settings.instance_timezone },
       set (value) { this.setSetting({ key: 'instance_timezone', value }) }
+    },
+    instance_name: {
+      get () { return this.settings.instance_name },
+      set (value) { this.setSetting({ key: 'instance_name', value }) }
     },
     allow_registration: {
       get () { return this.settings.allow_registration },
