@@ -7,6 +7,36 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.0](https://framagit.org/les/gancio/compare/v1.21.0...v1.22.0) (2025-01-24)
+
+this release is a step toward interoperability with other platforms that support events in the fediverse.
+a big thank you to those who contributed pull requests, translations, documentation and ideas: @sedum, @arg, @rennerocha, @linos.
+
+### Features
+
+* add Finnish locale ([0e05b52](https://framagit.org/les/gancio/commit/0e05b5262e5cf0f351d96fcec4aff08520540ea6))
+* add new locale தமிழ், Tamil ([0bf9beb](https://framagit.org/les/gancio/commit/0bf9bebe3ebae22f8cd318c1184f2f85d8090e18))
+* **AP:** add description into summary representation, fix [#304](https://framagit.org/les/gancio/issues/304) ([53a1682](https://framagit.org/les/gancio/commit/53a16827b972f745cbd71c53872fc25f83d83d07))
+* **AP** refactor location representation in AP ([e0325d5](https://framagit.org/les/gancio/commit/e0325d5145ef7adcfab0653cb35853a4b1ccb1e3))
+* show past events on place page ([927e207](https://framagit.org/les/gancio/commit/927e207d8d7d3a43cdaa464ca2196b70d1033259))
+* support actor URL as a way to add federated event source ([7e19f7d](https://framagit.org/les/gancio/commit/7e19f7d91c43585f7dd6ac0d00ed09a5e26260f3))
+
+
+### Bug Fixes
+
+* notify all admins for registration confirmation, fix [#498](https://framagit.org/les/gancio/issues/498) ([40f1f91](https://framagit.org/les/gancio/commit/40f1f9193773bab42928d451505b9f69d2646caf))
+* redirect to homepage when coming from fediverse, fix [#478](https://framagit.org/les/gancio/issues/478) ([5f0728e](https://framagit.org/les/gancio/commit/5f0728eb3e9c129f80c733049b5de4c0ef39c978))
+* seo complaining about missing lang html attribute ([d615b1c](https://framagit.org/les/gancio/commit/d615b1c5375001e525d9bddd225104e8d2f2be1f))
+* do not show federated place while adding a new event, fix [#499](https://framagit.org/les/gancio/issues/499) ([8e84c0f](https://framagit.org/les/gancio/commit/8e84c0f0b4eb1a8d737e2754579b6e66790bbe89))
+* a more inclusive Dockerfile, ref [#497](https://framagit.org/les/gancio/issues/497) ([83ba607](https://framagit.org/les/gancio/commit/83ba607228e40e3a6dac1a22e29e100e89aac906))
+* display resources from fediverse in chronological order, fix [#483](https://framagit.org/les/gancio/issues/483) ([6026f5b](https://framagit.org/les/gancio/commit/6026f5b1ca4c186946ad29da529fa6b363ca9677))
+* do not verify AP /inbox POST for wrong actor ([642baba](https://framagit.org/les/gancio/commit/642babad94461497c705072a8f701a76c326e524))
+* get the actual actor id ([fed37c0](https://framagit.org/les/gancio/commit/fed37c04da848476f2a73c9e848c45e9a8b1b248))
+* make `it` locale gender neutral ([61ffac2](https://framagit.org/les/gancio/commit/61ffac2de1e066027359421aee4427b112b61185))
+* make trusted instance menu scrollable ([d57cb33](https://framagit.org/les/gancio/commit/d57cb33c761086ae8b9495bfdf5b2fd5c2dfcb27))
+* minor on collection filters, [#482](https://framagit.org/les/gancio/issues/482) ([4753ae0](https://framagit.org/les/gancio/commit/4753ae01f9c1af0ffd649939e0ddc644f22fb9df))
+
+
 ## [1.21.0](https://framagit.org/les/gancio/compare/v1.20.0...v1.21.0) (2024-11-30)
 
 
