@@ -117,7 +117,8 @@
         "report": "Denunciar evento",
         "contact_user": "Contactar coa usuaria",
         "role": "Rol",
-        "sent": "Enviado"
+        "sent": "Enviado",
+        "past_events": "Eventos finalizados"
     },
     "recover": {
         "not_valid_code": "Algo fallou."
