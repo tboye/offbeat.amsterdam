@@ -11,7 +11,7 @@
         <template v-slot:item.data-table-select="{ isSelected, select }">
           <v-simple-checkbox size='small' small dense :on-icon="mdiCheckboxOutline" :off-icon="mdiCheckboxBlankOutline" :value="isSelected" @input="select($event)" />
         </template>
-        <template v-slot:item.when='{ item }'>
+        <template v-slot:item.start_datetime='{ item }'>
           <span v-if='!item.recurrent'>{{$time.when(item)}}</span>
           <span v-else><v-icon color='success' v-text='mdiRepeat' /> {{$time.recurrentDetail({ parent: item }, 'EEEE, HH:mm')}}</span>
         </template>
@@ -54,8 +54,8 @@ export default {
       headers: [
         { value: 'title', text: this.$t('common.title') },
         { value: 'place.name', text: this.$t('common.place') },
-        { value: 'when', text: this.$t('common.when') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+        { value: 'start_datetime', text: this.$t('common.when') },
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
       ]      
     }
   },
