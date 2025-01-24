@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
         if (ap_actor) {
           await Users.remove(req, res)
         } else {
-          const resource = await Resource.findOne({ where: { ap_id }})
+          const resource = await Resource.findOne({ where: { activitypub_id: ap_id }})
           if (resource) {
             await Resources.remove(req, res)
           }
