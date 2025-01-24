@@ -9,8 +9,10 @@ const { Op, where, col, fn, cast } = require('sequelize')
 module.exports = {
 
   async getEvents (req, res) {
-    const placeNameOrId = req.params.placeNameOrId
-    const place = await Place.findOne({ where: { [Op.or]: { id: placeNameOrId, name: placeNameOrId }}})
+    const name = req.params.placeNameOrId
+    const id = Number(req.params.placeNameOrId)
+    const place = await Place.findOne({ where: { ...(isNaN(id) ? { name } : { id })}})
+    
     if (!place) {
       log.warn(`Place ${placeNameOrId} not found`)
       return res.sendStatus(404)
