@@ -39,6 +39,7 @@ const defaultSettings = {
   tilelayer_provider: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   tilelayer_provider_attribution: "<a target=\"_blank\" href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors",
   enable_federation: true,
+  federated_events_in_home: true,
   enable_resources: false,
   hide_boosts: true,
   enable_trusted_instances: true,

@@ -10,6 +10,11 @@ v-container
 
     template(v-if='enable_federation')
 
+      v-switch.mt-4(v-model='federated_events_in_home'
+        :label="$t('admin.federated_events_in_home')"
+        :hint="$t('admin.federated_events_in_home_help')"
+        persistent-hint inset)
+
       v-switch.mt-4(v-model='enable_resources'
         :label="$t('admin.enable_resources')"
         :hint="$t('admin.enable_resources_help')"
@@ -156,6 +161,10 @@ export default {
     enable_resources: {
       get () { return this.settings.enable_resources },
       set (value) { this.setSetting({ key: 'enable_resources', value }) }
+    },
+    federated_events_in_home: {
+      get () { return this.settings.federated_events_in_home },
+      set (value) { this.setSetting({ key: 'federated_events_in_home', value }) }
     },
     default_fedi_hashtags: {
       get () { return this.settings.default_fedi_hashtags },

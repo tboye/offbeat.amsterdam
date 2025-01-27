@@ -105,7 +105,8 @@ module.exports = {
       collection_in_home: settings.collection_in_home,
       custom_js: settings.custom_js,
       custom_css: settings.custom_css,
-      default_fedi_hashtags: settings.default_fedi_hashtags
+      default_fedi_hashtags: settings.default_fedi_hashtags,
+      federated_events_in_home: settings.federated_events_in_home
     }
     next()
   },
@@ -277,6 +278,7 @@ module.exports = {
     const collectionController = require('./api/controller/collection')
     const eventController = require('./api/controller/event')
     const { DateTime } = require('luxon')
+    const show_federated = res.locals.settings.federated_events_in_home
     const show_multidate = res.locals.settings.allow_multidate_event
     const show_recurrent = res.locals.settings.allow_recurrent_event
     const collection_in_home = res.locals.settings.collection_in_home
@@ -286,7 +288,7 @@ module.exports = {
       collectionController._getVisible(),
       collection_in_home ?
         collectionController._getEvents({ name: collection_in_home, start: DateTime.local().toUnixInteger(), show_recurrent }) :
-        eventController._select({ start: DateTime.local().toUnixInteger(), show_multidate, show_recurrent })
+        eventController._select({ start: DateTime.local().toUnixInteger(), show_multidate, show_recurrent, show_federated })
     ])
     
     res.locals.announcements = ret[0]?.value

@@ -987,7 +987,7 @@ const eventController = {
     const page = Number(req.query.page) || 0
     const older = req.query.older || false
 
-    const show_federated = helpers.queryParamToBool(req.query.show_federated, false)
+    const show_federated = helpers.queryParamToBool(req.query.show_federated, settings.federated_events_in_home)
     const show_multidate = settings.allow_multidate_event && helpers.queryParamToBool(req.query.show_multidate, true)
     const show_recurrent = settings.allow_recurrent_event && helpers.queryParamToBool(req.query.show_recurrent, settings.recurrent_event_visible)
 

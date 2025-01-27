@@ -350,7 +350,9 @@
     "custom_js_help": "You can integrate some javascript code that will be loaded for each user by writing in this textarea below. You probably want to read the <a href='https://gancio.org/usage/custom_js'>documentation</a> first.",
     "custom_css_help": "You can customize some stylesheet too, read some example <a href='https://gancio.org/usage/custom_css'>here</a>.",
     "default_fedi_hashtags": "Default fediverse hashtags",
-    "default_fedi_hashtags_help": "The specified tags will be added to events sent to the fediverse"
+    "default_fedi_hashtags_help": "The specified tags will be added to events sent to the fediverse",
+    "federated_events_in_home": "Show federated events on the home page",
+    "federated_events_in_home_help": "Incoming events from trusted federated sources will be shown by default on the home page. To only show some events you can use collections"
   },
   "auth": {
     "not_confirmed": "Not confirmed yet…",
