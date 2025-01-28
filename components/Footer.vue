@@ -43,9 +43,9 @@ export default {
   },
   async created () {
     this.$root.$on('update_trusted_sources', async () => {
-      this.trusted_sources = await this.$axios.$get('ap_users/trusted').catch()
+      this.trusted_sources = await this.$axios.$get('ap_actors/trusted').catch()
     })
-    this.trusted_sources = await this.$axios.$get('ap_users/trusted').catch()
+    this.trusted_sources = await this.$axios.$get('ap_actors/trusted').catch()
   },
   computed: {
     ...mapState(['settings']),
