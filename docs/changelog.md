@@ -7,6 +7,23 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+## [1.23.0](https://framagit.org/les/gancio/compare/v1.22.0...v1.23.0) (2025-01-28)
+
+
+### Features
+
+* add a setting to display federated events in home page (default), fix [#495](https://framagit.org/les/gancio/issues/495) ([459882c](https://framagit.org/les/gancio/commit/459882cc379414a58f3d6632f51ed0a09223ed62))
+* allow to choose AP Actor name during setup, fix [#365](https://framagit.org/les/gancio/issues/365) ([165c458](https://framagit.org/les/gancio/commit/165c458433b55eb4db883f44c7624c78a6b9381d))
+
+
+### Bug Fixes
+
+* allow chronologically sort of "my events", fix [#501](https://framagit.org/les/gancio/issues/501) ([c0bf141](https://framagit.org/les/gancio/commit/c0bf14193a10d9b562c193b7bcbf35b486177d3d))
+* old place page fallback ([6b3fec4](https://framagit.org/les/gancio/commit/6b3fec4f8945e72c248e2222897917a65a33f102))
+* redirect AP request with html as Accepted content type + tests ([128e759](https://framagit.org/les/gancio/commit/128e759f8a711ab28fb556d636ec1ec0b43d2a5f))
+* renaming "federated instances" with "trusting event source" and related refactory fix [#463](https://framagit.org/les/gancio/issues/463) ([b5869eb](https://framagit.org/les/gancio/commit/b5869eb643d5550e8fec4a936e43f78068d43977))
+* update collections in home on admin modification ([cce7adb](https://framagit.org/les/gancio/commit/cce7adbf0ebb7c9c61b4203e451382384679c7e1))
+
 ## [1.22.0](https://framagit.org/les/gancio/compare/v1.21.0...v1.22.0) (2025-01-24)
 
 this release is a step toward interoperability with other platforms that support events in the fediverse.
