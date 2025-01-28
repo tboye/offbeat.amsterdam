@@ -108,7 +108,14 @@ const Helpers = {
         method,
         ...( method === 'post' && ({ data: message}))
       })
-      log.debug(`[FEDI] signed ${ret.status} => %s`, ret.data)
+
+      // check if content-type is json
+      if (!ret?.headers?.['content-type'].includes('json')) {
+        log.error(`[FEDI] Error in sign and send, wrong content-type returned: ${ret.headers['content-type']}`)
+        return
+      }
+
+      log.debug(`[FEDI] signed ${ret.status} => ${ret?.headers?.['content-type']}`)
       return ret.data
     } catch (e) {
       log.error("[FEDI] Error in sign and send [%s]: %s", inbox, e?.response?.data?.error ?? e?.response?.statusMessage ?? '' + ' ' + String(e))
@@ -365,14 +372,14 @@ const Helpers = {
   },
 
   async getOutbox(actor, limit) {
-    log.debug('[FEDI] Get %s outbox', actor?.ap_id)
+    log.debug('[FEDI] Get %s outbox: %s', actor?.ap_id, actor?.object?.outbox)
     
     if (!actor?.object?.outbox) return
     try {
       let collection = await Helpers.signAndSend('', actor?.object?.outbox, 'get')
       // embedded collection
       if (typeof collection?.first !== 'string') {
-        return collection.first?.orderedItems ?? []
+        return collection?.first?.orderedItems ?? []
       } else if (/^https?:\/\//.test(collection?.first)) {
         collection = await Helpers.signAndSend('', collection.first, 'get')
         if (Array.isArray(collection?.orderedItems)) {
@@ -423,7 +430,10 @@ const Helpers = {
     }
 
     fedi_user = await Helpers.signAndSend('', URL, 'get')
-
+    if (!fedi_user?.id) {
+      log.debug('[FEDI] getActor failed for %s', URL)
+      return false
+    }
     if (fedi_user) {
       log.info('[FEDI] Create/Update a new AP User "%s" and associate it to instance "%s"', fedi_user?.id, instance.domain)
       try {

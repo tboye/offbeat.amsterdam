@@ -1,5 +1,6 @@
 const { APUser, Instance, Event, Resource } = require('../models/models')
 const { getActor, unfollowActor, followActor, getInstance } = require('../../federation/helpers')
+const Sequelize = require('sequelize')
 const axios = require('axios')
 const get = require('lodash/get')
 const log = require('../../log')

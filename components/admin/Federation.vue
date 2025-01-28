@@ -168,8 +168,8 @@ export default {
       if (!this.$refs.form.validate()) { return }
       this.loading = true
       try {
-        this.instance_url = this.instance_url.replace(/\/$/, '')
-        await this.$axios.$post('/ap_actors/add_trust', { url: this.instance_url })
+        this.source_url = this.source_url.replace(/\/$/, '')
+        await this.$axios.$post('/ap_actors/add_trust', { url: this.source_url })
         this.$refs.form.reset()
         this.$fetch()
         this.dialogAddTrustedSource = false
