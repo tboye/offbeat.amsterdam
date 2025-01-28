@@ -7,6 +7,12 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+### [1.23.1](https://framagit.org/les/gancio/compare/v1.23.0...v1.23.1) (2025-01-28)
+
+### Bug Fixes
+
+* a regression in federation ([fd1e142](https://framagit.org/les/gancio/commit/fd1e1421e7e61a01020b2fe462b9d47b993afc08))
+
 ## [1.23.0](https://framagit.org/les/gancio/compare/v1.22.0...v1.23.0) (2025-01-28)
 
 
