@@ -250,7 +250,7 @@ const collectionController = {
       res.sendStatus(200)
     } catch (e) {
       log.error('Remove collection failed:' + String(e))
-      res.sendStatus(404)
+      res.sendStatus(400)
     }
   },
 
