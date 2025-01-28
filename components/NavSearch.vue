@@ -42,13 +42,13 @@ export default {
   data: ({ $store }) => ({
     oldRoute: '',
     mdiClose, mdiCog, mdiMagnify,
-    collections: $store.state.collections,
     show_recurrent: $store.state.settings.recurrent_event_visible,
     show_multidate: true,
     query: ''
   }),
   components: { Calendar },
   computed: {
+    ...mapState(['collections']),
     showSearchBar () {
       return ['index'].includes(this.$route.name)
     },
