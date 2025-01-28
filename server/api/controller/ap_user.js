@@ -1,4 +1,4 @@
-const { APUser } = require('../models/models')
+const { APUser, Instance, Event, Resource } = require('../models/models')
 const { getActor, unfollowActor, followActor, getInstance } = require('../../federation/helpers')
 const axios = require('axios')
 const get = require('lodash/get')

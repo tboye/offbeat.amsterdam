@@ -1,4 +1,4 @@
-const { APUser, Instance, Resource, Event } = require('../models/models')
+const { APUser, Instance, Resource } = require('../models/models')
 
 const Sequelize = require('sequelize')
 const log = require('../../log')
