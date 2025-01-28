@@ -1,5 +1,4 @@
 const request = require('supertest')
-const dayjs = require('dayjs')
 const path = require('path')
 
 const admin = { username: 'admin', password: 'test', grant_type: 'password', client_id: 'self' }
@@ -94,6 +93,28 @@ describe('Webfinger', () => {
 })
 
 describe('AP', () => {
+
+  test('should redirect to / on html as accepted content type', async () => {
+    await request(app).get('/federation/u/relay')
+      .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
+      .expect(302)
+      .expect('Location', '/')
+  })
+
+  test('should return a json when ld+json is accepted', async () => {
+    await request(app).get('/federation/u/relay')
+      .set('Accept', 'application/ld+json')
+      .expect(200)
+      .expect('Content-Type', /json/)
+  })
+
+  test('should return a json when activity+json is accepted', async () => {
+    await request(app).get('/federation/u/relay')
+      .set('Accept', 'application/activity+json')
+      .expect(200)
+      .expect('Content-Type', /json/)
+  })
+
   test('should return the AP Actor', async () => {
     const response = await request(app).get('/federation/u/relay')
       .expect(200)

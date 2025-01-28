@@ -32,7 +32,7 @@ router.get('/m/:event_id:json(.json)?', async (req, res) => {
   const event_id = req.params.event_id
   const json = req.params.json
   const acceptHtml = req.accepts('html', 'application/json', 'application/activity+json', 'application/ld+json') === 'html'
-  if (acceptHtml && !json) { return res.redirect(301, `/event/${event_id}`) }
+  if (acceptHtml && !json) { return res.redirect(302, `/event/${event_id}`) }
   const event = await Event.findByPk(req.params.event_id, { include: [User, Tag, Place] })
   if (!event) { return res.status(404).send('Not found') }
   const eventAp = event.toAP(settingsController.settings)
