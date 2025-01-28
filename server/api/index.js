@@ -208,15 +208,17 @@ module.exports = () => {
 
 
     // - FEDIVERSE INSTANCES, MODERATION, RESOURCES
+    api.post('/ap_actors/toggle_block', isAdminOrEditor, apUserController.toggleBlock)
+    api.get('/ap_actors/trusted', apUserController.getTrusted)
+    api.post('/ap_actors/add_trust', isAdmin, apUserController.addTrust)
+    api.delete('/ap_actors/trust', isAdmin, apUserController.removeTrust)
+    api.put('/ap_actors/follow', isAdminOrEditor, apUserController.toggleFollow)
+    api.get('/ap_actors/stats', apUserController.stats)
+
+
     api.get('/instances', isAdminOrEditor, instanceController.getAll)
-    api.get('/instances/trusted', instanceController.getTrusted)
-    api.get('/instances/stats', instanceController.stats)
-    api.put('/instances/follow', isAdminOrEditor, instanceController.toggleFollow)
     api.post('/instances/toggle_block', isAdminOrEditor, instanceController.toggleBlock)
-    api.post('/instances/toggle_user_block', isAdminOrEditor, apUserController.toggleBlock)
     api.get('/instances/:instance_domain', isAdminOrEditor, instanceController.get)
-    api.post('/instances/add_trust', isAdmin, instanceController.addTrust)
-    api.delete('/instances/trust', isAdmin, instanceController.removeTrust)
     api.put('/resources/:resource_id', isAdminOrEditor, resourceController.hide)
     api.delete('/resources/:resource_id', isAdminOrEditor, resourceController.remove)
     api.get('/resources', isAdminOrEditor, resourceController.getAll)

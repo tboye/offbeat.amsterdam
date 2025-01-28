@@ -127,7 +127,7 @@ export default {
       try {
         const ret = await this.$root.$confirm('admin.user_block_confirm', { user: resource.ap_user.ap_id })
         if (!ret) { return }
-        await this.$axios.post('/instances/toggle_user_block', { ap_id: resource.ap_user.ap_id })
+        await this.$axios.post('/ap_actor/toggle_block', { ap_id: resource.ap_user.ap_id })
         this.$root.$message('admin.user_blocked', { user: resource.ap_user.ap_id, color: 'success' })
       } catch (e) { }
     },

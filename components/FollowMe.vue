@@ -42,7 +42,7 @@ export default {
     }
   },
   async fetch () {
-    this.stats = await this.$axios.$get('/instances/stats')
+    this.stats = await this.$axios.$get('/ap_actors/stats')
   },
   computed: {
     ...mapState(['settings']),

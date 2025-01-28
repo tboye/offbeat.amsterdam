@@ -58,7 +58,7 @@ v-container
               item-text='ap_id'
               :delimiters="[',', ';']"
               :items="actors"
-              :label="$t('common.trusted_instances')")
+              :label="$t('common.trusted_sources')")
                 template(v-slot:item="{ item }")
                   v-list-item-avatar
                     v-img(:src="$format.actor(item, 'icon')")
@@ -204,7 +204,8 @@ export default {
   },
   async fetch() {
     this.collections = await this.$axios.$get('/collections?withFilters=true')
-    this.actors = await this.$axios.$get('/instances/trusted')
+    this.setCollections(this.collections)
+    this.actors = await this.$axios.$get('/ap_actors/trusted')
 
     // add local instance
     this.actors.unshift({ ap_id: null })
@@ -222,7 +223,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setSetting']),
+    ...mapActions(['setSetting', 'setCollections']),
     searchTags: debounce(async function (ev) {
       this.tags = await this.$axios.$get(`/tag?search=${encodeURIComponent(ev.target.value)}`)
     }, 100),
@@ -325,6 +326,7 @@ export default {
       try {
         await this.$axios.$delete(`/collection/${collection.id}`)
         this.collections = this.collections.filter(c => c.id !== collection.id)
+        this.setCollections(this.collections)
       } catch (e) {
         const err = get(e, 'response.data.errors[0].message', e)
         this.$root.$message(this.$t(err), { color: 'error' })

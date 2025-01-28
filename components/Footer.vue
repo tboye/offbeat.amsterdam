@@ -8,12 +8,12 @@ v-footer(aria-label='Footer')
     :key='link.label' color='primary' text
     :href='link.href' :to='link.to' :target="link.href && '_blank'") {{link.label}}
 
-  v-menu(v-if='settings.enable_federation && settings.enable_trusted_instances && trusted_instances?.length' max-height=550
+  v-menu(v-if='settings.enable_federation && trusted_sources?.length' max-height=550
     offset-y bottom transition="slide-y-transition")
     template(v-slot:activator="{ on, attrs }")
-      v-btn.ml-1(v-bind='attrs' v-on='on' color='primary' text) {{ settings.trusted_instances_label || $t('admin.trusted_instances_label_default')}}
+      v-btn.ml-1(v-bind='attrs' v-on='on' color='primary' text) {{ settings.trusted_sources_label || $t('admin.trusted_sources_label_default')}}
     v-list(subheaders two-lines max-width=550)
-      v-list-item(v-for='instance in trusted_instances'
+      v-list-item(v-for='instance in trusted_sources'
         :key='instance.ap_id'
         target='_blank'
         :href='instance?.object?.url ?? instance?.ap_id'
@@ -38,14 +38,14 @@ export default {
   data () {
     return {
       showFollowMe: false,
-      trusted_instances: []
+      trusted_sources: []
     }
   },
   async created () {
-    this.$root.$on('update_friendly_instances', async () => {
-      this.trusted_instances = await this.$axios.$get('instances/trusted').catch()
+    this.$root.$on('update_trusted_sources', async () => {
+      this.trusted_sources = await this.$axios.$get('ap_users/trusted').catch()
     })
-    this.trusted_instances = await this.$axios.$get('instances/trusted').catch()
+    this.trusted_sources = await this.$axios.$get('ap_users/trusted').catch()
   },
   computed: {
     ...mapState(['settings']),

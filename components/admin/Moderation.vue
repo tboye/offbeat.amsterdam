@@ -126,7 +126,7 @@ export default {
         const ret = await this.$root.$confirm('admin.user_block_confirm', { user: get(ap_user, 'object.preferredUsername', ap_user.preferredUsername) })
         if (!ret) { return }
       }
-      await this.$axios.post('/instances/toggle_user_block', { ap_id: ap_user.ap_id })
+      await this.$axios.post('/ap_actors/toggle_block', { ap_id: ap_user.ap_id })
       ap_user.blocked = !ap_user.blocked
     },
     async deleteResource (resource) {

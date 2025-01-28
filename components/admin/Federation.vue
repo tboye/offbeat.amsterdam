@@ -25,25 +25,11 @@ v-container
         :hint="$t('admin.hide_boost_bookmark_help')"
         persistent-hint inset)
 
-      //- div.mt-4 {{$t('admin.instance_name')}}
       //- v-text-field.mt-5(v-model='instance_name'
       //-   :label="$t('admin.instance_name')"
       //-   :hint="`${$t('admin.instance_name_help')} ${instance_ap_url}`"
       //-   placeholder='Instance name' persistent-hint
       //-   @blur='save("instance_name", instance_name)')
-
-    //- v-switch.mt-4(v-model='enable_trusted_instances'
-    //-   :label="$t('admin.enable_trusted_instances')"
-    //-   persistent-hint inset
-    //-   :hint="$t('admin.trusted_instances_help')")
-
-    //- //- template(v-if='enable_trusted_instances')
-    //- v-text-field.mt-4(v-model='instance_place'
-    //-   :label="$t('admin.instance_place')"
-    //-   persistent-hint
-    //-   :hint="$t('admin.instance_place_help')"
-    //-   @blur='save("instance_place", instance_place)'
-    //- )
 
     v-combobox.mt-4(v-model='default_fedi_hashtags'
       :prepend-icon="mdiTagMultiple"
@@ -58,38 +44,40 @@ v-container
                     :input-value="selected" label small) {{ item }}
 
 
-    v-text-field.mt-4(v-model='trusted_instances_label'
-      :label="$t('admin.trusted_instances_label')"
+    v-text-field.mt-4(v-model='trusted_sources_label'
+      :label="$t('admin.trusted_sources_label')"
       persistent-hint inset
-      :hint="$t('admin.trusted_instances_label_help')"
-      @blur='save("trusted_instances_label", trusted_instances_label)'
+      :placeholder="$t('admin.trusted_sources_label_default')"
+      :hint="$t('admin.trusted_sources_label_help')"
+      @blur='save("trusted_sources_label", trusted_sources_label)'
     )
 
-    v-dialog(v-model='dialogAddInstance' width='500px' :fullscreen='$vuetify.breakpoint.xsOnly')
+    v-dialog(v-model='dialogAddTrustedSource' width='500px' :fullscreen='$vuetify.breakpoint.xsOnly')
       v-card
-        v-card-title {{$t('admin.add_trusted_instance')}}
+        v-card-title {{$t('admin.add_trusted_source')}}
+        v-card-subtitle.mt-2(v-html="$t('admin.add_trusted_source_help')")
         v-card-text
           v-form(v-model='valid' @submit.prevent='createTrustedInstance' ref='form' lazy-validation)
-            v-text-field.mt-4(v-model='instance_url'
+            v-text-field.mt-4(v-model='source_url'
               persistent-hint
               :rules="[$validators.required('common.url')]"
               :loading='loading'
-              :hint="$t('admin.add_trusted_instance')"
+              :hint="$t('admin.add_trusted_source')"
               :label="$t('common.url')")
         v-card-actions
           v-spacer
-          v-btn(outlined color='error' @click='dialogAddInstance=false') {{$t('common.cancel')}}
+          v-btn(outlined color='error' @click='dialogAddTrustedSource=false') {{$t('common.cancel')}}
           v-btn(outlined color='primary' :disabled='!valid || loading' :loading='loading' @click='createTrustedInstance') {{$t('common.ok')}}
 
-    v-btn.mt-4(@click='dialogAddInstance = true' color='primary' text) <v-icon v-text='mdiPlus'></v-icon> {{$t('admin.add_instance')}}
+    v-btn.mt-4(@click='dialogAddTrustedSource = true' color='primary' text) <v-icon v-text='mdiPlus'></v-icon> {{$t('admin.add_source')}}
     v-data-table(
-      v-if='trusted_instances.length'
+      v-if='trusted_sources.length'
       dense
-      :hide-default-footer='trusted_instances.length<10'
+      :hide-default-footer='trusted_sources.length<10'
       :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
       :header-props='{ sortIcon: mdiChevronDown }'
       :headers='headers'
-      :items='trusted_instances')
+      :items='trusted_sources')
       template(v-slot:item.logo="{item}")
         v-img(height=20 width=20 :src="item?.object?.icon?.url") 
       template(v-slot:item.name="{item}")
@@ -106,7 +94,7 @@ v-container
         v-icon(v-if='item.follower' v-text='mdiUpload')
 
       template(v-slot:item.actions="{item}")
-        v-btn(icon @click='deleteInstance(item)' color='error')
+        v-btn(icon @click='deleteTrustedSource(item)' color='error')
           v-icon(v-text='mdiDeleteForever')
     
   v-card-title Stats
@@ -123,15 +111,14 @@ export default {
   data ({ $store, $options }) {
     return {
       mdiDeleteForever, mdiPlus, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDownload, mdiUpload, mdiCloseCircle, mdiTagMultiple,
-      instance_url: '',
+      source_url: '',
       instance_name: $store.state.settings.instance_name,
-      trusted_instances_label: $store.state.settings.trusted_instances_label,
+      trusted_sources_label: $store.state.settings.trusted_sources_label,
       url2host: $options.filters.url2host,
-      dialogAddInstance: false,
+      dialogAddTrustedSource: false,
       stats: {},
       loading: false,
-      trusted_instances: [],
-      loading_instances: {},
+      trusted_sources: [],
       valid: false,
       headers: [
         { value: 'logo', text: 'Logo', width: 60, sortable: false },
@@ -145,9 +132,9 @@ export default {
     }
   },
   async fetch() {
-    this.stats = await this.$axios.$get('/instances/stats')
-    const trusted_instances = await this.$axios.$get('/instances/trusted')
-    this.trusted_instances = trusted_instances.map(t => {
+    this.stats = await this.$axios.$get('/ap_actors/stats')
+    const trusted_sources = await this.$axios.$get('/ap_actors/trusted')
+    this.trusted_sources = trusted_sources.map(t => {
       t.loading = false
       return t
     })
@@ -173,14 +160,6 @@ export default {
     hide_boosts: {
       get () { return this.settings.hide_boosts },
       set (value) { this.setSetting({ key: 'hide_boosts', value }) }
-    },
-    enable_trusted_instances: {
-      get () { return this.settings.enable_trusted_instances },
-      set (value) { this.setSetting({ key: 'enable_trusted_instances', value }) }
-    },
-    instance_ap_url () {
-      const instance_url = this.settings.baseurl.match(/^https?:\/\/(.[^/:]+)/i)[1]
-      return `(@${this.instance_name}@${instance_url})`
     }
   },
   methods: {
@@ -190,37 +169,37 @@ export default {
       this.loading = true
       try {
         this.instance_url = this.instance_url.replace(/\/$/, '')
-        await this.$axios.$post('/instances/add_trust', { url: this.instance_url })
+        await this.$axios.$post('/ap_actors/add_trust', { url: this.instance_url })
         this.$refs.form.reset()
         this.$fetch()
-        this.dialogAddInstance = false
-        this.$root.$emit('update_friendly_instances')
+        this.dialogAddTrustedSource = false
+        this.$root.$emit('update_trusted_sources')
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
       }
       this.loading = false
     },
-    async deleteInstance (instance) {
-      const ret = await this.$root.$confirm('admin.delete_trusted_instance_confirm')
+    async deleteTrustedSource (trusted_source) {
+      const ret = await this.$root.$confirm('admin.delete_trusted_source_confirm')
       if (!ret) { return }
       try {
-        await this.$axios.$delete('/instances/trust', { params: { ap_id: instance.ap_id }})
+        await this.$axios.$delete('/ap_actors/trust', { params: { ap_id: trusted_source.ap_id }})
         this.$fetch()
-        this.$root.$emit('update_friendly_instances')
-        this.$root.$message('admin.instance_removed', { color: 'success' })
+        this.$root.$emit('update_trusted_sources')
+        this.$root.$message('admin.trusted_source_removed', { color: 'success' })
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
       }
     },
-    async toggleFollowing (instance) {
+    async toggleFollowing (trusted_source) {
       try {
-        instance.loading = true
-        await this.$axios.$put('/instances/follow', { ap_id: instance.ap_id })
+        trusted_source.loading = true
+        await this.$axios.$put('/ap_actors/follow', { ap_id: trusted_source.ap_id })
         this.$root.$message('common.ok', { color: 'success' })
       } catch (e) {
         this.$root.$message(e, { color: 'error' })
       }
-      instance.loading = false
+      trusted_source.loading = false
       this.$fetch()
     },
     save (key, value) {
