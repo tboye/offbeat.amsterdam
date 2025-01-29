@@ -118,7 +118,8 @@
         "contact_user": "Contactar coa usuaria",
         "role": "Rol",
         "sent": "Enviado",
-        "past_events": "Eventos finalizados"
+        "past_events": "Eventos finalizados",
+        "trusted_sources": "Orixes federadas de confianza"
     },
     "recover": {
         "not_valid_code": "Algo fallou."
@@ -350,7 +351,17 @@
         "custom_js_help": "Podes integrar código javascript escribíndoo na área de texto que se cargará para cada usuaria. Pode que queiras ler a <a href='https://gancio.org/usage/custom_js'>documentación</a> relacionada.",
         "custom_css_help": "Tamén podes personalizar as follas de estilo, <a href='https://gancio.org/usage/custom_css'>aquí</a> tes algún exemplo.",
         "default_fedi_hashtags": "Cancelos predeterminados no fediverso",
-        "default_fedi_hashtags_help": "Os cancelos indicados engadiranse aos eventos enviados ao fediverso"
+        "default_fedi_hashtags_help": "Os cancelos indicados engadiranse aos eventos enviados ao fediverso",
+        "add_source": "Engadir orixes federadas de confianza",
+        "trusted_sources_label_default": "Outras localizacións",
+        "trusted_sources_label_help": "A etiqueta predeterminada é «Outras localizacións»",
+        "delete_trusted_source_confirm": "Queres eliminar esta orixe de confianza?",
+        "trusted_source_removed": "Retirouse a orixe de confianza",
+        "trusted_sources_label": "Etiqueta de navegación para orixes federadas de confianza",
+        "add_trusted_source": "Engade unha orixe federada de confianza",
+        "add_trusted_source_help": "Usa unha das seguintes opcións: <br/><ul><li>o enderezo web doutra instancia Gancio ou un software compatible como Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (ex. <u>https://demo.gancio.org</u>)</li><li>un identificador ActivityPub como <u>@gancio@mastodon.cisti.org</u></li><li>o url dunha conta como <u>https://instance.tld/actor</u>.</li></ul><br/>Vanse importar os eventos publicados ou promovidos por esas orixes.",
+        "federated_events_in_home": "Mostrar eventos federados na páxina de inicio",
+        "federated_events_in_home_help": "Os eventos recibidos desde orixes federadas de confianza serán mostrados de xeito predeterminado na páxina de inicio. Para só mostrar algúns eventos podes usar as coleccións"
     },
     "auth": {
         "not_confirmed": "Aínda non foi confirmado…",
