@@ -1,1 +1,35 @@
-{}
+{
+    "register": {
+        "subject": "Zahtjev za registraciju primljen",
+        "content": "Primili smo zahtjev za registraciju. Potvrdit ćemo ga čim bude moguće."
+    },
+    "confirm": {
+        "content": "Bok, vaš račun na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je potvrđen. Pišite nam na {{config.admin_email}} za bilo kakve informacije.",
+        "subject": "Sada možete početi objavljivati događaje"
+    },
+    "recover": {
+        "content": "Bok, zatražili ste oporavak lozinke na {{config.title}}. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Kliknite ovdje</a> za potvrdu.",
+        "subject": "Oporavak lozinke"
+    },
+    "test": {
+        "content": "Ovo je testni email, ako ovo čitate vaša konfiguracija radi.",
+        "subject": "Vaša SMTP konfiguracija radi"
+    },
+    "user_confirm": {
+        "subject": "Sada možete početi objavljivati događaje",
+        "content": "Bok, vaš račun na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je kreiran. <a href='{{{config.baseurl}}}/user_confirm/{{user.recover_code}}'>Potvrdite ga i odaberite lozinku.</a>."
+    },
+    "admin_register": {
+        "subject": "Nova registracija",
+        "content": "{{user.email}} je zatražio registraciju na {{config.title}}: <br/><pre>{{user.description}}</pre><br/> Potvrdite je <a href='{{{config.baseurl}}}/admin'>ovdje</a>."
+    },
+    "event_confirm": {
+        "content": "Možete potvrditi ovaj događaj na <a href='{{{url}}}'>ovoj stranici</a>"
+    },
+    "report": {
+        "subject": "Moderacija događaja [{{event.title}}]",
+        "content_ADMIN": "Administrator je komentirao događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_AUTHOR": "Autor događaja <strong>{{event.title}}</strong> napisao je:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_ANON": "Posjetitelj je prijavio događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>"
+    }
+}
