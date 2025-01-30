@@ -117,7 +117,9 @@
         "sent": "Enviat",
         "contact_user": "Persona de contacte",
         "report": "Denuncia l'activitat",
-        "role": "Rol"
+        "role": "Rol",
+        "trusted_sources": "Fonts federades de confiança",
+        "past_events": "Activitats passades"
     },
     "login": {
         "description": "Amb la sessió iniciada pots afegir activitats noves.",
@@ -358,7 +360,17 @@
         "custom_css_help": "També pots personalitzar els estils, consulta'n un exemple a <a href='https://gancio.org/usage/custom_css'>la documentació</a>.",
         "custom_js_help": "Pots integrar codi javascript escrivint-lo o copiant-lo en la caixa de text de sota. Cada usuàriï el carregarà en visitar la web. Pots llegir <a href='https://gancio.org/usage/custom_js'>la documentació dels scripts</a> per una explicació més detallada.",
         "default_fedi_hashtags": "Etiquetes predeterminades pel fedivers",
-        "default_fedi_hashtags_help": "Les etiquetes següents s'afegiran a les activitats quan s'enviïn al fedivers"
+        "default_fedi_hashtags_help": "Les etiquetes següents s'afegiran a les activitats quan s'enviïn al fedivers",
+        "add_source": "Afegeix una font federada de confiança",
+        "trusted_sources_label": "Etiqueta de navegació per les fonts federades de confiança",
+        "trusted_sources_label_default": "Altres ubicacions",
+        "trusted_sources_label_help": "L'etiqueta per defecte és \"Altres ubicacions\"",
+        "add_trusted_source": "Afegeix una font federada de confiança",
+        "trusted_source_removed": "S'ha esborrat la font de confiança",
+        "federated_events_in_home": "Mostra activitats federades a la pàgina principal",
+        "federated_events_in_home_help": "Per defecte, les activitats provinents de fonts federades de confiança es mostres a la pàgina principal. Per mostrar-ne només alguns, es pot aconseguir amb les coŀleccions",
+        "delete_trusted_source_confirm": "De debò que vols esborrar aquesta font de confiança?",
+        "add_trusted_source_help": "Fes servir una d'aquestes sintaxis: <br/><ul><li>l'adreça web normal d'un altre Gancio o altre software compatible amb la \"Application Actor\" / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (ex: <u>https://demo.gancio.org</u>)</li><li>una adreça ActivityPub de l'estil <u>@gancio@mastodon.cisti.org</u></li><li>la url d'un compte, com <u>https://instance.tld/actor</u>.</li></ul><br/>S'importaran totes les activitats publicades o impulsades d'aquestes fonts."
     },
     "auth": {
         "not_confirmed": "Encara no s'ha confirmat…",
