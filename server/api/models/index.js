@@ -29,26 +29,28 @@ const models = {
 
 const db = {
   sequelize: null,
-  loadModels () {
+  loadModels() {
     for (const modelName in models) {
       const m = models[modelName](db.sequelize, Sequelize.DataTypes)
       DB[modelName] = m
     }
 
   },
-  associates () {
-    const { Filter, Collection, APUser, Instance, User, Event, EventNotification, Tag,
-      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification, Message } = DB
+  associates() {
+    const {
+      Filter, Collection, APUser, Instance, User, Event, EventNotification, Tag,
+      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification, Message
+    } = DB
 
     Filter.belongsTo(Collection)
     Collection.hasMany(Filter)
 
     Instance.hasMany(APUser)
     APUser.belongsTo(Instance)
-    
+
     OAuthCode.belongsTo(User)
     OAuthCode.belongsTo(OAuthClient, { as: 'client' })
-    
+
     OAuthToken.belongsTo(User)
     OAuthToken.belongsTo(OAuthClient, { as: 'client' })
 
@@ -60,18 +62,18 @@ const db = {
 
     Message.belongsTo(Event)
     Event.hasMany(Message)
-    
+
     Event.belongsTo(User)
     User.hasMany(Event)
-    
+
     Event.belongsToMany(Tag, { through: 'event_tags' })
     Tag.belongsToMany(Event, { through: 'event_tags' })
-    
+
     // Event.belongsToMany(Notification, { through: EventNotification })
     // Notification.belongsToMany(Event, { through: EventNotification })
     Event.hasMany(EventNotification)
     Notification.hasMany(EventNotification)
-    
+
     Event.hasMany(Resource)
     Resource.belongsTo(Event)
 
@@ -80,7 +82,7 @@ const db = {
 
     Event.hasMany(Event, { as: 'child', foreignKey: 'parentId' })
     Event.belongsTo(Event, { as: 'parent' })
-    
+
     SequelizeSlugify.slugifyModel(Event, { source: ['title'], overwrite: false })
 
   },
@@ -90,7 +92,10 @@ const db = {
     }
   },
   connect(dbConf = config.db) {
-    dbConf.dialectOptions = { autoJsonMap: true }
+    dbConf.dialectOptions = {
+      ...dbConf.dialectOptions,
+      autoJsonMap: true
+    }
     log.debug(`Connecting to DB: ${JSON.stringify(dbConf)}`)
     if (dbConf.dialect === 'sqlite') {
       dbConf.retry = {
@@ -113,13 +118,13 @@ const db = {
       return true
     }
   },
-  async fixMariaDBJSON () {
+  async fixMariaDBJSON() {
 
     // manually fix mariadb JSON wrong parse
     if (db.sequelize.options.dialect === 'mariadb' && semver.lt('10.5.2', db.sequelize.options.databaseVersion)) {
       try {
         const ret = await db.sequelize.query('SHOW CREATE TABLE `settings`')
-        if (!ret[0][0]['Create Table'].toLowerCase().includes('json_valid')){
+        if (!ret[0][0]['Create Table'].toLowerCase().includes('json_valid')) {
           await db.sequelize.query('alter table settings modify `value` JSON')
           await db.sequelize.query('alter table ap_users modify `object` JSON')
           await db.sequelize.query('alter table events modify `recurrent` JSON')
