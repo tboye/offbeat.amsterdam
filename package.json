@@ -1,9 +1,8 @@
 {
-  "name": "offbeat.amsterdam",
-  "version": "0.1.0-dev",
-  "description": "A fork of Gancio by lesion, with modifications for offbeat.amsterdam.",
+  "name": "gancio",
+  "version": "1.23.1",
+  "description": "A shared agenda for local communities",
   "author": "lesion",
-  "contributors": ["tboye"],
   "scripts": {
     "build": "nuxt build --modern",
     "start:inspect": "NODE_ENV=production node --inspect node_modules/.bin/nuxt start --modern",
@@ -121,9 +120,10 @@
     "gancio": "server/cli.js"
   },
   "bugs": {
-    "email": "me@tboye.dev"
+    "email": "lesion@autistici.org",
+    "url": "https://framagit.org/les/gancio/issues"
   },
-  "homepage": "https://offbeat.amsterdam",
+  "homepage": "https://gancio.org",
   "keywords": [
     "AP",
     "gancio",
@@ -138,7 +138,7 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tboye/offbeat.amsterdam.git"
+    "url": "https://framagit.org/les/gancio"
   },
   "snyk": true,
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
