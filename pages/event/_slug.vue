@@ -24,7 +24,7 @@
 
             .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
               v-icon(v-text='mdiMapMarker' small)
-              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`') 
+              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
                 span(itemprop='name') {{event?.place?.name}}
               .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
 
@@ -37,12 +37,12 @@
               outlined :key='tag' :to='`/tag/${encodeURIComponent(tag)}`') {{tag}}
 
           //- online events
-          v-list(nav dense v-if='hasOnlineLocations')
-            v-list-item(v-for='(item, index) in event.online_locations' target='_blank' :href="`${item}`" :key="index")
+          v-list(nav dense v-if="hasOnlineLocations")
+            v-list-item(v-for="(url, index) in formattedOnlineLocations" :key="index" target="_blank" :href="url.href")
               v-list-item-icon
-                v-icon(v-text='mdiMonitorAccount')
+                v-icon(v-text="mdiLinkVariant")
               v-list-item-content.py-0
-                v-list-item-title.text-caption(v-text='item')
+                v-list-item-title.text-caption(v-html="url.label")
 
           v-divider
           //- info & actions
@@ -134,7 +134,8 @@ import EventModeration from '@/components/EventModeration'
 
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap, mdiMessageTextOutline,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll, mdiTimerSandComplete,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar } from '@mdi/js'
+  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar,
+  mdiLinkVariant} from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -159,7 +160,7 @@ export default {
   data ({$route}) {
     return {
       mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline, mdiTimerSandComplete,
-      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll,
+      mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll, mdiLinkVariant,
       currentAttachment: 0,
       event: {},
       showEmbed: false,
@@ -190,7 +191,7 @@ export default {
       title: `${this.settings.title} - ${this.event.title}`,
       htmlAttrs: {
         lang: this.settings.instance_locale
-      },      
+      },
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
@@ -276,7 +277,7 @@ export default {
     showResources () {
       return this.settings.enable_federation &&
       ( (!this.settings.hide_boosts && (this.event.boost?.length || this.event?.likes?.length)) ||
-      ( this.settings.enable_resources && this.event?.resources?.length))      
+      ( this.settings.enable_resources && this.event?.resources?.length))
     },
     isPast() {
       const now = new Date()
@@ -285,6 +286,14 @@ export default {
       } else {
         return new Date((3*60*60+this.event.start_datetime)*1000) < now
       }
+    },
+    formattedOnlineLocations() {
+      return this.event.online_locations.map((url, index) => ({
+        href: url,
+        label: index === 0 ? `<a href="${url}" target="_blank">Info</a>`
+          : index === 1 ? `<a href="${url}" target="_blank">Tickets</a>`
+            : `<a href="${url}" target="_blank">${url}</a>`
+      }))
     }
   },
   mounted () {
