@@ -1,14 +1,23 @@
 <template>
   <v-container id='home' class='px-2 px-sm-6 pt-0' fluid>
 
-    <h1 class='d-block text-h3 font-weight-black text-center text-uppercase mt-10 mb-16 mx-auto w-100 text-underline'><u>{{tag}}</u></h1>
+    <h1 class='d-block text-h3 font-weight-black text-center text-uppercase mt-10 mx-auto w-100 text-underline'><u>{{tag}}</u></h1>
 
     <!-- Events -->
-    <div class="mb-2 mt-1 pl-1 pl-sm-2" id="events">
+    <div class="mb-2 mt-14 pl-1 pl-sm-2" id="events">
       <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in events' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
         <Event :event='event' :lazy='idx>9' />
       </v-lazy>
     </div>
+  
+    <!-- Past Events -->
+    <h2 class='mt-14 mb-3' v-if="pastEvents.length">{{$t('common.past_events')}}</h2>
+    <div v-if="pastEvents.length" id="events">
+      <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in pastEvents' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
+        <Event :event='event' :lazy='idx > 9' />
+      </v-lazy>
+    </div>
+    
   </v-container>
 </template>
 <script>
@@ -40,8 +49,8 @@ export default {
   async asyncData ({ $axios, params, error }) {
     try {
       const tag = params.tag
-      const events = await $axios.$get(`/tag/${encodeURIComponent(tag)}`)
-      return { events, tag }
+      const { pastEvents, events } = await $axios.$get(`/tag/${encodeURIComponent(tag)}`)
+      return { pastEvents, events, tag }
     } catch (e) {
       error({ statusCode: 404, message: 'Tag not found' })
     }

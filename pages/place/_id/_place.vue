@@ -14,6 +14,7 @@
         <HowToArriveNav :place='place' class="justify-center" />
       </div>
     </div>
+
     <!-- Events -->
     <div id="events" class='mt-14'>
       <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in events' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
@@ -21,12 +22,14 @@
       </v-lazy>
     </div>
 
+    <!-- Past Events -->
     <h2 class='mt-14 mb-3' v-if="pastEvents.length">{{$t('common.past_events')}}</h2>
     <div v-if="pastEvents.length" id="events">
       <v-lazy class='event v-card' :value='idx<9' v-for='(event, idx) in pastEvents' :key='event.id' :min-height='hide_thumbs ? 105 : undefined' :options="{ threshold: .5, rootMargin: '500px' }" :class="{ 'theme--dark': is_dark }">
         <Event :event='event' :lazy='idx > 9' />
       </v-lazy>
-    </div>    
+    </div>
+
   </v-container>
 </template>
 <script>
