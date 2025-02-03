@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: 'Place',
       name: this.name,
       address: this.address,
+      url: this?.ap_id ?? `${config.baseurl}/place/${this.id}/${encodeURIComponent(this.name)}`,
       ...( this.latitude && this.longitude && ({ latitude: this.latitude, longitude: this.longitude}))
     }
   }
