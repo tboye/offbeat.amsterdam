@@ -1,4 +1,5 @@
 const { Place } = require('../api/models/models')
+const { preferHTML } = require('./helpers')
 const log = require('../log')
 
 module.exports = {
@@ -7,6 +8,9 @@ module.exports = {
     const id = req.params.id
     if (!id) { return res.status(400).send('Bad request.') }
 
+    if (preferHTML(req)) {
+      return res.redirect(302, `/place/${id}`)
+    }
     const place = await Place.findByPk(id)
     if (!place) {
       log.warn(`[FEDI] Place ${id} not found`)

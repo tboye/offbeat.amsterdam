@@ -183,6 +183,9 @@ const Helpers = {
     }
   },
 
+  preferHTML (req) {
+    return req.accepts('html', 'application/json', 'application/activity+json', 'application/ld+json') === 'html'
+  },
 
   /**
    * Parses the location of an ActivityPub Event to extract physical and online locations.

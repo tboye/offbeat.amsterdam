@@ -10,7 +10,7 @@ const get = require('lodash/get')
 
 module.exports = {
   get (req, res) {
-    if (req.accepts('application/activity+json', 'application/ld+json', 'application/json', 'html') === 'html'){
+    if (Helpers.preferHTML(req)){
       log.debug('[FEDI] Get actor but prefer text/html, redirect to homepage')
       return res.redirect(302, '/')
     }
