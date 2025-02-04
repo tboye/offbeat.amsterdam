@@ -1,1 +1,7 @@
-{}
+{
+    "common": {
+        "export": "",
+        "next": "",
+        "add_event": ""
+    }
+}
