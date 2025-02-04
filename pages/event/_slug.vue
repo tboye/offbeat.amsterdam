@@ -40,7 +40,7 @@
           v-list(nav dense v-if="hasOnlineLocations")
             v-list-item(v-for="(url, index) in formattedOnlineLocations" :key="index" target="_blank" :href="url.href")
               v-list-item-icon
-                v-icon(v-text="mdiLinkVariant")
+                v-icon(v-text="url.icon")
               v-list-item-content.py-0
                 v-list-item-title.text-caption(v-html="url.label")
 
@@ -65,7 +65,7 @@
               //- calendar
               v-list-item(:href='`/api/event/detail/${event.slug || event.id}.ics`')
                 v-list-item-icon
-                  v-icon(v-text='mdiCalendarExport')
+                  v-icon(v-text='mdiCalendarImport')
                 v-list-item-content
                   v-list-item-title(v-text="$t('common.add_to_calendar')")
 
@@ -134,8 +134,8 @@ import EventModeration from '@/components/EventModeration'
 
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap, mdiMessageTextOutline,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll, mdiTimerSandComplete,
-  mdiCalendarExport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar,
-  mdiLinkVariant} from '@mdi/js'
+  mdiCalendarImport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar,
+  mdiLinkVariant, mdiInformationSlabCircle, mdiTicketConfirmationOutline} from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -159,8 +159,9 @@ export default {
   },
   data ({$route}) {
     return {
-      mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarExport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline, mdiTimerSandComplete,
+      mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarImport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline, mdiTimerSandComplete,
       mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll, mdiLinkVariant,
+      mdiInformationSlabCircle, mdiTicketConfirmationOutline,
       currentAttachment: 0,
       event: {},
       showEmbed: false,
@@ -290,6 +291,7 @@ export default {
     formattedOnlineLocations() {
       return this.event.online_locations.map((url, index) => ({
         href: url,
+        icon: index === 0 ? mdiInformationSlabCircle : index === 1 ? mdiTicketConfirmationOutline : mdiLinkVariant,
         label: index === 0 ? `<a href="${url}" target="_blank">Info</a>`
           : index === 1 ? `<a href="${url}" target="_blank">Tickets</a>`
             : `<a href="${url}" target="_blank">${url}</a>`
