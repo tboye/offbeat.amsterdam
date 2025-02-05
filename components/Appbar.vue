@@ -35,20 +35,19 @@ export default {
 }
 </script>
 <style>
-nav {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.7)),
-    url(/headerimage.png);
-  background-position: center center;
-  background-size: cover;
+
+.theme--dark nav {
+  background:
+      radial-gradient(circle, rgba(48, 48, 48, 0.8), rgba(20, 20, 20, 0) 60%),
+      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #2e2e2e 0)
+      0 0/20px 20px;
 }
 
 .theme--light nav {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(230, 230, 230, 0.95),
-      rgba(250, 250, 250, 0.95)
-    ),
-    url(/headerimage.png);
+  background:
+      radial-gradient(circle, rgba(255, 243, 243, 0.8), rgba(255, 255, 255, 0) 60%),
+      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #fff3f3 0)
+      0 0/20px 20px;
 }
 
 #title {
