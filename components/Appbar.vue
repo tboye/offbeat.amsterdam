@@ -52,8 +52,9 @@ export default {
 
 #title {
   word-break: break-all;
-  font-size: 2rem;
+  font-size: 3.5rem;
   font-weight: 600;
   text-decoration: none;
+  font-family: 'VT323', monospace !important;
 }
 </style>

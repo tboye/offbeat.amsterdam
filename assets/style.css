@@ -161,7 +161,7 @@ li {
   text-overflow: ellipsis;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  font-size: 1.1em !important;
+  font-size: 1.3em !important;
   line-height: 1.2em !important;
   /* text-decoration: none; */
 }
@@ -208,4 +208,51 @@ li {
 pre {
   white-space: break-spaces;
   font-size: 13px;
+}
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../static/vt323-latin-400-normal.woff') format('woff'),
+       url('../static/vt323-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Share Tech Mono';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    url('../static/share-tech-mono-v15-latin-regular.woff2') format('woff2');
+}
+
+body, .v-application, * {
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+/* Site title, event titles */
+h1 *, h2 a, a > h2, .event .title {
+  font-family: 'VT323', monospace !important;
+}
+
+.theme--light.v-text-field--outlined > .v-input__control > .v-input__slot,
+.theme--light.v-btn.v-btn--outlined {
+  background: #ffffff !important;
+}
+
+.theme--dark.v-text-field--outlined > .v-input__control > .v-input__slot,
+.theme--dark.v-btn.v-btn--outlined {
+  background: #1e1e1e !important;
+}
+
+.v-text-field--outlined > .v-input__control > .v-input__slot,
+.v-btn,
+.vc-container,
+.v-chip.v-chip--outlined {
+  border-radius: 0 !important;
+}
+
+/* Fix exaggerated font size for event date in cards */
+.v-application .subtitle-1 {
+  font-size: inherit !important;
 }

@@ -150,15 +150,16 @@ module.exports = {
   buildModules: ['@nuxtjs/vuetify'],
   vuetify: {
     treeShake: true,
-    defaultAssets: false,    
-    optionsPath: './vuetify.options.js'
+    defaultAssets: false,
+    optionsPath: './vuetify.options.js',
+    customVariables: ['~/assets/variables.scss']
   },
   hooks: {
     listen(server) {
       server.keepAliveTimeout = 35000;
       server.headersTimeout = 36000;
     }
-  },  
+  },
   build: {
     extend(config, { isDev, isClient }) {
       // ..
