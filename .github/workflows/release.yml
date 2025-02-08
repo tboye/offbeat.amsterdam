@@ -1,0 +1,42 @@
+name: Build and publish release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+    GH_TOKEN: ${{ github.token }}
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - name: Pack
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: pack
+
+      - name: Publish release
+        shell: bash
+        run: |
+          gh release upload ${{github.event.release.tag_name}} *.tgz
