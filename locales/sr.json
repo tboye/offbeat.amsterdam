@@ -206,7 +206,8 @@
         "send_to_admins": "Pošalji administratorima",
         "send_to_author_too": "Pošalji administratorima i autoru",
         "disable_author": "Onemogući autora",
-        "disable_author_confirm": "Da li ste sigurni da želite onemogućiti autora ovog događaja?"
+        "disable_author_confirm": "Da li ste sigurni da želite onemogućiti autora ovog događaja?",
+        "recurrent_2m_ordinal": "Each {n} {days} a month every other"
     },
     "register": {
         "description": "Socijalni pokreti treba da se organizuju i samofinansiraju.<br/>\n<br/>Pre nego što objavite, <strong>nalog mora biti odobren</strong>, imajte na umu da <strong>iza ovog sajta stoje stvarni ljudi</strong>, pa napišite nekoliko rečenica kako bismo znali koje događaje bi želeli da objavite.",
