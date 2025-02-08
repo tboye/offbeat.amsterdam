@@ -135,7 +135,7 @@ import EventModeration from '@/components/EventModeration'
 import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, mdiMap, mdiMessageTextOutline,
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll, mdiTimerSandComplete,
   mdiCalendarImport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar,
-  mdiLinkVariant, mdiInformationSlabCircle, mdiTicketConfirmationOutline} from '@mdi/js'
+  mdiLinkVariant, mdiInformation, mdiTicketConfirmationOutline} from '@mdi/js'
 
 export default {
   name: 'Event',
@@ -161,7 +161,7 @@ export default {
     return {
       mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiCalendarImport, mdiCalendar, mdiFileDownloadOutline, mdiMessageTextOutline, mdiTimerSandComplete,
       mdiMapMarker, mdiContentCopy, mdiClose, mdiDelete, mdiEye, mdiEyeOff, mdiRepeat, mdiMap, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar, mdiShareAll, mdiLinkVariant,
-      mdiInformationSlabCircle, mdiTicketConfirmationOutline,
+      mdiInformation, mdiTicketConfirmationOutline,
       currentAttachment: 0,
       event: {},
       showEmbed: false,
@@ -291,7 +291,7 @@ export default {
     formattedOnlineLocations() {
       return this.event.online_locations.map((url, index) => ({
         href: url,
-        icon: index === 0 ? mdiInformationSlabCircle : index === 1 ? mdiTicketConfirmationOutline : mdiLinkVariant,
+        icon: index === 0 ? mdiInformation : index === 1 ? mdiTicketConfirmationOutline : mdiLinkVariant,
         label: index === 0 ? `<a href="${url}" target="_blank">Info</a>`
           : index === 1 ? `<a href="${url}" target="_blank">Tickets</a>`
             : `<a href="${url}" target="_blank">${url}</a>`
