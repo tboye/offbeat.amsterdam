@@ -4,21 +4,36 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Build release
-        shell: bash
-        run: |
-          rm -fr node_modules
-          yarn --frozen-lockfile
-          yarn --frozen-lockfile build
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - name: Pack
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: pack
 
       - name: Publish release
         shell: bash
         run: |
-          yarn --frozen-lockfile pack
           gh release upload ${{github.event.release.tag_name}} *.tgz
