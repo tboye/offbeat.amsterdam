@@ -11,7 +11,7 @@
         <v-icon v-text='mdiInformation' />
       </v-btn>
       <v-btn icon large @click='toggleDark'>
-        <v-icon v-text='mdiContrastCircle' />
+        <v-icon v-text='mdiCircleHalfFull' />
       </v-btn>
       <client-only>
         <v-menu offset-y transition="slide-y-transition">
@@ -32,7 +32,7 @@
           </v-list>
         </v-menu>
         <v-btn slot='placeholder' large  icon arial-label='Language'>{{$i18n.locale}}</v-btn>
-      </client-only> 
+      </client-only>
 
       <client-only>
         <v-menu v-if='$auth.loggedIn' offset-y transition="slide-y-transition">
@@ -93,26 +93,26 @@
 </template>
 <script>
 
-import { mdiLogin, mdiDotsVertical, mdiLogout, mdiAccount, mdiCog, mdiInformation, mdiContrastCircle, mdiCalendarAccount } from '@mdi/js'
+import { mdiLogin, mdiDotsVertical, mdiLogout, mdiAccount, mdiCog, mdiInformation, mdiCircleHalfFull, mdiCalendarAccount } from '@mdi/js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
-    return { mdiLogin, mdiDotsVertical, mdiLogout, mdiAccount, mdiCog, mdiInformation, mdiContrastCircle, mdiCalendarAccount }
+    return { mdiLogin, mdiDotsVertical, mdiLogout, mdiAccount, mdiCog, mdiInformation, mdiCircleHalfFull, mdiCalendarAccount }
   },
   computed: {
     ...mapGetters(['hide_thumbs', 'is_dark']),
-  },  
+  },
   methods: {
     ...mapActions(['setLocalSetting']),
     async toggleDark() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
       this.setLocalSetting({ key: 'theme.is_dark', value: !this.is_dark })
-    },    
+    },
     logout () {
       this.$root.$message('common.logout_ok')
       this.$auth.logout()
     }
-  }  
+  }
 }
 </script>

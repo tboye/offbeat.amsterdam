@@ -6,7 +6,7 @@ v-container
     v-switch.mt-5(v-model='is_dark'
       inset hide-details
       :label="$t('admin.is_dark')")
-      
+
     v-switch.mt-5(v-model='hide_thumbs'
       inset hide-details
       :label="$t('admin.hide_thumbs')")
@@ -40,16 +40,16 @@ v-container
             v-btn(color='warning' text @click='resetFallbackImage') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
         v-img.mt-2(:src='`/fallbackimage.png?${fallbackImageKey}`' max-height="150px" contain)
 
-      v-col(cols='4')
-        //- HEADER IMAGE
-        v-file-input.mt-5(ref='upload'
-          :label="$t('admin.header_image')"
-          persistent-hint
-          @change='uploadHeaderImage'
-          accept='image/*')
-          template(slot='append-outer')
-            v-btn(color='warning' text @click='resetHeaderImage') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
-        v-img.mt-2(:src='`/headerimage.png?${headerImageKey}`' max-height="150px" contain)          
+      //v-col(cols='4')
+      //  //- HEADER IMAGE
+      //  v-file-input.mt-5(ref='upload'
+      //    :label="$t('admin.header_image')"
+      //    persistent-hint
+      //    @change='uploadHeaderImage'
+      //    accept='image/*')
+      //    template(slot='append-outer')
+      //      v-btn(color='warning' text @click='resetHeaderImage') <v-icon v-text='mdiRestore'></v-icon> {{$t('common.reset')}}
+      //  v-img.mt-2(:src='`/headerimage.png?${headerImageKey}`' max-height="150px" contain)
 
 
   v-card-title {{$t('admin.colors')}}
@@ -176,7 +176,7 @@ export default {
     custom_css: {
       get () { return this.settings.custom_css },
       set (value) { this.setSetting({ key: 'custom_css', value })}
-    }    
+    }
   },
   methods: {
     ...mapActions(['setSetting', 'setLocalSetting']),
@@ -197,7 +197,7 @@ export default {
     },
     forceHeaderImageReload () {
       this.headerImageKey++
-    },    
+    },
     resetLogo (e) {
       this.setSetting({ key: 'logo', value: null })
         .then(this.forceLogoReload)
@@ -286,7 +286,7 @@ export default {
       } catch (e) {
 
       }
-    },    
+    },
     save (key, value) {
       if (this.settings[key] !== value) {
         this.setSetting({ key, value })
