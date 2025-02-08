@@ -1,0 +1,24 @@
+name: Build and publish release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Build release
+        shell: bash
+        run: |
+          rm -fr node_modules
+          yarn --frozen-lockfile
+          yarn --frozen-lockfile build
+
+      - name: Publish release
+        shell: bash
+        run: |
+          yarn --frozen-lockfile pack
+          gh release upload ${{github.event.release.tag_name}} *.tgz
