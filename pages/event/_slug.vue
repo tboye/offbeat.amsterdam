@@ -16,14 +16,14 @@
             v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
             v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
             time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
-              v-icon(v-text='mdiCalendar' small)
+              v-icon(v-text='mdiCalendar')
               span.ml-2.text-uppercase {{$time.when(event)}}
               .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
             div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
               small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
             .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
-              v-icon(v-text='mdiMapMarker' small)
+              v-icon(v-text='mdiMapMarker')
               nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
                 span(itemprop='name') {{event?.place?.name}}
               .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
