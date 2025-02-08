@@ -1,3 +1,7 @@
+# 0.1.1 (in progress)
+## Improvements
+- Improve text display on About page (larger text size and better alignment)
+
 # 0.1.0 (08.02.2025)
 ## Initial version
 - Based off [Gancio 1.23.1](https://framagit.org/les/gancio/compare/v1.23.0...v1.23.1) 
