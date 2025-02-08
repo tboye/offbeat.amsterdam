@@ -7,3 +7,4 @@
 
 ## Changes
 - API rate limits won't be applied to admins [#5](https://github.com/tboye/offbeat.amsterdam/pull/5)
+- Refine core visual elements [#6](https://github.com/tboye/offbeat.amsterdam/pull/6)
