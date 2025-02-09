@@ -38,15 +38,15 @@ export default {
 
 .theme--dark nav {
   background:
-      radial-gradient(circle, rgba(48, 48, 48, 0.8), rgba(20, 20, 20, 0) 60%),
-      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #2e2e2e 0)
+      radial-gradient(circle, #312737, transparent 60%),
+      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #292929 0)
       0 0/20px 20px;
 }
 
 .theme--light nav {
   background:
-      radial-gradient(circle, rgba(255, 243, 243, 0.8), rgba(255, 255, 255, 0) 60%),
-      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #fff3f3 0)
+      radial-gradient(circle, #f3e9ff, transparent 60%),
+      conic-gradient(from 90deg at 1px 1px, transparent 60deg, #fdebeb 0)
       0 0/20px 20px;
 }
 

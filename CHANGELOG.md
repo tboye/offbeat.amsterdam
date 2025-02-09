@@ -2,6 +2,7 @@
 ## Improvements
 - Improve text display on About page (larger text size and better alignment)
 - Set Monday as first day of the week in the calendar
+- Beautify header gradients
 
 # 0.1.0 (08.02.2025)
 ## Initial version
