@@ -6,6 +6,7 @@
       title-position='left'
       :is-dark="is_dark"
       :columns="!$vuetify.breakpoint.smAndDown ? 2 : 1"
+      :first-day-of-week='2'
       @input='click'
       @update:from-page='updatePage'
       :locale='$i18n.locale'
