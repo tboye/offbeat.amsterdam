@@ -1,10 +1,10 @@
-# 0.1.1 (in progress)
+# 0.1.1 (10-02-2025)
 ## Improvements
 - Improve text display on About page (larger text size and better alignment)
 - Set Monday as first day of the week in the calendar
 - Beautify header gradients
 
-# 0.1.0 (08.02.2025)
+# 0.1.0 (08-02-2025)
 ## Initial version
 - Based off [Gancio 1.23.1](https://framagit.org/les/gancio/compare/v1.23.0...v1.23.1) 
 
