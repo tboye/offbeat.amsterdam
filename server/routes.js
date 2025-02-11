@@ -46,7 +46,8 @@ async function main () {
     app.get('/feed/:format/collection/:name', cors(), collectionController.getEvents)
     app.get('/feed/:format', cors(), exportController.export)
     
-    app.use('/event/:slug', helpers.APRedirect)
+    app.use('/event/:slug', helpers.APEventRedirect)
+    app.use('/', helpers.APRedirect)
     
     // federation api / activitypub / webfinger / nodeinfo
     app.use('/federation', federation)

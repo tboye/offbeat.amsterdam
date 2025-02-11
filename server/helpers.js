@@ -1,5 +1,4 @@
 const ical = require('ical.js')
-const settingsController = require('./api/controller/settings')
 const express = require('express')
 const dayjs = require('dayjs')
 const timezone = require('dayjs/plugin/timezone')
@@ -20,6 +19,7 @@ const { JSDOM } = require('jsdom')
 const { window } = new JSDOM('<!DOCTYPE html>')
 const domPurify = DOMPurify(window)
 const URL = require('url')
+const settingsController = require('./api/controller/settings')
 
 domPurify.addHook('beforeSanitizeElements', node => {
   if (node.hasAttribute && node.hasAttribute('href')) {
@@ -314,17 +314,25 @@ module.exports = {
     return cursor
   },
 
-  async APRedirect(req, res, next) {
+  async APEventRedirect(req, res, next) {
     const eventController = require('../server/api/controller/event')
-    const acceptJson = req.accepts('html', 'application/activity+json', 'application/ld+json', 'application/json') !== 'html'
 
-    if (acceptJson) {
+    if (preferJSON(req)) {
       const event = await eventController._get(req.params.slug)
       if (event) {
         log.debug('[FEDI] APRedirect for %s', event.title)
         return res.redirect(event?.ap_id ?? `/federation/m/${event.id}`)
       }
       log.warn('[FEDI] Accept JSON but event not found: %s', req.params.slug)
+    }
+    next()
+  },
+
+  async APRedirect (req, res, next) {
+    const { preferJSON } = require('../server/federation/helpers')
+    if (preferJSON(req)) {
+      log.debug('[FEDI] JSON preferred')
+      return res.redirect(`/federation/u/${settingsController.settings.instance_name}`, 302)
     }
     next()
   },
