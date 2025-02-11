@@ -37,7 +37,7 @@ module.exports = {
     }
 
     if (!event) {
-      log.error('This is a direct message. Just ignore it')
+      log.error('[FEDI] Create Activity for Note object are only supported for events or other local notes')
       log.error(body)
       return res.status(404).send('Not found')
     }
@@ -90,7 +90,7 @@ module.exports = {
       include: [{ model: APUser, required: true, attributes: ['ap_id'] }]
     })
     if (!resource) {
-      log.info(`[FEDI] Comment not found`)
+      log.warn(`[FEDI] Comment not found`)
       return res.status(404).send('Not found')
     }
     // check if fedi_user that requested resource removal

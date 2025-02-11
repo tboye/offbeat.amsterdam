@@ -31,19 +31,19 @@ module.exports = {
     const ap_id = APEvent?.id ?? APEvent
 
     if (!ap_id) {
-      log.warning('[FEDI] id not found in body.object')
+      log.warn('[FEDI] id not found in body.object')
       return res.sendStatus(404)
     }
 
     const event = await Event.findOne({ where: { ap_id }, include: [APUser]})
     if (!event) {
-      log.warning('[FEDI] Event with this ap_id not found: %s', ap_id)
+      log.warn('[FEDI] Event with this ap_id not found: %s', ap_id)
       return res.sendStatus(404)
     }
 
     // is the owner the same?
     if (res.locals.fedi_user.ap_id !== event?.ap_user?.ap_id) {
-      log.error('[FEDI] Event %s updated not from the owner! %s != %s', ap_id, res.locales.fedi_user.ap_id, event)
+      log.error('[FEDI] Event %s updated not from the owner! %s != %s', ap_id, res.locals.fedi_user.ap_id, event?.ap_user?.ap_id)
     }
 
     const place = await eventController._findOrCreatePlace({
@@ -91,7 +91,7 @@ module.exports = {
       await event.setTags(tags)
     }
 
-    return res.sendStatus(201)
+    return res.status(201).send()
 
   },
 

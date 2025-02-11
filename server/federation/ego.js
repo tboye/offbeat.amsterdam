@@ -27,7 +27,7 @@ module.exports = {
   async unboost (req, res) {
     const match = req.body?.object?.match(`${config.baseurl}/federation/m/(.*)`)
     if (!match || match.length < 2) { return res.status(404).send('Event not found!') }
-    log.info(`unboost ${match[1]}`)
+    log.info(`[FEDI] unboost ${match[1]}`)
     const event = await Event.findByPk(Number(match[1]))
     if (!event) { return res.status(404).send('Event not found!') }
     await event.update({ boost: event.boost.filter(actor => actor !== req.body.actor) })
@@ -40,7 +40,7 @@ module.exports = {
       return res.status(404).send('Event not found!')
     }
     const event = await Event.findByPk(Number(match[1]))
-    log.info(`${req.body.actor} bookmark ${event.title} (${event.likes.length})`)
+    log.info(`[FEDI] ${req.body.actor} bookmark ${event.title} (${event.likes.length})`)
     if (!event) { return res.status(404).send('Event not found!') }
     // TODO: has to be unique
     await event.update({ likes: [...event.likes, req.body.actor] })
@@ -53,7 +53,7 @@ module.exports = {
     const match = object.object.match(`${config.baseurl}/federation/m/(.*)`)
     if (!match || match.length < 2) { return res.status(404).send('Event not found!') }
     const event = await Event.findByPk(Number(match[1]))
-    log.info(`${body.actor} unbookmark ${event.title} (${event.likes.length})`)
+    log.info(`[FEDI] ${body.actor} unbookmark ${event.title} (${event.likes.length})`)
     if (!event) { return res.status(404).send('Event not found!') }
     await event.update({ likes: event.likes.filter(actor => actor !== body.actor) })
     res.sendStatus(201)
