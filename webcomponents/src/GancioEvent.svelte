@@ -1,4 +1,4 @@
-<svelte:options tag="gancio-event" />
+<svelte:options customElement="gancio-event"/>
 
 <script>
   import { onMount } from 'svelte'
