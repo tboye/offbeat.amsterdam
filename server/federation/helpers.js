@@ -206,10 +206,13 @@ const Helpers = {
     const locations = Array.isArray(APEvent.location) ? APEvent.location : [APEvent.location]
 
     // find the first physical place from locations
-    let APPlace = locations.find(location => location.address && !location?.address?.url) || locations.find(location => !location.address?.url)
+    let APPlace = locations.find(location => location.address)
 
     // get the list of online locations
-    let onlineLocations = locations.filter(location => location?.address?.url).map(location => location.address.url)
+    let onlineLocations = locations.filter(location => location.type === 'VirtualLocation' && location?.url).map(location => location.url)
+
+    // online locations could be in attachments too
+    onlineLocations = onlineLocations.concat(APEvent?.attachment?.filter(a => a?.type === 'Link').map(a => a?.href).filter(a => a && !onlineLocations.includes(a)))
 
     // we have a physical place
     if (APPlace) {
