@@ -117,6 +117,7 @@ describe('AP', () => {
 
   test('should return the AP Actor', async () => {
     const response = await request(app).get('/federation/u/relay')
+      .set('Accept', 'application/activity+json')
       .expect(200)
       .expect('Content-Type', /json/)
 
