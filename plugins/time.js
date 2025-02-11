@@ -55,7 +55,7 @@ export default ({ app, store }, inject) => {
 
     when (event) {
       const currentYear = app.$time.currentYear()
-      const addTimezone = event.ap_id || event.place.name === 'online'
+      const addTimezone = event.ap_id || event.place?.name === 'online'
 
       const opt = {
         zone: store.state.settings.instance_timezone,
