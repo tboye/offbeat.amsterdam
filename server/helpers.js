@@ -316,12 +316,13 @@ module.exports = {
 
   async APEventRedirect(req, res, next) {
     const eventController = require('../server/api/controller/event')
+    const { preferJSON } = require('../server/federation/helpers')
 
     if (preferJSON(req)) {
       const event = await eventController._get(req.params.slug)
       if (event) {
         log.debug('[FEDI] APRedirect for %s', event.title)
-        return res.redirect(event?.ap_id ?? `/federation/m/${event.id}`)
+        return res.redirect(301, event?.ap_id ?? `/federation/m/${event.id}`)
       }
       log.warn('[FEDI] Accept JSON but event not found: %s', req.params.slug)
     }
@@ -331,8 +332,8 @@ module.exports = {
   async APRedirect (req, res, next) {
     const { preferJSON } = require('../server/federation/helpers')
     if (preferJSON(req)) {
-      log.debug('[FEDI] JSON preferred')
-      return res.redirect(`/federation/u/${settingsController.settings.instance_name}`, 302)
+      log.debug(`[FEDI] JSON preferred ${req.path}`)
+      return res.redirect(301, `/federation/u/${settingsController.settings.instance_name}`)
     }
     next()
   },

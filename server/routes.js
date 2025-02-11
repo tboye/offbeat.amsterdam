@@ -46,9 +46,6 @@ async function main () {
     app.get('/feed/:format/collection/:name', cors(), collectionController.getEvents)
     app.get('/feed/:format', cors(), exportController.export)
     
-    app.use('/event/:slug', helpers.APEventRedirect)
-    app.use('/', helpers.APRedirect)
-    
     // federation api / activitypub / webfinger / nodeinfo
     app.use('/federation', federation)
     app.use('/.well-known', webfinger)
@@ -65,6 +62,8 @@ async function main () {
 
   // api!
   app.use('/api', api())
+  app.use('/event/:slug', helpers.APEventRedirect)
+  app.use('/', helpers.APRedirect)
 
   // // Handle 500
   app.use((error, _req, res, _next) => {
