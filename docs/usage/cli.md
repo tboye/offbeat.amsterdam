@@ -59,3 +59,48 @@ To add administrator privileges to an user:
 
 To remove administrator privileges from an user:
 `gancio users set_role <username|email> user`
+
+
+## Settings <span class='label label-yellow'>since 1.24.0</span>
+All settings related sub-commands starts with `gancio settings`.
+Note that most of this actions could be done from administration panel.
+
+
+### List all settings
+To list all settings use
+`gancio settings list`
+
+
+### Get a specific setting value
+
+`gancio settings get <setting>`
+
+
+
+### Set a specific setting value
+`gancio settings set <setting> <value>`
+
+```bash
+# change federated actor's name
+➜ gancio settings set instance_name '"gancio"'
+📅 gancio - v1.24.0 - A shared agenda for local communities (nodejs: v20.15.0)
+> Reading configuration from: /home/les/dev/hacklab/gancio/config.json
+
+instance_name
+Old value: "relay"
+New value: "gancio"
+
+Note that this will likely break current federation (all your follower / following connections will be destroyed)!
+Note that a restart is needed to get the new setting
+```
+
+
+> warning "JSON"
+> Note that settings are store in JSON, so your value will be parsed.
+
+> warning "Restart needed"
+> A restart is needed after a setting is changed
+
+> info "References"
+> [#365](https://framagit.org/les/gancio/-/issues/365)
+
