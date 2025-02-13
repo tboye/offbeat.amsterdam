@@ -2,7 +2,6 @@ const config = require('../config')
 const Helpers = require('./helpers')
 const crypto = require('crypto')
 const log = require('../log')
-const settingsController = require('../api/controller/settings')
 
 module.exports = {
   // follow request from fediverse

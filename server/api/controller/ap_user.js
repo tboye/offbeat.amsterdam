@@ -131,7 +131,7 @@ const apUserController = {
           return res.json(actor)
         }
       } catch (e) {
-        log.debug('[FEDI] %s is probably not an actor: %s', url, e)
+        log.debug('[FEDI] %s is probably not an actor: %s', url, String(e))
       }
 
       // ok this wasn't an actor, let's use the applicationActor if exists
