@@ -13,7 +13,7 @@ module.exports = {
   async create (req, res) {
 
     try {
-      await Helpers.parseAPEvent(req.body)
+      await Helpers.parseAPEvent(req.body, res.locals.fedi_user)
     } catch (e) {
       log.error('[FEDI] Error parsing AP Event: %s', e?.message ?? e)
       return res.status(400).send("Error parsing AP Event")
@@ -46,25 +46,22 @@ module.exports = {
       log.error('[FEDI] Event %s updated not from the owner! %s != %s', ap_id, res.locals.fedi_user.ap_id, event?.ap_user?.ap_id)
     }
 
-    const place = await eventController._findOrCreatePlace({
-      place_name: APEvent.location?.name,
-      place_address: APEvent.location?.address?.streetAddress ?? APEvent.location?.address?.addressLocality ?? APEvent.location?.address?.addressCountry ?? APEvent.location?.address ?? '',
-      place_latitude: APEvent.location?.latitude,
-      place_longitude: APEvent.location?.longitude
-    })
+    const [ place, online_locations ] = await Helpers.parsePlace(APEvent)
+
 
     let media = []
-    if (APEvent.attachment.length > 0) {
+    const image_url = APEvent?.attachment?.find(a => a?.mediaType.includes('image') && a.url)?.url
+    if (image_url) {
 
-      const image_url = APEvent.attachment[0]?.url
-      req.file = await helpers.getImageFromURL(image_url)
+      const file = await helpers.getImageFromURL(image_url)
+      log.debug('[FEDI] Download attachment for event %s', image_url)
 
       media = [{
-        url: req.file.filename,
-        height: req.file.height,
-        width: req.file.width,
+        url: file.filename,
+        height: file.height,
+        width: file.width,
         name: APEvent.attachment[0]?.name || APEvent.name.trim() || '',
-        size: req.file.size || 0,
+        size: file.size || 0,
         focalpoint: APEvent.attachment[0]?.focalPoint
       }]
     }
@@ -74,7 +71,8 @@ module.exports = {
       title: APEvent.name.trim(),
       start_datetime: dayjs(APEvent.startTime).unix(),
       end_datetime: APEvent?.endTime ? dayjs(APEvent.endTime).unix() : null,
-      description: helpers.sanitizeHTML(linkifyHtml(APEvent.content, { target: '_blank', render: { email: ctx => ctx.content }})),
+      description: helpers.sanitizeHTML(linkifyHtml(APEvent?.content ?? '', { target: '_blank', render: { email: ctx => ctx.content }})),
+      online_locations,
       media,
       is_visible: true,
       ap_id,
