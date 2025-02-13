@@ -33,6 +33,11 @@ module.exports = {
         // in reply to another resource...
         const resource = await Resource.findOne({ where: { activitypub_id: inReplyTo }, include: [Event] })
         event = resource && resource.event
+
+        if (!event) {
+          // in reply to a remote event
+          event = await Event.findOne({ where: { ap_id: inReplyTo }})
+        }
       }
     }
 
@@ -42,7 +47,7 @@ module.exports = {
       return res.status(404).send('Not found')
     }
 
-    log.debug(`[FEDI] Reply from ${req.body.actor} to "${event.title}"`)
+    log.debug(`[FEDI] Reply from ${req.body.actor} to "${res.locals.settings.baseurl}/event/${event.slug}"`)
 
     body.object.content = helpers.sanitizeHTML(linkifyHtml(body.object.content || '', { target: '_blank', render: { email: ctx => ctx.content }}))
 
