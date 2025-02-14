@@ -1,3 +1,7 @@
+# 0.1.2 (14-02-2025)
+- Fix sitemap: show all events (with weekly freq) and last mod date, root page as daily + exclude unwanted routes
+[#8](https://github.com/tboye/offbeat.amsterdam/pull/8)
+
 # 0.1.1 (10-02-2025)
 ## Improvements
 - Improve text display on About page (larger text size and better alignment)
