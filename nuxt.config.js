@@ -70,14 +70,23 @@ module.exports = {
       '/Admin',
       '/settings',
       '/export',
-      '/setup'
+      '/setup',
+      '/Login',
+      '/Authorize',
+      '/my_events',
+      '/Register',
+      '/search'
     ],
     routes: async () => {
       if (config.status === 'READY') {
         try {
-          const Event = require('./server/api/models/event')
-          const events = await Event.findAll({ where: { is_visible: true } })
-          return events.map(e => `/event/${e.slug}`)
+          const response = await fetch(`${config.baseurl}/api/events`)
+          const events = await response.json()
+          return events.map(e => ({
+            url: `/event/${e.slug}`,
+            changefreq: 'weekly',
+            lastmod: e.updatedAt
+          }))
         } catch (e) {
           return []
         }
