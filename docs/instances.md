@@ -45,6 +45,7 @@ nav_order: 7
 - [cloudspeakers.org](https://cloudspeakers.org/) (Utrecht?)
 - [eventos.lhc.net.br](https://eventos.lhc.net.br/) (Campinas)
 - [berlin.askapunk.de](https://berlin.askapunk.de) (diy shows and similar events in berlin)
+- [do.basspistol.org](https://do.basspistol.org) (Music and activism, Stockholm, Berlin, Geneva)
 
 
 You can also check federated instances on [fedidb.org](https://fedidb.org/software/gancio) or on [fediverse.observer](https://gancio.fediverse.observer/list)
