@@ -56,7 +56,7 @@ afterAll(async () => {
 
 describe('Nodeinfo', () => {
   test('shoud return a json content', async () => {
-    const response = await request(app).get('/.well-known/nodeinfo')
+    await request(app).get('/.well-known/nodeinfo')
       .expect('Content-Type', /application\/json/)
       .expect(200)
   })
@@ -79,7 +79,7 @@ describe('Nodeinfo', () => {
 
 describe('Webfinger', () => {
   test('should return a 404 on bad request', () => {
-    request(app).get('/.well-known/webfinger')
+    return request(app).get('/.well-known/webfinger')
       .expect(400)
   })
 
@@ -128,56 +128,56 @@ describe('AP', () => {
   describe('Location', () => {
 
     test('should fail parsing a location without a name', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/bad-location-without-a-name.json')
-      expect(parsePlace({ location })).rejects.toThrow()
+      expect(parseAPLocation({ location })).rejects.toThrow()
     })
 
     test ('should parse a location with only a name', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/physical-location-without-id.json')
-      let [place] = await parsePlace({ location })
+      let [place] = await parseAPLocation({ location })
       expect(place.name).toBe('Location without id')
       expect(place.ap_id).toBeUndefined()
       expect(place.id).toBe(1)
     })
 
     test ('should parse a location with id and name', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/physical-location-no-address.json')
-      let [place] = await parsePlace({ location })
+      let [place] = await parseAPLocation({ location })
       expect(place.name).toBe('Location with a name')
       expect(place.address).toBe('Location with a name')
       expect(place.id).toBe(2)
     })
 
     test ('should parse a location with a simple string address', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/physical-location-with-simple-string-address.json')
-      let [place] = await parsePlace({ location })
+      let [place] = await parseAPLocation({ location })
       expect(place.name).toBe('Location with a simple string address')
     })
 
     test ('should parse a location with a postal address', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/physical-location-with-postal-address.json')
-      let [place] = await parsePlace({ location })
+      let [place] = await parseAPLocation({ location })
       expect(place.name).toBe('Location with a postal address')
     })
 
     test ('should parse a virtual location', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/virtual-location.json')
-      let [place, online_locations] = await parsePlace({ location })
+      let [place, online_locations] = await parseAPLocation({ location })
       expect(place.name).toBe('online')
       expect(online_locations.length).toBe(1)
       expect(online_locations[0]).toBe("https://virtual.location.org")
     })
 
     test ('should parse a mixed location', async () => {
-      const { parsePlace } = require('../server/federation/helpers.js')
+      const { parseAPLocation } = require('../server/federation/places.js')
       const location = require('./fixtures/AP-location/multiple-mixed-locations.json')
-      let [place, online_locations] = await parsePlace({ location })
+      let [place, online_locations] = await parseAPLocation({ location })
       expect(place.name).toBe('Location with a name')
       expect(online_locations.length).toBe(2)
       expect(online_locations[0]).toBe('https://virtual.location.org')
