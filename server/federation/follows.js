@@ -37,7 +37,7 @@ module.exports = {
   async unfollow (req, res) {
     const settings = res.locals.settings
     const body = req.body
-    const username = body.object.object.replace(`${config.baseurl}/federation/u/`, '')
+    const username = body.object.object?.replace(`${config.baseurl}/federation/u/`, '')
     if (username !== settings.instance_name) {
       log.warn(`[FEDI] Unfollowing wrong user: ${username} instead of ${settings.instance_name}`)
       return res.status(404).send('User not found')
