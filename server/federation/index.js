@@ -1,15 +1,12 @@
 const express = require('express')
 const router = express.Router()
-// const cors = require('cors')
 const Users = require('./users')
 const Places = require('./places')
-const { Event, User, Tag, Place } = require('../api/models/models')
-
-const settingsController =  require('../api/controller/settings')
-
-const Helpers = require('./helpers')
+const Events = require('./events')
 const Inbox = require('./inbox')
 const log = require('../log')
+
+const { verifySignature } = require('./helpers')
 const { HttpError } = require('../helpers')
 
 /**
@@ -17,61 +14,22 @@ const { HttpError } = require('../helpers')
  * ref: https://www.w3.org/TR/activitypub/#Overview
  */
 
-// router.use(cors())
-
 // middleware to check if federation is enabled
 router.use((_req, res, next) => {
-  if (settingsController.settings.enable_federation) { return next() }
+  if (res.locals.settings.enable_federation) {
+    return next()
+  }
   log.debug('[FEDI] Federation disabled!')
-  return  res.status(401).send('Federation disabled')
+  return res.status(401).send('Federation disabled')
 })
 
+// parse JSON body
 router.use(express.json({ type: ['application/json', 'application/activity+json', 'application/ld+json'] }))
 
-router.get('/m/:event_id:json(.json)?', async (req, res) => {
-  log.debug('[AP] Get event details ')
-  const event_id = req.params.event_id
-  const json = req.params.json
-  if (Helpers.preferHTML(req) && !json) {
-    return res.redirect(302, `/event/${event_id}`)
-  }
-  const event = await Event.findByPk(req.params.event_id, { include: [User, Tag, Place] })
-  if (!event) { return res.status(404).send('Not found') }
-  const eventAp = event.toAP(settingsController.settings)
-  eventAp['@context'] = [
-    'https://www.w3.org/ns/activitystreams',
-    'https://w3id.org/security/v1',
-    {
-      toot: 'http://joinmastodon.org/ns#',
-
-      // A property-value pair, e.g. representing a feature of a product or place. We use this to publish this very same instance
-      // https://docs.joinmastodon.org/spec/activitypub/#PropertyValue
-      schema: 'http://schema.org#',
-      ProperyValue: 'schema:PropertyValue',
-      value: 'schema:value',
-
-      // https://docs.joinmastodon.org/spec/activitypub/#discoverable
-      "discoverable": "toot:discoverable",
-
-      // https://docs.joinmastodon.org/spec/activitypub/#Hashtag
-      "Hashtag": "https://www.w3.org/ns/activitystreams#Hashtag",
-
-      manuallyApprovesFollowers: 'as:manuallyApprovesFollowers',
-
-      // focal point - https://docs.joinmastodon.org/spec/activitypub/#focalPoint
-      "focalPoint": {
-        "@container": "@list",
-        "@id": "toot:focalPoint"
-      }
-    }
-  ]
-
-  res.type('application/activity+json; charset=utf-8')
-  return res.json(eventAp)
-})
+router.get('/m/:event_id:json(.json)?', Events.get)
 
 // get any message coming from federation
-router.post('/u/:name/inbox', Helpers.verifySignature, Inbox)
+router.post('/u/:name/inbox', verifySignature, Inbox)
 
 router.get('/u/:name/outbox', Users.outbox)
 // router.get('/u/:name/followers', Users.followers)
