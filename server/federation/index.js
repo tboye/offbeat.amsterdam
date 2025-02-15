@@ -10,6 +10,7 @@ const settingsController =  require('../api/controller/settings')
 const Helpers = require('./helpers')
 const Inbox = require('./inbox')
 const log = require('../log')
+const { HttpError } = require('../helpers')
 
 /**
  * Federation is calling!
@@ -83,6 +84,16 @@ router.get('/p/:id', Places.get)
 router.use((req, res) => {
   log.warn(`[FEDI] 404 Page not found: ${req.path}`)
   res.status(404).send('404: Page not Found')
+})
+
+router.use((err, _req, res, _next) => {
+  if (err instanceof HttpError) {
+    log.warn(err.message)
+    res.status(err.status).send(err.message)
+  } else {
+    log.error(err);
+    res.status(501).send('Internal Server Error')
+  }
 })
 
 module.exports = router
