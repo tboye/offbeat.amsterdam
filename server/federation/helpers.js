@@ -3,13 +3,16 @@ const axios = require('axios')
 const crypto = require('crypto')
 const config = require('../config')
 const httpSignature = require('@peertube/http-signature')
-const { APUser, Instance, Event } = require('../api/models/models')
 const dayjs = require('dayjs')
-const { Task, TaskManager } = require('../taskManager')
 const url = require('url')
 const settingsController = require('../api/controller/settings')
 const log = require('../log')
-const helpers = require('../helpers')
+const Ego = require('./ego')
+const Place = require('./places')
+
+const { APUser, Instance, Event } = require('../api/models/models')
+const { Task, TaskManager } = require('../taskManager')
+const { getImageFromURL, sanitizeHTML, NotFoundError, BadRequestError, UnauthorizedError } = require('../helpers')
 
 // process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
@@ -62,7 +65,7 @@ const Helpers = {
       '/poco'
     ]
     if (urlToIgnore.includes(req.path)) {
-      log.debug(`Ignore noisy fediverse ${req.path}`)
+      log.debug(`[FEDI] Ignore noisy fediverse ${req.path}`)
       return res.status(404).send('Not Found')
     }
     next()
@@ -110,8 +113,8 @@ const Helpers = {
       })
 
       // check if content-type is json
-      if (!ret?.headers?.['content-type'].includes('json')) {
-        log.error(`[FEDI] Error in sign and send, wrong content-type returned: ${ret.headers['content-type']}`)
+      if (!ret?.headers?.['content-type']?.includes('json')) {
+        log.error(`[FEDI] Error in sign and send, wrong content-type returned: ${ret.headers['content-type']} - status: ${ret.status}`)
         return
       }
 
@@ -119,12 +122,13 @@ const Helpers = {
       return ret.data
     } catch (e) {
       log.error("[FEDI] Error in sign and send [%s]: %s", inbox, e?.response?.data?.error ?? e?.response?.statusMessage ?? '' + ' ' + String(e))
+      throw e
     }
   },
 
   async sendEvent (event, type = 'Create') {
     if (!settingsController.settings.enable_federation) {
-      log.info('event not send, federation disabled')
+      log.info('[FEDI] Event not sent, federation is disabled')
       return
     }
 
@@ -147,6 +151,7 @@ const Helpers = {
         actor: `${config.baseurl}/federation/u/${settingsController.settings.instance_name}`,
         object: event.toAP(settingsController.settings, recipients[sharedInbox], type)
       }
+
       body['@context'] = [
         'https://www.w3.org/ns/activitystreams',
         'https://w3id.org/security/v1',
@@ -173,181 +178,144 @@ const Helpers = {
             "@id": "toot:focalPoint"
           }
         }]
-        const task = new Task({
-          name: 'AP',
-          method: Helpers.signAndSend,
-          args: [JSON.stringify(body), sharedInbox]
-        })
-        TaskManager.add(task)
+
+      const task = new Task({
+        name: 'AP',
+        method: Helpers.signAndSend,
+        args: [JSON.stringify(body), sharedInbox]
+      })
+      TaskManager.add(task)
     
     }
   },
 
-  preferHTML (req) {
-    return req.accepts('html', 'application/json', 'application/activity+json', 'application/ld+json') === 'html'
-  },
-
-  /**
-   * Parses the location of an ActivityPub Event to extract physical and online locations.
-   * @link https://www.w3.org/TR/activitystreams-vocabulary/#places
-   * @link https://codeberg.org/fediverse/fep/src/commit/4a75a1bc50bc6d19fc1e6112f02c52621bc178fe/fep/8a8e/fep-8a8e.md#location
-   * @param {Object} APEvent - The ActivityPub Event object
-   * @returns {Array} An array containing the Place and a list of online locations
-   */
-  async parsePlace(APEvent) {
-    const eventController = require('../api/controller/event')
-    let place = null
-
-    if (!APEvent?.location) {
-      log.warn(`[FEDI] Event "${APEvent?.name}" has no location field`)
-      return [null, null]
+  async parseAPMessage (APMessage, actor) {
+    
+    if (APMessage.type === 'Announce' || APMessage.type === 'Create') {
+      if (!APMessage?.object || !APMessage?.type) {
+        log.warn('[FEDI] message without `object` or `type` property: %s', APMessage)
+        throw new BadRequestError('message without `object` or `type` property')
+      }
+      log.debug(`[FEDI] Parsing ${APMessage.type}`)
+      return Helpers.parseAPMessage(APMessage?.object, actor)
     }
 
-    const locations = Array.isArray(APEvent.location) ? APEvent.location : [APEvent.location]
-
-    // find the first physical place from locations
-    let APPlace = locations.find(location => location.address)
-
-    // get the list of online locations
-    let onlineLocations = locations.filter(location => location.type === 'VirtualLocation' && location?.url).map(location => location.url)
-
-    // online locations could be in attachments too
-    onlineLocations = onlineLocations.concat(APEvent?.attachment?.filter(a => a?.type === 'Link').map(a => a?.href).filter(a => a && !onlineLocations.includes(a)))
-
-    // we have a physical place
-    if (APPlace) {
-      place = {
-        place_name: APPlace?.name,
-        ...(APPlace?.id && { place_ap_id: APPlace.id }),
-        ...(APPlace?.latitude && APPlace?.longitude && { place_latitude: APPlace.latitude, place_longitude: APPlace.longitude }),
+    let event
+    if (typeof APMessage === 'string') {
+      const is_local = APMessage?.match(`${config.baseurl}/federation/m/(.*)`)
+      // Announce of local event
+      if (is_local) {
+        return Ego.boost(APMessage, actor)
       }
-    // no physical but at least virtual location
-    } else if (onlineLocations.length) {
-      place = {
-        place_name: 'online'
-      }
-    // nothing...
+    } else if (APMessage.type === 'Event') {
+      event = APMessage
     } else {
-      log.warn(`[FEDI] No Physical nor Virtual location: ${JSON.stringify(APEvent.location)}`)
-      return [null, null]
+      log.warn(`[FEDI] Skip AP object of type: ${APMessage.type}`)
+      return false
     }
 
-    // the `address` field could be Text, PostalAddress or VirtualLocation, we do support the name as a fallback
-    const addr = APPlace?.address
-    if (addr) {
-      if (typeof addr === 'string') {
-        place.place_address = addr
-      } else if ( addr?.streetAddress || addr?.addressLocality || addr?.addressCountry || addr?.addressRegion ) {
-        place.place_address = [ addr?.streetAddress, addr?.addressLocality, addr?.addressRegion, addr?.addressCountry].filter(part => part).join(', ')
-      } else if (addr?.url) {
-        place.place_name = 'online'
+    if (!actor.following || !actor.trusted) {
+      log.warn(`[FEDI] APUser not followed or not trusted`)
+      return false
+    }
+
+    try {
+      let tmp_actor
+      if (!event) {
+        // this is an announce of a remote event, let's get the actor
+        event = await Helpers.signAndSend('', APMessage, 'get')
+      }
+      if (event?.type === 'Event') {
+        if (event?.attributedTo !== actor?.ap_id) {
+          log.warn(`[FEDI] Event attributedTo Actor is different from Activity Actor ${event?.attributedTo} !== ${actor?.ap_id}, keep going as I trust and follow ${actor?.ap_id}`)
+          const instance = await Helpers.getInstance(event?.attributedTo)
+          tmp_actor = await Helpers.getActor(event?.attributedTo, instance)
+        }
+        return Helpers.parseAPEvent(event, tmp_actor ?? actor)
       } else {
-        console.warn(`[FEDI] Event "${APEvent?.name}" has bad address location: ${JSON.stringify(APPlace?.address)}`)
+        log.debug(`[FEDI] Skip AP object of type ${event?.type}`)
+        return false
       }
-    } else {
-      place.place_address = place.place_name
+    } catch (e) {
+      log.error('[FEDI] Error getting remote AP Event (%s): %s', APMessage, e?.message ?? e)
+      throw new Error("Error getting remote AP Event")
     }
-
-    place = await eventController._findOrCreatePlace(place)
-
-    if (!place) {
-        throw new Error('Place not found nor created')
-    }
-
-    return [place, onlineLocations]
   },
-
+  
   /**
    *  Event object.type
-   *  Create / Announce
    */
-  async parseAPEvent (message, actor=message?.actor) {
+  async parseAPEvent (APEvent, actor) {
       const tagController = require('../api/controller/tag')
 
-      // has to have an object and a type property..
-      if (!message?.object || !message?.type) {
-        log.warn('[FEDI] message without `object` or `type` property: %s', message)
-        throw new Error ('Wrong AP message: no object or type property')
+      if (APEvent?.type !== 'Event') {
+        log.warn(`[FEDI] parseAPEvent with another object type ${APEvent.type}`)
+        throw new BadRequestError(`Wrong object type: ${APEvent.type}`)
       }
 
-      // TODO: supporting Announce of a Create (refactoring is needed to support boost)
-      if (message.type === 'Announce' && message.object?.type === 'Create' && message.object?.object) {
-        message.object = message.object.object
-        message.type = 'Create'
+      // validate incoming events
+      const required_fields = ['name', 'startTime', 'id', 'type']
+      let missing_field = required_fields.find(required_field => !APEvent[required_field])
+      if (missing_field) {
+        log.warn(`[FEDI] ${missing_field} required`)
+        throw new BadRequestError(`${missing_field} required`)
       }
 
-      if (message?.actor !== actor) {
-        log.warn(`[FEDI] This event is attributed to another actor? ${actor} / ${message?.actor}`)
-        return
+      // check if this event is new
+      const ap_id = APEvent.id
+      const exists = await Event.findOne({ where: { ap_id }})
+      if (exists) {
+        log.warn(`[FEDI] Avoid creating a duplicated event ${ap_id} - ${config.baseurl}/event/${exists.slug}`)
+        return exists
       }
-
-      // we only support Create / Event
-      if (message.type === 'Create' && message.object.type === 'Event') {
-
-        const APEvent = message.object
-
-        // validate incoming events
-        const required_fields = ['name', 'startTime', 'id']
-        let missing_field = required_fields.find(required_field => !APEvent[required_field])
-        if (missing_field) {
-          log.warn(`[FEDI] ${missing_field} required`)
-          throw new Error(`${missing_field} required`)
-        }
-    
-        // check if this event is new
-        const ap_id = APEvent.id
-        const exists = await Event.findOne({ where: { ap_id }})
-        if (exists) {
-          log.warn('[FEDI] Avoid creating a duplicated event %s', ap_id)
-          return exists
-        }
-    
-        const [ place, online_locations ] = await Helpers.parsePlace(APEvent)
-    
-        let media = []
-        const image_url = APEvent?.attachment?.find(a => a?.mediaType.includes('image') && a.url)?.url
-        if (image_url) {
-    
-          const file = await helpers.getImageFromURL(image_url)
-          log.debug('[FEDI] Download attachment for event %s', image_url)
-    
-          media = [{
-            url: file.filename,
-            height: file.height,
-            width: file.width,
-            name: APEvent.attachment[0]?.name || APEvent.name.trim() || '',
-            size: file.size || 0,
-            focalpoint: APEvent.attachment[0]?.focalPoint
-          }]
-        }
-    
-        // create it
-        const event = await Event.create({
-          title: APEvent?.name?.trim() ?? '',
-          start_datetime: dayjs(APEvent.startTime).unix(),
-          end_datetime: APEvent?.endTime ? dayjs(APEvent.endTime).unix() : null,
-          description: helpers.sanitizeHTML(APEvent?.content ?? APEvent?.summary ?? ''),
-          online_locations,
-          media,
-          is_visible: true,
-          ap_id,
-          ap_object: APEvent, 
-          apUserApId: message?.actor,
-        })
-    
-        if (place) {
-          await event.setPlace(place)
-        }
-    
-        // create/assign tags
-        let tags = []
-        if (APEvent.tag) {
-          tags = await tagController._findOrCreate(APEvent.tag.map(t => t?.name?.substr(1)))
-          await event.setTags(tags)
-        }
-      } else {
-        log.info('[FEDI] This is not an Event')
+  
+      const [ place, online_locations ] = await Place.parseAPLocation(APEvent)
+  
+      let media = []
+      const image_url = APEvent?.attachment?.find(a => a?.mediaType.includes('image') && a.url)?.url
+      if (image_url) {
+  
+        const file = await getImageFromURL(image_url)
+        log.debug('[FEDI] Download attachment for event %s', image_url)
+  
+        media = [{
+          url: file.filename,
+          height: file.height,
+          width: file.width,
+          name: APEvent.attachment[0]?.name || APEvent.name.trim() || '',
+          size: file.size || 0,
+          focalpoint: APEvent.attachment[0]?.focalPoint
+        }]
       }
+  
+      // TODO: should skip past event?
+
+      // create it
+      const event = await Event.create({
+        title: APEvent?.name?.trim() ?? '',
+        start_datetime: dayjs(APEvent.startTime).unix(),
+        end_datetime: APEvent?.endTime ? dayjs(APEvent.endTime).unix() : null,
+        description: sanitizeHTML(APEvent?.content ?? APEvent?.summary ?? ''),
+        online_locations,
+        media,
+        is_visible: true,
+        ap_id,
+        ap_object: APEvent, 
+        apUserApId: actor?.ap_id ?? actor,
+      })
+  
+      if (place) {
+        await event.setPlace(place)
+      }
+  
+      // create/assign tags
+      let tags = []
+      if (APEvent.tag) {
+        tags = await tagController._findOrCreate(APEvent.tag.map(t => t?.name?.substr(1)))
+        await event.setTags(tags)
+      }
+      log.debug(`[FEDI] Event created: ${config.baseurl}/event/${event.slug}`)
+      return event
   },
 
   async followActor (actor) {
@@ -371,9 +339,7 @@ const Helpers = {
     }
     
     for(const event of events) {
-      await Helpers.parseAPEvent(event, actor.ap_id).catch(e => {
-        console.error(e)
-      })
+      await Helpers.parseAPMessage(event, actor).catch(e => log.warn(e))
     }
   },
 
