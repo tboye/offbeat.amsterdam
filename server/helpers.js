@@ -43,7 +43,37 @@ domPurify.addHook('beforeSanitizeElements', node => {
   return node
 })
 
-module.exports = {
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
+class BadRequestError extends HttpError {
+  constructor(message = 'Bad Request') {
+    super(400, message);
+  }
+}
+
+class UnauthorizedError extends HttpError {
+  constructor(message = 'Unauthorized') {
+    super(401, message);
+  }
+}
+
+class NotFoundError extends HttpError {
+  constructor(message = 'Not Found') {
+    super(404, message);
+  }
+}
+
+const Helpers = {
+  HttpError,
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,  
 
   randomString(length = 12) {
     const wishlist = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -60,6 +90,13 @@ module.exports = {
     })
   },
 
+  preferHTML (req) {
+    return req.accepts('html', 'application/activity+json', 'application/ld+json') === 'html'
+  },
+
+  preferJSON (req) {
+    return ['application/activity+json', 'application/ld+json'].includes(req.accepts('html', 'application/activity+json', 'application/ld+json'))
+  },
 
   async initSettings(_req, res, next) {
     // initialize settings
@@ -114,7 +151,7 @@ module.exports = {
     const router = express.Router()
     // serve images/thumb
     router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }), 
-      (req, res) => res.redirect('/fallbackimage.png')
+      (_req, res) => res.redirect('/fallbackimage.png')
     )
     
     router.use('/download/:filename', (req, res) => {
@@ -316,9 +353,8 @@ module.exports = {
 
   async APEventRedirect(req, res, next) {
     const eventController = require('../server/api/controller/event')
-    const { preferJSON } = require('../server/federation/helpers')
 
-    if (preferJSON(req)) {
+    if (Helpers.preferJSON(req)) {
       const event = await eventController._get(req.params.slug)
       if (event) {
         log.debug('[FEDI] APRedirect for %s', event.title)
@@ -330,8 +366,7 @@ module.exports = {
   },
 
   async APRedirect (req, res, next) {
-    const { preferJSON } = require('../server/federation/helpers')
-    if (preferJSON(req)) {
+    if (Helpers.preferJSON(req)) {
       log.debug(`[FEDI] JSON preferred ${req.path}`)
       return res.redirect(301, `/federation/u/${settingsController.settings.instance_name}`)
     }
@@ -370,3 +405,5 @@ module.exports = {
   }
 
 }
+
+module.exports = Helpers

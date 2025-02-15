@@ -65,10 +65,15 @@ async function main () {
   app.use('/event/:slug', helpers.APEventRedirect)
   app.use('/', helpers.APRedirect)
 
-  // // Handle 500
-  app.use((error, _req, res, _next) => {
-    log.error('[ERROR] %s', error)
-    return res.sendStatus(500) //.send('500: Internal Server Error')
+  // Handle 500
+  app.use((err, _req, res, _next) => {
+    if (err instanceof helpers.HttpError) {
+      log.warn(err.message)
+      res.status(err.status).send(err.message)
+    } else {
+      log.error(err)
+      res.status(501).send('Internal Server Error')
+    }
   })
 
   // remaining request goes to nuxt
