@@ -49,6 +49,7 @@ export default {
         this.$emit('close')
         this.$root.$message('event.saved', { color: 'success' })
       } catch(e) {
+        this.loading = false
         this.$root.$message(e, { color: 'warning' })
       }
     }

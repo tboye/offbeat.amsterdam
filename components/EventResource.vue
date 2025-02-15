@@ -51,7 +51,7 @@
 
             v-icon.mr-1(v-show='resource.hidden' v-text='mdiEyeOff')
 
-            a(:href='resource.data.url || resource.data.context')
+            a(:href='resource.data?.url ?? resource.data?.context ?? resource.data?.id')
                 small {{$time.format(resource.data.published,'ff')}}
 
         v-card-text
