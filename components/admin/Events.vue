@@ -11,22 +11,46 @@ v-container
       :headers='headers')
       template(v-slot:item.when='{ item }') {{$time.when(item)}}
       template(v-slot:item.actions='{ item }')
-        v-btn(text small @click='confirm(item)' color='success') {{$t('common.confirm')}}
-        v-btn(text small :to='`/event/${item.slug || item.id}`' color='success') {{$t('common.preview')}}
-        v-btn(text small :to='`/add/${item.id}`' color='warning') {{$t('common.edit')}}
-        v-btn(text small @click='remove(item)'
-          color='error') {{$t('common.delete')}}
+        t-btn(text small @click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
+          v-icon(v-text='mdiCheckBold')
+        t-btn(text small :to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
+          v-icon(v-text='mdiEye')
+        t-btn(text small :to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
+          v-icon(v-text='mdiPencil')
+        t-btn(text small @click='remove(item)' color='error' :tooltip="$t('common.delete')")
+          v-icon(v-text='mdiDeleteForever')
+
+  v-card-title {{$t('common.past_events')}}
+    v-data-table(
+      :hide-default-footer='unconfirmedOldEvents.length<10'
+      :header-props='{ sortIcon: mdiChevronDown }'
+      :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
+      :items='unconfirmedOldEvents'
+      :headers='headers')
+      template(v-slot:item.when='{ item }') {{$time.when(item)}}
+      template(v-slot:item.actions='{ item }')
+        t-btn(text small @click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
+          v-icon(v-text='mdiCheckBold')
+        t-btn(text small :to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
+          v-icon(v-text='mdiEye')
+        t-btn(text small :to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
+          v-icon(v-text='mdiPencil')
+        t-btn(text small @click='remove(item)' color='error' :tooltip="$t('common.delete')")
+          v-icon(v-text='mdiDeleteForever')
 </template>
 <script>
-import { mdiChevronLeft, mdiChevronRight, mdiChevronDown } from '@mdi/js'
+import { mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiCheckBold } from '@mdi/js'
+import TBtn from '../../components/TBtn.vue'
 
 export default {
   props: {
-    unconfirmedEvents: { type: Array, default: () => [] }
+    unconfirmedEvents: { type: Array, default: () => [] },
+    unconfirmedOldEvents: { type: Array, default: () => [] },
   },
+  components: { TBtn },
   data () {
     return {
-      mdiChevronLeft, mdiChevronRight, mdiChevronDown,
+      mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiCheckBold,
       valid: false,
       dialog: false,
       editing: false,
@@ -34,7 +58,7 @@ export default {
         { value: 'title', text: this.$t('common.title') },
         { value: 'place.name', text: this.$t('common.place') },
         { value: 'when', text: this.$t('common.when') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
       ]
     }
   },

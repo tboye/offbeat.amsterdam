@@ -18,8 +18,8 @@ v-container.container.pa-0.pa-md-3
       v-tab(href='#unconfirmed_events')
         v-badge(:value='!!unconfirmedEvents.length' :content='unconfirmedEvents.length') {{$t('common.events')}}
       v-tab-item(value='unconfirmed_events')
-        Events(:unconfirmedEvents='unconfirmedEvents'
-          @confirmed='id => { unconfirmedEvents = unconfirmedEvents.filter(e => e.id !== id)}')
+        Events(:unconfirmedEvents='unconfirmedEvents' :unconfirmedOldEvents='unconfirmedOldEvents'
+          @confirmed='id => { unconfirmedEvents = unconfirmedEvents.filter(e => e.id !== id); unconfirmedOldEvents = unconfirmedOldEvents.filter(e => e.id !== id)}')
 
       //- USERS
       v-tab(href='#users' v-if='$auth.user.is_admin')
@@ -104,9 +104,9 @@ export default {
     }
     try {
       const users = await $axios.$get('/users')
-      const unconfirmedEvents = await $axios.$get('/event/unconfirmed')
+      const { events: unconfirmedEvents, oldEvents: unconfirmedOldEvents } = await $axios.$get('/event/unconfirmed')
       const selfReachable = await $axios.$get('/reachable')
-      return { users, unconfirmedEvents, url, selfReachable }
+      return { users, unconfirmedEvents, unconfirmedOldEvents, url, selfReachable }
     } catch (e) {
       return { users: [], unconfirmedEvents: [], url, selfReachable: false }
     }
