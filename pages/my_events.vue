@@ -24,7 +24,7 @@
           </template>
           <template v-else>
             <t-btn @click='toggle(item)' v-if='!item.is_visible' color='success' :tooltip="$t('common.start')"><v-icon v-text='mdiPlay' /></t-btn>
-            <t-btn @click='toggle(item)' v-else color='info' :tooltip="$t('common.pause')"><v-icon v-text='mdiPause' /></t-btn>                    
+            <t-btn @click='toggle(item)' v-else color='info' :tooltip="$t('common.pause')"><v-icon v-text='mdiPause' /></t-btn>
           </template>
           <t-btn :to='`/add/${item.id}`' color='yellow' :tooltip="$t('common.edit')"><v-icon v-text='mdiPencil' /></t-btn>
           <t-btn @click='remove(item, item.recurrent)' color='error' :tooltip="$t('common.delete')"> <v-icon v-text='item.recurrent ? mdiDeleteForever : mdiDelete' /></t-btn>
