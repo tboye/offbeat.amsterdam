@@ -6,6 +6,7 @@ const { Event, Place, APUser, Tag } = require('../api/models/models')
 const config = require('../config')
 const log = require('../log')
 const Helpers = require('./helpers')
+const settingsController = require('../api/controller/settings')
 
 module.exports = {
   get (req, res) {
@@ -14,7 +15,7 @@ module.exports = {
       log.debug('[FEDI] Get actor but prefer text/html, redirect to homepage')
       return res.redirect(302, '/')
     }
-    const settings = res.locals.settings
+    const settings = settingsController.settings
     const name = req.params.name
     if (!name) { return res.status(400).send('Bad request.') }
     
@@ -22,7 +23,7 @@ module.exports = {
       log.debug(`[FEDI] Get unknown actor ${name}`)
       return res.status(404).send(`No record found for ${escape(name)}`)
     }
-    log.debug('[FEDI] Get actor')
+    log.debug('[FEDI] Get actor aa')
     const ret = {
       '@context': [
         'https://www.w3.org/ns/activitystreams',
@@ -138,7 +139,7 @@ module.exports = {
     const name = req.params.name
     const page = parseInt(req.query?.page)
     const events_per_page = 10
-    const settings = res.locals.settings
+    const settings = settingsController.settings
 
     if (!name) {
       log.info('[AP] Bad /outbox request')

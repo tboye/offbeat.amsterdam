@@ -62,7 +62,11 @@ async function main () {
 
   // api!
   app.use('/api', api())
+
+  // redirect to ld+json AP event representation if json content-type is preferred
   app.use('/event/:slug', helpers.APEventRedirect)
+
+  // redirect to Application Actor if json content-type is preferred
   app.use('/', helpers.APRedirect)
 
   // Handle 500
