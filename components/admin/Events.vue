@@ -76,8 +76,11 @@ export default {
     async remove (event) {
       const ret = await this.$root.$confirm('event.remove_confirmation')
       if (!ret) { return }
-      await this.$axios.delete(`/event/${event.id}`)
-      this.$root.$message('admin.event_remove_ok')
+      try {
+        await this.$axios.delete(`/event/${event.id}`)
+        this.$root.$message('admin.event_remove_ok')
+        this.$emit('removed', event.id)
+      } catch (e) {}
     }
   }
 }
