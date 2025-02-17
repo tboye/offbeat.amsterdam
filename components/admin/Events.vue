@@ -2,40 +2,40 @@
 v-container
   v-card-title {{$t('common.events')}}
   v-card-subtitle {{$t('admin.event_confirm_description')}}
-  v-card-text
-    v-data-table(
-      :hide-default-footer='unconfirmedEvents.length<10'
-      :header-props='{ sortIcon: mdiChevronDown }'
-      :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
-      :items='unconfirmedEvents'
-      :headers='headers')
-      template(v-slot:item.when='{ item }') {{$time.when(item)}}
-      template(v-slot:item.actions='{ item }')
-        t-btn(text small @click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
-          v-icon(v-text='mdiCheckBold')
-        t-btn(text small :to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
-          v-icon(v-text='mdiEye')
-        t-btn(text small :to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
-          v-icon(v-text='mdiPencil')
-        t-btn(text small @click='remove(item)' color='error' :tooltip="$t('common.delete')")
-          v-icon(v-text='mdiDeleteForever')
+  v-data-table(
+    :hide-default-footer='unconfirmedEvents.length<10'
+    :header-props='{ sortIcon: mdiChevronDown }'
+    :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
+    :items='unconfirmedEvents'
+    :headers='headers')
+    template(v-slot:item.start_datetime='{ item }') {{$time.when(item)}}
+    template(v-slot:item.actions='{ item }')
+      t-btn(@click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
+        v-icon(v-text='mdiCheckBold')
+      t-btn(:to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
+        v-icon(v-text='mdiEye')
+      t-btn(:to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
+        v-icon(v-text='mdiPencil')
+      t-btn(@click='remove(item)' color='error' :tooltip="$t('common.delete')")
+        v-icon(v-text='mdiDeleteForever') 
 
   v-card-title {{$t('common.past_events')}}
-    v-data-table(
-      :hide-default-footer='unconfirmedOldEvents.length<10'
-      :header-props='{ sortIcon: mdiChevronDown }'
-      :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
-      :items='unconfirmedOldEvents'
-      :headers='headers')
-      template(v-slot:item.when='{ item }') {{$time.when(item)}}
-      template(v-slot:item.actions='{ item }')
-        t-btn(text small @click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
+  v-data-table(
+    :hide-default-footer='unconfirmedOldEvents.length<10'
+    :header-props='{ sortIcon: mdiChevronDown }'
+    :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
+    :items='unconfirmedOldEvents'
+    :headers='headers')
+    template(v-slot:item.start_datetime='{ item }') {{$time.when(item)}}
+    template(v-slot:item.actions='{ item }')
+      template
+        t-btn(@click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
           v-icon(v-text='mdiCheckBold')
-        t-btn(text small :to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
+        t-btn(:to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
           v-icon(v-text='mdiEye')
-        t-btn(text small :to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
+        t-btn(:to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
           v-icon(v-text='mdiPencil')
-        t-btn(text small @click='remove(item)' color='error' :tooltip="$t('common.delete')")
+        t-btn(@click='remove(item)' color='error' :tooltip="$t('common.delete')")
           v-icon(v-text='mdiDeleteForever')
 </template>
 <script>
@@ -56,9 +56,9 @@ export default {
       editing: false,
       headers: [
         { value: 'title', text: this.$t('common.title') },
-        { value: 'place.name', text: this.$t('common.place') },
-        { value: 'when', text: this.$t('common.when') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
+        { value: 'place.name', text: this.$t('common.place'), width: 300 },
+        { value: 'start_datetime', text: this.$t('common.when'), width: 300 },
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false, width: 180 }
       ]
     }
   },
