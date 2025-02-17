@@ -122,6 +122,8 @@ describe('AP', () => {
       .expect('Content-Type', /json/)
 
     expect(response.body.type).toBe('Application')
+    expect(response.body.preferredUsername).toBe('relay')
+    expect(response.body.publicKey.publicKeyPem).toBeDefined()
   })
 
 
