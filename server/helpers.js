@@ -123,7 +123,7 @@ const Helpers = {
       enable_federation: settings.enable_federation,
       enable_resources: settings.enable_resources,
       hide_boosts: settings.hide_boosts,
-      trusted_sources_label: settings.trusted_sources_label || settings.trusted_instances_label,
+      trusted_sources_label: settings?.trusted_sources_label ?? settings.trusted_instances_label,
       'theme.is_dark': settings['theme.is_dark'],
       dark_colors: settings.dark_colors,
       light_colors: settings.light_colors,
