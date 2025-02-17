@@ -19,7 +19,8 @@ v-container.container.pa-0.pa-md-3
         v-badge(:value='!!unconfirmedEvents.length' :content='unconfirmedEvents.length') {{$t('common.events')}}
       v-tab-item(value='unconfirmed_events')
         Events(:unconfirmedEvents='unconfirmedEvents' :unconfirmedOldEvents='unconfirmedOldEvents'
-          @confirmed='id => { unconfirmedEvents = unconfirmedEvents.filter(e => e.id !== id); unconfirmedOldEvents = unconfirmedOldEvents.filter(e => e.id !== id)}')
+          @confirmed='id => { unconfirmedEvents = unconfirmedEvents.filter(e => e.id !== id); unconfirmedOldEvents = unconfirmedOldEvents.filter(e => e.id !== id)}'
+          @removed='id => { unconfirmedEvents = unconfirmedEvents.filter(e => e.id !== id); unconfirmedOldEvents = unconfirmedOldEvents.filter(e => e.id !== id)}')
 
       //- USERS
       v-tab(href='#users' v-if='$auth.user.is_admin')
