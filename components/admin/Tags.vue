@@ -42,21 +42,20 @@ v-container
       :header-props='{ sortIcon: mdiChevronDown }'
       :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
       :search='search')
-      template(v-slot:item.map='{ item }')
-        span {{item.latitude && item.longitude && 'YEP' }}
       template(v-slot:item.actions='{ item }')
-        v-btn(@click='editTag(item)' color='primary' icon)
+        t-btn(@click='editTag(item)' color='primary' :tooltip="$t('common.edit')")
           v-icon(v-text='mdiPencil')
-        nuxt-link(:to='`/tag/${item.tag}`')
+        t-btn(:to='`/tag/${item.tag}`' color='success'  :tooltip="$t('common.preview')")
           v-icon(v-text='mdiEye')
-        v-btn(@click='removeTag(item)' color='primary' icon)
-          v-icon(v-text='mdiDeleteForever')        
+        t-btn(@click='removeTag(item)' color='error' :tooltip="$t('common.delete')")
+          v-icon(v-text='mdiDeleteForever')
 
 </template>
 <script>
 import { mdiPencil, mdiChevronLeft, mdiChevronRight, mdiMagnify, mdiEye, mdiMapSearch, mdiChevronDown, mdiDeleteForever, mdiTag } from '@mdi/js'
 import { mapState } from 'vuex'
 import get from 'lodash/get'
+import TBtn from '../../components/TBtn.vue'
 
 export default {
   data() {
@@ -76,6 +75,7 @@ export default {
       ]
     }
   },
+  components: { TBtn },
   async fetch() {
     this.tags = await this.$axios.$get('/tags')
   },
