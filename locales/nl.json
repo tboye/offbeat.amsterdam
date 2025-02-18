@@ -121,6 +121,7 @@
         "-1": "laatste"
     },
     "common": {
+        "active": "Active",
         "plugins": "Plugins",
         "help_translate": "Help vertalen",
         "tag": "Tag",
@@ -251,6 +252,9 @@
         "not_valid_code": "Er ging iets fout."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Je kunt evenementen die jou interesseren naar je laten e-mailen.",
         "insert_your_address": "Vul je e-mailadres in",
         "intro": "In tegenstelling tot asociale platformen die alles doen om gebruikers en hun gegevens voor zichzelf te houden, geloven wij dat informatie, zoals mensen, vrij moet zijn. Daarom kun je op te hoogte blijven van de door jou gewenste evenementen, zonder verplicht door deze website te hoeven ploegen.",

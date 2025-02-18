@@ -257,6 +257,9 @@
         "fail": "Kunde inte logga in. Är du säker att lösenordet är korrekt?"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "intro": "Till skillnad från de osociala plattformarna som gör allt för att behålla användare och information om dem, tror vi att information, precis som människor, måste vara fri. Därför kan du hålla dig uppdaterad om de händelser du vill, utan att nödvändigtvis gå via den här sidan.",
         "insert_your_address": "Ange din e-postadress",
         "feed_description": "För att följa uppdateringar från en dator eller smartphone utan att behöva öppna den här sidan periodiskt, använd RSS-flöden.</p>\n\n<p>Med RSS-flöden använder du en speciell app för att ta emot uppdateringar från webbplatser som intresserar dig. Det är ett bra sätt att snabbt följa många webbplatser, utan att behöva skapa ett konto eller andra komplikationer.</p>\n\n<li> Om du har Android rekommenderar vi <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> eller Feeder </li>\n<li> För iPhone / iPad kan du använda <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a> </li>\n<li> För stationär dator / laptop rekommenderar vi Feedbro, som kan installeras på <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefox</a> eller <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome</a>.\n</li> <br/> Genom att lägga till den här länken i din RSS-läsare kommer du att hålla dig uppdaterad.",
@@ -272,6 +275,7 @@
         "first_user": "Administratör skapad"
     },
     "common": {
+        "active": "Active",
         "tags": "Taggar",
         "tag": "Tagg",
         "theme": "Tema",

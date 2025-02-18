@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "next": "Tjetër",
         "export": "Eksporto",
         "send": "Dërgo",
@@ -123,6 +124,9 @@
         "not_registered": "Nuk jeni regjistruar?"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Ju mund të merrni aktivitetet që ju interesojnë të dërguara përmes postës elektronike.",
         "insert_your_address": "Vendos adresën e postës elektronike",
         "ical_description": "Kompjuterët dhe telefonat inteligjentë zakonisht janë të pajisur me një aplikacion kalendar që mund të importojë një kalendar në distancë.",

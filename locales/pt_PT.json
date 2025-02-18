@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "trusted_instances": "Instâncias confiáveis",
         "editor": "Editor",
         "sent": "Enviado",
@@ -368,6 +369,9 @@
         "not_valid_code": "Algo não funcionou corretamente."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Podes obter eventos que sejam do teu interesse via e-mail.",
         "insert_your_address": "Informe seu endereço de e-mail",
         "list_description": "Se têm uma página e quer exibir uma lista de eventos, use o seguinte código",

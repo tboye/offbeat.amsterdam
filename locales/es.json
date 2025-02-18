@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "add_event": "Añadir evento",
         "next": "Continúa",
         "export": "Exporta",
@@ -132,6 +133,9 @@
         "not_valid_code": "Mmmmm algo no salió bien..."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "intro": "A diferencia de las plataformas antisociales, que hacen todo lo posible para mantener datos y usuarios dentro de ellas, creemos que la información, así como las personas, debe ser libre. Por este motivo, puedes mantenerte enterado sobre los eventos que te interesan como mejor te parezca, sin necesariamente tener que pasar por este sitio.",
         "email_description": "Puedes recibir por mail los eventos que te interesan.",
         "insert_your_address": "Casilla de correo",

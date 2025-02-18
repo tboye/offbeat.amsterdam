@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "export": "Izvoz",
         "next": "Sljedeće",
         "add_event": "Dodaj događaj",
@@ -128,6 +129,9 @@
         "insert_email": "Unesite svoju e-mail adresu"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "ical_description": "Računari i pametni telefoni obično su opremljeni aplikacijom za kalendar koja može uvoziti udaljeni kalendar.",
         "list_description": "Ako imate sajt i želite da prikažete listu događaja, koristite sledeći kod",
         "intro": "Za razliku od antisocijalnih platformi koje rade sve kako bi zadržale korisnike i podatke o njima, mi verujemo da informacije, kao i ljudi, moraju biti slobodne. Zbog toga možete biti u toku sa događajima koji vas interesuju, bez nužnosti da stalno posećujete ovaj sajt.",

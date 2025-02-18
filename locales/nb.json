@@ -154,6 +154,7 @@
         "insert_email": "Skriv inn din e-postadresse"
     },
     "common": {
+        "active": "Active",
         "reset": "Tilbakestill",
         "theme": "Drakt",
         "tags": "Etiketter",
@@ -259,6 +260,9 @@
         "-1": "siste"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "list_description": "Hvis du har en nettside og ønsker å vise en liste over hendelser, bruk følgende kode",
         "ical_description": "Datamaskiner og smarttelefoner er vanligvis utstyrt med et kalenderprogram som kan importere kalendere.",
         "feed_description": "For å følge oppdateringer fra en datamaskin eller smarttelefon uten å trenge å åpne denne siden, kan du bruke en RSS-leser. </p>\n\n<p> Med en RSS-informasjonskanal kan du bruke et egnet program for å motta oppdateringer fra sider som interesserer deg. Det er en bra måte å følge mange sider raskt, uten å måtte opprette en konto eller annet plunder. </p>\n\n<li> Hvis du har Android, anbefales <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> or Feeder </li>\n<li> For iPhone/iPad kan du bruke <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> </li>\n<li> For skrivebord/bærbar anbefales Feedbro, installert på <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> eller <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome </a>.</li>\n<br/>\nÅ legge denne lenken til i din RSS-leser vil holde deg oppdatert.",

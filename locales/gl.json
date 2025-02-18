@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "export": "Exportar",
         "send": "Enviar",
         "address": "Enderezo",
@@ -125,6 +126,9 @@
         "not_valid_code": "Algo fallou."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Podes ter eventos que che interesen a través do email.",
         "insert_your_address": "Escribe o enderezo de email",
         "ical_description": "As computadoras e teléfonos traen normalmente instalada unha aplicación de calendario que pode importar un calendario remoto.",

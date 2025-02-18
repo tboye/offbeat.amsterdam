@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "add_event": "Sortu ekitaldia",
         "next": "Hurrengoa",
         "export": "Esportatu",
@@ -130,6 +131,9 @@
         "not_valid_code": "Zerbaitek huts egin du."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "intro": "Kapitalismoaren plataformek edozer egingo dute erabiltzaileak eta haien datuak gordetzeko. Guk aldiz, informazioa, pertsonak bezala, askea izan behar duela uste dugu. Horregatik hemengo ekitaldien informazio eguneratua jaso dezakezu webgune honetatik pasatu beharrik ere izan gabe.",
         "email_description": "Zure intereseko ekitaldiak epostaz jaso ditzakezu.",
         "insert_your_address": "Sartu zure eposta helbidea",
