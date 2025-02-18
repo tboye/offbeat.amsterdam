@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "add_event": "Dodaj wydarzenie",
         "next": "Dalej",
         "export": "Eksportuj",
@@ -305,9 +304,6 @@
         "check_email": "Sprawdź swoją skrzynkę odbiorczą i spam."
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "email_description": "Możesz otrzymywać zdarzenia, które Cię interesują, wysyłane pocztą elektroniczną.",
         "filter_description": "Eksport można filtrować według tagów i miejsc lub według wstępnie ustawionej kolekcji",
         "ical_description": "Komputery i smartfony są zwykle wyposażone w aplikację kalendarza, która umożliwia importowanie zdalnego kalendarza.",

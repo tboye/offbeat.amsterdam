@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "related": "İlgili",
         "password_updated": "Parola değişti.",
         "follow": "Takip et",
@@ -119,9 +118,6 @@
         "role": "Görev"
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "email_description": "İstersen ilginç etkinlerden e-posta yoluyla haberdar olabilirsin.",
         "feed_description": "Bu sitedeki güncellemelerden siteyi sürekli açmadan haberdar olmak için telefonunda ya da bilgisayarında RSS akışlarını takip edebilirsin.</p>\n\n<p> RSS akışları sayesinde, özel bir program kullanarak takip ettiğin sitelerden haber alabilirsin. RSS, birden çok siteyi hesap açamadan takip etmek için güzel bir yöntemdir.</p>\n\n<li> Android kullanıyorsan <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ya da Feeder öneriyoruz.</li>\n<li> iPhone ya da iPad kullanıyorsan <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> güzel bir seçenek. </li>\n<li>Bilgisayarından takip ediyorsan tarayıcına Feedbro eklentisini kurabilirsin.</li>\n<br/>\nBu bağlantıyı RSS okuyucuna ekleyerek bu sayfayı takip edebilirsin.",
         "intro": "Kullanıcıları ve verilerini tutmak için her şeyi yapan diğer asosyal platformların aksine; verilerinizin özgür olması gerektiğine inanıyoruz. Bu yüzden bu sitedeki etkinlikleri istediğin yöntemle takip edebilirsin.",

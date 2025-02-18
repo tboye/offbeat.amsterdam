@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "add_event": "Add event",
         "next": "Next",
         "export": "Export",
@@ -220,6 +219,7 @@
         "disable_author_confirm": "Are you sure you want to disable the author of this event?"
     },
     "admin": {
+        "active": "Enabled",
         "place_description": "If you have gotten the place or address wrong, you can change it.<br/>All current and past events associated with this place will change address.",
         "event_confirm_description": "You can confirm events entered by anonymous users here",
         "delete_user": "Remove",

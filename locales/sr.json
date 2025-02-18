@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "next": "Sledeće",
         "send": "Pošalji",
         "sent": "Poslato",
@@ -132,9 +131,6 @@
         "not_valid_code": "Nešto je pošlo naopako."
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "intro": "Za razliku od antisocijalnih platformi koje rade sve kako bi zadržale korisnike i podatke o njima, mi verujemo da informacije, kao i ljudi, moraju biti slobodne. Zbog toga možete biti u toku sa događajima koji vas interesuju, bez nužnosti da stalno posećujete ovaj sajt.",
         "email_description": "Možete dobiti događaje koji vas interesuju putem e-maila.",
         "insert_your_address": "Unesite svoju e-mail adresu",

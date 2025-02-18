@@ -119,7 +119,6 @@
         "wrong_domain_warning": "URL-ul de bază configurat în config.json <b>({baseurl})</b> diferă de cel pe care îl vizitați <b>({url})</b>"
     },
     "common": {
-        "active": "Active",
         "related": "Asocierea",
         "password_updated": "Parolă schimbată.",
         "follow": "Urmărește",
@@ -232,9 +231,6 @@
         "trusted_instances": "Instanțe de încredere"
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "email_description": "Puteți primi evenimente care interesează trimise prin e-mail.",
         "feed_description": "Pentru a urmări actualizările de pe un computer sau smartphone fără a fi nevoie să deschideți periodic acest site, utilizați fluxuri RSS. </p>\n\n<p> Cu fluxurile RSS, utilizați o aplicație specială pentru a primi actualizări de la site-urile care vă interesează. Este o modalitate bună de a urmări rapid multe site-uri, fără a fi nevoie să vă creați un cont sau alte complicații. </p>\n\n<li> Dacă aveți Android, vă recomandăm <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> sau Feeder </li>\n<li> Pentru iPhone/iPad puteți utiliza <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> </li>\n<li> Pentru desktop/laptop, vă recomandăm Feedbro, care să fie instalat pe <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> sau <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a>. </li>\n<br/>\nAdăugarea acestui link la cititorul de feed RSS vă va ține la curent.",
         "intro": "Spre deosebire de platformele nesociale care fac totul pentru a păstra utilizatorii și datele despre aceștia, credem că informațiile, ca și oamenii, trebuie să fie libere. Pentru asta poți fi la curent cu evenimentele pe care le dorești, fără a trece neapărat prin acest site.",
