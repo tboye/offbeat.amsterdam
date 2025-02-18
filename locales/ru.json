@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "send": "Отправить",
         "where": "Где",
         "address": "Адрес",
@@ -270,6 +271,9 @@
         "not_valid_code": "Что-то пошло не так."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Вы можете получать интересующие вас события на электронной почте.",
         "insert_your_address": "Введите свой адрес электронной почты",
         "ical_description": "Компьютеры и смартфоны обычно оснащены приложением календаря, способным импортировать календарь (ical файл).",

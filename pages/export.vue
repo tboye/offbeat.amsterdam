@@ -5,7 +5,7 @@ v-container.pa-0.pa-md-3
     v-card-text
       p.text-body-1 {{$t('export.intro')}}
       v-card(outlined :dark='is_dark' :color="is_dark ? '#333' : '#ececec'")
-        v-card-title {{$t('common.filter')}}
+        v-card-title {{$t('export.filter_title')}}
         v-card-subtitle {{$t('export.filter_description')}}
         v-card-text
           Search(v-model='filters')
@@ -31,7 +31,7 @@ v-container.pa-0.pa-md-3
               v-btn(slot='prepend' text color='primary' @click='clipboard(link)') {{$t("common.copy")}}
                 v-icon.ml-1(v-text='mdiContentCopy')
 
-      v-tab ics/ical
+      v-tab {{$t('export.ical_title')}}
       v-tab-item
         v-card
           v-card-text
@@ -40,7 +40,7 @@ v-container.pa-0.pa-md-3
               v-btn(slot='prepend' text color='primary' @click='clipboard(link)') {{$t("common.copy")}}
                 v-icon.ml-1(v-text='mdiContentCopy')
 
-      v-tab List
+      v-tab {{$t('export.list_title')}}
       v-tab-item
         v-card
           v-card-text

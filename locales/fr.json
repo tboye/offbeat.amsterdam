@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "next": "Suivant",
         "add_event": "Ajouter un évènement",
         "fediverse": "Fediverse",
@@ -198,6 +199,9 @@
         "error": "Erreur : "
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "feed_description": "Pour rester informé depuis un ordinateur ou un smartphone sans avoir à ouvrir régulièrement ce site, utilisez les flux RSS. </p>\n\n<p> Avec les flux RSS vous utilisez une application spécifique pour recevoir les dernière actualités des sites qui vous intéressent. C'est une bonne manière de suivre plusieurs sites rapidement, sans avoir besoin de créer un compte ou autres complications. </p>\n\n<li> Si vous avez Android, nous recommandons <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ou Feeder </li>\n<li> Pour les iPhone/iPad vous pouvez utiliser <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> </li>\n<li> Pour un ordinateur de bureau ou portable nous vous recommandons Feedbro, à installer sur <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> ou <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a>. </li>\n<br/>\nAjouter ce lien dans votre lecteur de flux RSS vous tiendra informé en tant réel.",
         "list_description": "Si vous avez un site web et que vous souhaitez afficher une liste d’évènements, utilisez le code suivant",
         "ical_description": "Les ordinateurs et les téléphones intelligents sont généralement équipés d’une application de calendrier capable d’importer un calendrier distant.",

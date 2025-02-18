@@ -51,6 +51,7 @@
         "same_day": "samana päivänä"
     },
     "common": {
+        "active": "Active",
         "home": "Koti",
         "fediverse": "Fediversumi",
         "label": "Etiketti",
@@ -169,6 +170,9 @@
         "pin": "Kiinnitä"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "email_description": "Voit saada tietoa sinua kiinnostavista tapahtumista sähköpostiisi.",
         "intro": "Epäsosiaaliset alustat tekevät kaikkensa pysäyttääkseen käyttäjien ja heitä koskevien tietojen siirtymistä pois alustalta. Sen sijaan me uskomme, että tieto, kuten ihminen, on oltava vapaa. Tätä varten voit pysyä ajan tasalla haluamistasi tapahtumista myös käyttämättä tätä sivustoa suoraan.",
         "feed_description": "RSS-syötteen avulla voit seurata päivityksiä tietokoneelta tai älypuhelimelta ilman, että sinun tarvitsee ajoittain avata tätä sivustoa. </p>\n\n<p> RSS-syötteiden kanssa käytät erityistä sovellusta saadaksesi päivityksiä sinua kiinnostavilta sivustoilta. Se on hyvä tapa seurata monia sivustoja nopeasti ilman tilin luomista tai muita hankaluuksia. </p>\n\n<li> Jos sinulla on Android, suosittelemme <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flymiä</a> tai Feederia </li>\n<li> iPhonessa/iPadissa voit käyttää <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U:ta </a> </li>\n<li> Pöytätietokoneille/kannettaville tietokoneille suosittelemme Feedbroa, joka asennetaan <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefoxiin </a> tai <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a>.\n<br/>\nKun lisäät tämän linkin RSS-syötteenlukijaasi, pysyt ajan tasalla.",

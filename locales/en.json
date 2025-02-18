@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "add_event": "Add event",
         "next": "Next",
         "export": "Export",
@@ -131,6 +132,9 @@
         "not_valid_code": "Something went wrong."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "intro": "Unlike the unsocial platforms that do everything to keep users and data about them, we believe that information, like people, must be free. For this you can stay updated on the events you want, without necessarily going through this site.",
         "email_description": "You can get events that interest sent via e-mail.",
         "insert_your_address": "Enter your e-mail address",

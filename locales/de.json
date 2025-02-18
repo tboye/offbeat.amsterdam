@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "title": "Titel",
         "user": "nutzende Person",
         "moderation": "Moderation",
@@ -390,6 +391,9 @@
         "description": "Soziale Bewegungen sollten sich organisieren und durch sich selbst finanzieren.<br/>\n<br/>Vor deiner Veröffentlichung, <strong> muss dein Nutzer:innen-Konto freigeschaltet werden. </strong>Bitte denke daran, dass <strong>hinter dieser Seite echte Menschen zu finden sind</strong>, also schreibe zwei Zeilen, um uns mitzuteilen, welche Veranstaltungen du veröffentlichen möchtest."
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "list_description": "Wenn Du eine Website hast und eine Liste von Veranstaltungen anzeigen möchtest, verwende den folgenden Code",
         "ical_description": "Computer und Smartphones sind üblicherweise mit einer Kalenderanwendung ausgestattet, mit der ein Fernkalender importiert werden kann.",
         "insert_your_address": "Gib deine E-Mail-Adresse ein",

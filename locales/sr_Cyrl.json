@@ -157,6 +157,7 @@
         }
     },
     "common": {
+        "active": "Active",
         "address": "Адреса",
         "when": "Када",
         "what": "Шта",
@@ -361,6 +362,9 @@
         "recurrent_2w_days": "Сваки други {days}"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "ical_description": "Рачунари и паметни телефони обично су опремљени апликацијом за календар која може увозити удаљени календар.",
         "email_description": "Можете добити догађаје који вас интересују путем имејла.",
         "insert_your_address": "Унесите своју имејл адресу",

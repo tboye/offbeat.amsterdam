@@ -1,5 +1,6 @@
 {
     "common": {
+        "active": "Active",
         "embed_help": "将以下代码复制并粘贴到你的网站，此事件将像这样显示",
         "follow": "关注",
         "add_event": "添加事件",
@@ -92,6 +93,9 @@
         "clone": "克隆"
     },
     "export": {
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "List",
         "list_description": "如果你有一个网站并希望展示一个事件列表，使用以下代码",
         "email_description": "你可以通过发给你的电子邮件了解你感兴趣的事件。",
         "insert_your_address": "输入你的电子邮箱地址",
