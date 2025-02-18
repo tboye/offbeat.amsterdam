@@ -12,7 +12,6 @@
         "content": "Hola, has pedido recuperar tu contraseña en {{config.title}}. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Pulsa aquí</a> para confirmar."
     },
     "common": {
-        "active": "Active",
         "press_here": "Premi qui"
     },
     "user_confirm": {

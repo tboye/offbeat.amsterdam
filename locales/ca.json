@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "add_event": "Afegeix activitat",
         "next": "Següent",
         "export": "Exporta",
@@ -135,9 +134,6 @@
         "not_valid_code": "Hi ha alguna cosa malament..."
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "intro": "A diferència de les plataformes capitalistes, que recopilen informació de tot el que hi fem les usuàries, nosaltres creiem que la informació, tal com les persones, ha de ser lliure. Per això, pots estar al corrent de les activitats que vols sense necessitat de passar per aquest web.",
         "email_description": "Pots rebre correus sobre les activitats que t'interessin.",
         "insert_your_address": "Introdueix la teva adreça de mail",

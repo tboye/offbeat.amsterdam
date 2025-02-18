@@ -118,7 +118,6 @@
         "wrong_domain_warning": "Adresa v config.json <b>({baseurl})</b> je jiná než ta na kterou se připojuješ <b>({url})</b>"
     },
     "common": {
-        "active": "Active",
         "related": "Příbuzné",
         "password_updated": "Heslo změněno.",
         "follow": "Sledovat",
@@ -226,9 +225,6 @@
         "close": "Zavřít"
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "email_description": "Můžeš dostávat události které tě zajímají na e-mail.",
         "feed_description": "Chceš-li sledovat nové události z počítače nebo smartphonu bez nutnosti pravidelně chodit na tento web, použij RSS. </p>\n\n<p> S RSS můžeš použávat speciální aplikaci pro příjem novinek z webů, které tě zajímají. Je to dobrý způsob, jak rychle sledovat mnoho stránek, bez nutnosti vytvářet si na nich účet </p>\n\n<li> Pokud máš Android, doporučujeme <a href=\"https://f-droid.org/cs/packages/net.frju.flym/\">Flym</a> nebo Feeder </li>\n<li> Pro iPhone / iPad můžeš použít <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442442?mt=8\"> Feed4U </a> </li> </li>\n<li> Pro stolní / notebook doporučujeme Feedbro, dá se nainstalovat do <a href=\"https://addons.mozilla.org/cs-GB/firefox/addon/feedbroreader/\"> Firefoxu </a> nebo <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnmdfa\"> Chrome </a>. </li>\n<br/>\nPřidej si tento odkaz do své RSS čtečky a zůstaň v obraze.",
         "intro": "Na rozdíl od asociálních platforem které dělají vše proto aby si udrželi uživatele a jejich data, my věříme že informace musí být svobodné, stejně jako lidí. Proto můžete získávat aktuality o událostech i bez nutnosti chodit na tuto stránku.",

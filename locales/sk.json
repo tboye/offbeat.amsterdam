@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "media": "Médiá",
         "login": "Login",
         "email": "E-mail",
@@ -105,9 +104,6 @@
         "not_valid_code": "Niečo sa pokazilo."
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "intro": "Narozdieľ od nesociálnych sietí ktoré robia všetko preto aby si udržali uživateľov a dáta o nich, my veríme v to že informácie, tak ako ľudia, musia byť voľné. Preto môžete zostať v obraze o podujatiach ktoré vás zaujímaju bez toho aby ste nutne išli cez túto stránku.",
         "insert_your_address": "Vložte svoju e-mailovú adresu",
         "email_description": "Môžete dostávať podujatia ktoré vás zaujímajú cez e-mail.",

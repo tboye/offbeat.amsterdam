@@ -1,6 +1,5 @@
 {
     "common": {
-        "active": "Active",
         "add_event": "Aggiungi evento",
         "next": "Continua",
         "export": "Esporta",
@@ -130,9 +129,6 @@
         "not_valid_code": "Mmmmm qualcosa è andato storto."
     },
     "export": {
-        "filter_title": "Filter",
-        "ical_title": "ics/ical",
-        "list_title": "List",
         "intro": "Contrariamente alle piattaforme del capitalismo, che fanno di tutto per tenere i dati e gli utenti al loro interno, crediamo che le informazioni, come le persone, debbano essere libere. Per questo puoi rimanere aggiornata sugli eventi che vuoi, come meglio credi, senza necessariamente passare da questo sito.",
         "email_description": "Puoi ricevere via posta elettronica gli eventi che ti interessano.",
         "insert_your_address": "Inserisci il tuo indirizzo e-mail",
