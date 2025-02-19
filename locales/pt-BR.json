@@ -115,7 +115,9 @@
         "contact_user": "Contactar usuária",
         "report": "Reportar evento",
         "role": "Papel",
-        "pin": "Pinado"
+        "pin": "Pinado",
+        "trusted_sources": "Fontes federadas confiáveis",
+        "past_events": "Eventos Passados"
     },
     "admin": {
         "user_block_confirm": "Tem certeza que quer bloquear o utilizador {user}?",
@@ -188,7 +190,7 @@
         "recurrent_event_visible": "Exibir eventos recorrentes por padrão",
         "user_blocked": "Usuária {user} bloqueado",
         "announcement_description": "Nesta seção pode inserir anúncios que serão exibidos na página principal",
-        "description_description": "Exibido no cabeçalho próximo ao título",
+        "description_description": "Exibido no cabeçalho próximo ao título (HTML suportado)",
         "instance_place": "Local indicativo deste domínio",
         "is_dark": "Tema escuro",
         "add_link": "Adicionar link",
@@ -254,7 +256,17 @@
         "custom_js_help": "Você pode integrar algum código Javascript que será carregado para cada usuária, preenchendo a área de texto abaixo. Você provavelmente deveria ler a <a href='https://gancio.org/usage/custom_js'>documentação</a> primeiro.",
         "custom_css_help": "Você pode customizar alguns estilos também, veja alguns exemplos <a href='https://gancio.org/usage/custom_css'>aqui</a>.",
         "default_fedi_hashtags": "Hashtags padrão do Fediverso",
-        "default_fedi_hashtags_help": "As tags especificadas será adicionadas aos eventos enviados ao Fediverso"
+        "default_fedi_hashtags_help": "As tags especificadas será adicionadas aos eventos enviados ao Fediverso",
+        "add_trusted_source_help": "Utilize uma das seguintes sintaxes: <br/><ul><li>o endereço de outra insância do Gancio ou outro aplicativo que suporte um Ator / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (e.g. <u>https://demo.gancio.org</u>)</li><li>um identificador ActivityPub como <u>@gancio@mastodon.cisti.org</u></li><li>a URL de uma conta como <u>https://instance.tld/actor</u>.</li></ul><br/>Eventos publicados ou impulsionados por estas fontes serão importados.",
+        "trusted_sources_label_help": "O marcador padrão é ‘Outros locais’",
+        "add_trusted_source": "Adicionar uma fonte federada confiável",
+        "delete_trusted_source_confirm": "Você quer realmente excluir esta fonte confiável?",
+        "trusted_source_removed": "Fonte confiável removida",
+        "federated_events_in_home_help": "Eventos futuros de fontes federadas confiáveis serão exibidos por padrão na página principal. Para exibir apenas alguns eventos, você pode utilizar coleções",
+        "add_source": "Adicionar fonte federada confiável",
+        "trusted_sources_label": "Marcador de navegação para fontes federadas confiáveis",
+        "trusted_sources_label_default": "Outros locais",
+        "federated_events_in_home": "Exibir eventos federados na página principal"
     },
     "event": {
         "follow_me_description": "Uma das maneiras de se manter atualizado com os eventos publicados aqui em {title},\né seguir a conta <u>{account}</u> no Fediverso, por exemplo, via Mastodon, e possivelmente adicionar recursos para um evento a partir de lá.<br/><br/>\nSe nunca ouviu falar sobre Mastodon ou no Fediverso nós recomendamos ler <a href='https://www.savjee.be/videos/simply-explained/mastodon-and-fediverse-explained/'>este artigo</a>.<br/><br/>Entre com o seu domínio abaixo (e.g. mastodon.social)",
