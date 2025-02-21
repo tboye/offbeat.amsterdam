@@ -69,6 +69,11 @@ v-container.container.pa-0.pa-md-3
       v-tab-item(value='announcements')
         Announcement
 
+      //- PAGES
+      v-tab(href='#pages' v-if='$auth.user.is_admin') {{$t('common.pages')}}
+      v-tab-item(value='pages')
+        Page
+
       //- PLUGINS
       v-tab(href='#plugins' v-if='$auth.user.is_admin') {{$t('common.plugins')}}
       v-tab-item(value='plugins')
@@ -93,6 +98,7 @@ export default {
     Moderation: () => import(/* webpackChunkName: "admin" */'../components/admin/Moderation.vue'),
     Plugin: () => import(/* webpackChunkName: "admin" */'../components/admin/Plugin.vue'),
     Announcement: () => import(/* webpackChunkName: "admin" */'../components/admin/Announcement.vue'),
+    Page: () => import(/* webpackChunkName: "admin" */'../components/admin/Page.vue'),
     Theme: () => import(/* webpackChunkName: "admin" */'../components/admin/Theme.vue')
   },
   middleware: ['auth', 'isAdminOrEditor'],

@@ -23,6 +23,7 @@ const apUserController = require('./controller/ap_user')
 const resourceController = require('./controller/resource')
 const oauthController = require('./controller/oauth')
 const announceController = require('./controller/announce')
+const pageController = require('./controller/page')
 const pluginController = require('./controller/plugins')
 const geocodingController = require('./controller/geocoding')
 const localeController = require('./controller/locale')
@@ -227,8 +228,15 @@ module.exports = () => {
     api.get('/announcements', isAdmin, announceController.getAll)
     api.post('/announcements', isAdmin, announceController.add)
     api.put('/announcements/:announce_id', isAdmin, announceController.update)
-    api.get('/announcements/:announce_id', announceController.get)
     api.delete('/announcements/:announce_id', isAdmin, announceController.remove)
+    api.get('/announcements/:announce_id', announceController.get)
+
+    // - ADMIN PAGES
+    api.get('/pages', isAdmin, pageController.getAll)
+    api.post('/pages', isAdmin, pageController.add)
+    api.put('/pages/:page_id', isAdmin, pageController.update)
+    api.get('/pages/:page_slug', pageController.get)
+    api.delete('/pages/:page_id', isAdmin, pageController.remove)
 
     // - COLLECTIONS
     api.get('/collections/:name', cors, collectionController.getEvents)
