@@ -55,7 +55,7 @@ v-row.mb-4
           :input-value="selected" label small) {{ item }}
 
   v-dialog(v-model='whereInputAdvancedDialog' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly' dense)
-    WhereInputAdvanced(ref='whereAdvanced' :place.sync='value' :event='event'
+    WhereInputAdvanced(ref='whereAdvanced' :place.sync='event.place'
       @close='whereInputAdvancedDialog = false && this.$refs.address.blur()')
 
     
