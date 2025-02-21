@@ -1,10 +1,9 @@
 <template lang="pug">
 div
-  v-combobox(ref='geocodedAddress'
+  v-combobox(v-model="place.geocodedAddress"
     :prepend-icon='mdiMapSearch'
     @input.native='searchAddress'
     :label="$t('common.search_coordinates')"
-    :value='place.geocodedAddress'
     item-text='address'
     persistent-hint hide-no-data clearable no-filter
     :loading='loading'
@@ -34,7 +33,7 @@ div
         :rules="$validators.longitude")
   p.mt-4(v-if='place.isNew' v-html="$t('event.address_geocoded_disclaimer')")
 
-  Map.mt-4(:place.sync='place' draggable=true height="16rem"
+  Map.mt-4(:place.sync='place' :LMapStyles='{height:"16rem"}' draggable=true
     v-if="(place.latitude && place.longitude)"  )
 
 
@@ -50,7 +49,7 @@ import geolocation from '../server/helpers/geolocation/index'
 export default {
   name: 'SearchAddress',
   props: {
-    place: { type: Object, default: () => ({ isNew: false, name: '', address: '', latitude: null, longitude: null, id: null }) }
+    place: { type: Object, default: () => ({}) }
   },
   components: {
     [process.client && 'Map']: () => import('@/components/Map.vue')
@@ -74,9 +73,6 @@ export default {
     ...mapState(['settings']),
   },
   methods: {
-    close() {
-      this.$emit('close')
-    },
     loadCoordinatesResultIcon(item) {
       let icon = this.currentGeocodingProvider.loadResultIcon(item)
       return this.iconsMapper[icon]

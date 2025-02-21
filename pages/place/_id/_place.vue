@@ -7,8 +7,8 @@
 
     <!-- Map -->
     <div v-if='settings.allow_geolocation && place.latitude && place.longitude' >
-      <div class="mt-4 mx-auto px-4" >
-        <Map :place='place' :height='mapHeight' />
+      <div class="mt-4 mx-n2 md:mx-0">
+        <Map :place='place' :LMapStyles="{'border-radius':0, height:'16rem'}" />
       </div>
       <div class="mt-4">
         <HowToArriveNav :place='place' class="justify-center" />
@@ -44,9 +44,6 @@ export default {
     Event, 
     HowToArriveNav,
     [process.client && 'Map']: () => import('@/components/Map.vue')
-  },
-  data() {
-    return { mapHeight: "14rem" }
   },
   head() {
     const title = `${this.settings.title} - ${this.place.name}`
