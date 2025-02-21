@@ -2,7 +2,7 @@
 client-only(placeholder='Loading...' )
   LMap(ref="leafletMap"
       id="leaflet-map"
-      :style="{ 'height': height }"
+      :style="LMapStyles"
       :zoom="zoom"
       :options="{attributionControl: false}"
       :center="center")
@@ -57,11 +57,11 @@ export default {
   },
   props: {
     place: { type: Object, default: () => ({ latitude: 0, longitude: 0 }) },
-    height: { type: String, default: '' },
     showMarker: { type: Boolean, default: true },
     mapCenter: { type: Array, default: () => ([]) },
     zoom: { type: Number, default: () => (16) },
     draggable: { type: Boolean, default: false },
+    LMapStyles: { type: Object, default: () => ({}) }
   },
   mounted() {
     delete Icon.Default.prototype._getIconUrl;
