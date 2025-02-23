@@ -361,6 +361,7 @@ const Helpers = {
         return res.redirect(301, event?.ap_id ?? `/federation/m/${event.id}`)
       }
       log.warn('[FEDI] Accept JSON but event not found: %s', req.params.slug)
+      return res.redirect(`/federation/u/${settingsController.settings.instance_name}`, 302)
     }
     next()
   },
