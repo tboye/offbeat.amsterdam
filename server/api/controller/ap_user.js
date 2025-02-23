@@ -9,7 +9,7 @@ const apUserController = {
 
   async removeTrust (req, res) {
     let ap_id = req.query.ap_id
-    log.info(`Remove trust on node ${ap_id} ...`)
+    log.info(`Remove trust on node ${ap_id}`)
     
     try {
       const actor = await getActor(ap_id)
@@ -19,11 +19,12 @@ const apUserController = {
 
       if (actor.following) {
         // unfollow
-        await unfollowActor(actor)
+        await unfollowActor(actor).catch(e => {})
       }
 
       // remove trust
-      await actor.update({ trusted: false })
+      // await actor.update({ trusted: false })
+      await actor.destroy()
 
     } catch (e) {
       log.warn(e)
