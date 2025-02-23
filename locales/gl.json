@@ -223,7 +223,7 @@
         "instance_name": "Nome da instancia",
         "filter_users": "Filtrar usuarias",
         "title_description": "Utilízase no título da páxina, no asunto do email e para as fontes RSS e ICS exportadas.",
-        "description_description": "Aparece na cabeceira a carón do título",
+        "description_description": "Aparece na cabeceira a carón do título (admite HTML)",
         "instance_name_help": "Conta ActivityPub a seguir",
         "add_trusted_instance": "Engade un nodo de confianza",
         "edit_place": "Editar lugar",
