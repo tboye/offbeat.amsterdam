@@ -27,6 +27,7 @@
         :headers='headers'
         :items='pages')
         template(v-slot:item.actions='{ item }')
+          <t-btn :to='`/p/${item.slug || item.id}`' :tooltip="$t('common.preview')"><v-icon v-text='mdiArrowRight' /></t-btn>
           t-btn(@click='toggle(item)' :color='item.visible ? "warning" : "success"' :tooltip="item.visible ? $t('common.disable') : $t('common.enable')")
             v-icon(v-text='item.visible ? mdiEyeOff : mdiEye')
           t-btn(@click='edit(item)' color='info' :tooltip="$t('common.edit')")
@@ -42,13 +43,13 @@ import Editor from '../Editor'
 import Announcement from '../Announcement'
 import TBtn from '../../components/TBtn.vue'
 
-import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff } from '@mdi/js'
+import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff, mdiArrowRight } from '@mdi/js'
 
 export default {
   components: { Editor, Announcement, TBtn },
   data() {
     return {
-      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEyeOff, mdiEye,
+      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEyeOff, mdiEye, mdiArrowRight,
       valid: false,
       dialog: false,
       editing: false,
