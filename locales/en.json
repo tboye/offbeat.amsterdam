@@ -1,6 +1,6 @@
 {
     "common": {
-        "active": "Enabled",
+        "enabled": "Enabled",
         "add_event": "Add event",
         "next": "Next",
         "export": "Export",
