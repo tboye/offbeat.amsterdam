@@ -52,22 +52,26 @@ v-container
                 v-list-item-title {{ role }}
 
       template(v-slot:item.actions='{item}')
-        v-btn(text small @click='deleteUser(item)' color='error' ) {{$t('admin.delete_user')}}
+        t-btn(@click='deleteUser(item)' color='error' :tooltip="$t('admin.delete_user')")
+          v-icon(v-text='mdiDeleteForever') 
+          
 
 </template>
 <script>
 import { mapState } from 'vuex'
 import get from 'lodash/get'
-import { mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown } from '@mdi/js'
+import { mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever } from '@mdi/js'
+import TBtn from '../../components/TBtn.vue'
 
 export default {
   name: 'Users',
+  components: { TBtn },
   props: {
     users: { type: Array, default: () => [] }
   },
   data () {
     return {
-      mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown,
+      mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever,
       newUserDialog: false,
       changeRoleDialog: false,
       role_colors: { admin: 'error', editor: 'secondary', user: 'success' },
@@ -83,7 +87,7 @@ export default {
         { value: 'is_active', text: this.$t('common.enabled'), width: 50 },
         { value: 'role', text: this.$t('common.role'), width: 150 },
         // { value: 'is_editor', text: this.$t('common.editor') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100 }
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100, sortable: false }
       ]
     }
   },

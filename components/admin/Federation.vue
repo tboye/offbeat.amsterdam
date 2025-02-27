@@ -127,7 +127,7 @@ export default {
         { value: 'url', text: 'URL' },
         { value: 'following', text: 'Following' },
         { value: 'follower', text: 'Follower' },
-        { value: 'actions', text: 'Actions', align: 'right' }
+        { value: 'actions', text: 'Actions', align: 'right', sortable: false }
       ]
     }
   },

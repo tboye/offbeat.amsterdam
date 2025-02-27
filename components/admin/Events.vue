@@ -1,8 +1,9 @@
 <template lang='pug'>
 v-container
-  v-card-title {{$t('common.events')}}
+  v-card-title {{$t('admin.unconfirmed_events')}}
   v-card-subtitle {{$t('admin.event_confirm_description')}}
   v-data-table(
+    v-if='unconfirmedEvents.length'
     :hide-default-footer='unconfirmedEvents.length<10'
     :header-props='{ sortIcon: mdiChevronDown }'
     :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
@@ -12,7 +13,7 @@ v-container
     template(v-slot:item.actions='{ item }')
       t-btn(@click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
         v-icon(v-text='mdiCheckBold')
-      t-btn(:to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
+      t-btn(:to='`/event/${item.slug || item.id}`' color='info' :tooltip="$t('common.preview')")
         v-icon(v-text='mdiEye')
       t-btn(:to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
         v-icon(v-text='mdiPencil')
@@ -21,6 +22,7 @@ v-container
 
   v-card-title {{$t('common.past_events')}}
   v-data-table(
+    v-if='unconfirmedOldEvents.length'
     :hide-default-footer='unconfirmedOldEvents.length<10'
     :header-props='{ sortIcon: mdiChevronDown }'
     :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
@@ -29,17 +31,15 @@ v-container
     template(v-slot:item.start_datetime='{ item }') {{$time.when(item)}}
     template(v-slot:item.actions='{ item }')
       template
-        t-btn(@click='confirm(item)' color='success' :tooltip="$t('common.confirm')")
-          v-icon(v-text='mdiCheckBold')
-        t-btn(:to='`/event/${item.slug || item.id}`' color='success' :tooltip="$t('common.preview')")
-          v-icon(v-text='mdiEye')
+        t-btn(:to='`/event/${item.slug || item.id}`' color='info' :tooltip="$t('common.preview')")
+          v-icon(v-text='mdiArrowRight')
         t-btn(:to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
           v-icon(v-text='mdiPencil')
         t-btn(@click='remove(item)' color='error' :tooltip="$t('common.delete')")
           v-icon(v-text='mdiDeleteForever')
 </template>
 <script>
-import { mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiCheckBold } from '@mdi/js'
+import { mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff, mdiCheckBold, mdiArrowRight } from '@mdi/js'
 import TBtn from '../../components/TBtn.vue'
 
 export default {
@@ -50,7 +50,7 @@ export default {
   components: { TBtn },
   data () {
     return {
-      mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiCheckBold,
+      mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff, mdiCheckBold, mdiArrowRight,
       valid: false,
       dialog: false,
       editing: false,
@@ -74,7 +74,7 @@ export default {
       } catch (e) {}
     },
     async remove (event) {
-      const ret = await this.$root.$confirm('event.remove_confirmation')
+      const ret = await this.$root.$confirm('event.remove_confirmation', { event: event.title })
       if (!ret) { return }
       try {
         await this.$axios.delete(`/event/${event.id}`)
