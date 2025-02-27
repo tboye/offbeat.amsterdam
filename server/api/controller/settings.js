@@ -21,7 +21,7 @@ const defaultSettings = {
   hostname: defaultHostname,
   instance_timezone: 'Europe/Rome',
   instance_locale: 'en',
-  instance_name: 'relay',
+  instance_name: 'events',
   allow_registration: true,
   allow_anon_event: true,
   allow_multidate_event: true,
