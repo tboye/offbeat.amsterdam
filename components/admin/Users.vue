@@ -84,8 +84,9 @@ export default {
       headers: [
         { value: 'email', text: this.$t('common.email'), width: 150 },
         { value: 'description', text: this.$t('common.description') },
-        { value: 'is_active', text: 'Active', width: 100 },
-        { value: 'role', text: 'Role', width: 150 },
+        { value: 'is_active', text: this.$t('common.enabled'), width: 50 },
+        { value: 'role', text: this.$t('common.role'), width: 150 },
+        // { value: 'is_editor', text: this.$t('common.editor') },
         { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100, sortable: false }
       ]
     }
