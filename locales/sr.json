@@ -116,7 +116,9 @@
         "what": "Šta",
         "new_password": "Nova lozinka",
         "cancel": "Otkaži",
-        "login": "Prijava"
+        "login": "Prijava",
+        "pages": "Stranice",
+        "enabled": "Omogućeno"
     },
     "login": {
         "description": "Prijavljivanjem možete objavljivati nove događaje.",
@@ -137,7 +139,10 @@
         "ical_description": "Računari i pametni telefoni obično su opremljeni aplikacijom za kalendar koja može uvoziti udaljeni kalendar.",
         "filter_description": "Možete filtrirati svoj izvoz ovde po tagovima i mestu ili po unapred definisanoj kolekciji",
         "list_description": "Ako imate sajt i želite da prikažete listu događaja, koristite sledeći kod",
-        "feed_description": "Da biste pratili ažuriranja sa računara ili pametnog telefona bez potrebe da periodično otvarate ovaj sajt, koristite RSS kanale.\n\nUz RSS kanale koristite posebnu aplikaciju za primanje ažuriranja sa sajtova koji vas interesuju. To je dobar način da brzo pratite mnoge sajtove, bez potrebe za kreiranjem naloga ili drugih komplikacija.\n\n<li> Ako imate Android, preporučujemo <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ili Feeder </li>\n<li> Za iPhone / iPad možete koristiti <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a> </li>\n<li> Za desktop / laptop preporučujemo Feedbro, koji se instalira na <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefox</a> ili <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome</a>. </li>\n<br/>\nDodavanje ovog linka u vaš RSS čitač održaće vas u toku."
+        "feed_description": "Da biste pratili ažuriranja sa računara ili pametnog telefona bez potrebe da periodično otvarate ovaj sajt, koristite RSS kanale.\n\nUz RSS kanale koristite posebnu aplikaciju za primanje ažuriranja sa sajtova koji vas interesuju. To je dobar način da brzo pratite mnoge sajtove, bez potrebe za kreiranjem naloga ili drugih komplikacija.\n\n<li> Ako imate Android, preporučujemo <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ili Feeder </li>\n<li> Za iPhone / iPad možete koristiti <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a> </li>\n<li> Za desktop / laptop preporučujemo Feedbro, koji se instalira na <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefox</a> ili <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome</a>. </li>\n<br/>\nDodavanje ovog linka u vaš RSS čitač održaće vas u toku.",
+        "list_title": "Lista",
+        "ical_title": "ics/ical",
+        "filter_title": "Filter"
     },
     "event": {
         "where_description": "Gde je događaj? Ako mesto nije prisutno, možete ga kreirati.",
@@ -162,7 +167,7 @@
         "address_description": "Koja je adresa?",
         "address_description_osm": "Pretražite koordinate unosom adrese. (<a href='http://osm.org/copyright'>OpenStreetMap</a> doprinosioci)",
         "not_found": "Nije moguće pronaći događaj",
-        "remove_confirmation": "Da li ste sigurni da želite da uklonite ovaj događaj?",
+        "remove_confirmation": "Da li ste sigurni da želite da uklonite događaj?",
         "recurrent": "Ponavljajući",
         "edit_recurrent": "Uredi ponavljajući događaj:",
         "show_recurrent": "ponavljajući događaji",
@@ -275,7 +280,7 @@
         "instance_timezone_description": "Gancio je dizajniran za prikupljanje događaja na određenom mestu, poput grada. Svi događaji na tom mestu biće prikazani u vremenskoj zoni odabranoj za njega.",
         "instance_locale_description": "Preferirani jezik korisnika za stranice. Ponekad poruke moraju biti prikazane na istom jeziku za sve (na primer, prilikom objavljivanja putem ActivityPub-a ili slanja nekih e-mailova). U tim slučajevima biće korišćen jezik odabran iznad.",
         "title_description": "Koristi se u naslovu stranice, u predmetu e-maila za izvoz RSS i ICS feedova.",
-        "description_description": "Pojavljuje se u zaglavlju pored naslova",
+        "description_description": "Pojavljuje se u zaglavlju pored naslova (HTML je podržan)",
         "instance_place": "Indikativno mesto ove instance",
         "user_blocked": "Korisnik {user} blokiran",
         "favicon": "Logo",
@@ -350,7 +355,9 @@
         "blocked": "Blokirano",
         "domain": "Domen",
         "smtp_description": "<ul><li>Administrator treba da primi e-mail kada anoniman događaj bude dodat (ako je omogućeno).</li><li>Administrator treba da primi e-mail o zahtevu za registraciju (ako je omogućeno).</li><li>Korisnik treba da primi e-mail o zahtevu za registraciju.</li><li>Korisnik treba da primi e-mail o potvrđenoj registraciji.</li><li>Korisnik treba da primi e-mail sa potvrdom kada ga direktno registruje administrator.</li><li>Korisnici treba da prime e-mail za vraćanje lozinke kada je zaborave.</li></ul>",
-        "geolocation_description": "<b>1. Definišite provajdera za geokodiranje usluge</b>.<br>Trenutno, među onima navedenim u <a href=\"https://wiki.openstreetmap.org/wiki/Nominatim#Alternatives_.2F_Third-party_providers\">wiki stranici OpenStreetMap-a</a>, postoji podrška za softver <a href=\"https://github.com/osm-search/Nominatim\">Nominatim</a> i <a href=\"https://github.com/komoot/photon\">Photon</a>.<br>Možete koristiti jedan od zvaničnih demo linkova kopiranjem linka u polje 'Geocoding provider':<ul><li>https://nominatim.openstreetmap.org/search (<a href=\"https://operations.osmfoundation.org/policies/nominatim/\">Uslovi korišćenja</a>)</li><li>https://photon.komoot.io/api/ (<a href=\"https://photon.komoot.io/\">Uslovi korišćenja</a>)</li></ul><br><b>2. Definišite provajdera za slojeve mapa.</b><br>Listu njih možete pronaći ovde: <a href=\"https://leaflet-extras.github.io/leaflet-providers/preview/\">https://leaflet-extras.github.io/leaflet-providers/preview/</a>"
+        "geolocation_description": "<b>1. Definišite provajdera za geokodiranje usluge</b>.<br>Trenutno, među onima navedenim u <a href=\"https://wiki.openstreetmap.org/wiki/Nominatim#Alternatives_.2F_Third-party_providers\">wiki stranici OpenStreetMap-a</a>, postoji podrška za softver <a href=\"https://github.com/osm-search/Nominatim\">Nominatim</a> i <a href=\"https://github.com/komoot/photon\">Photon</a>.<br>Možete koristiti jedan od zvaničnih demo linkova kopiranjem linka u polje 'Geocoding provider':<ul><li>https://nominatim.openstreetmap.org/search (<a href=\"https://operations.osmfoundation.org/policies/nominatim/\">Uslovi korišćenja</a>)</li><li>https://photon.komoot.io/api/ (<a href=\"https://photon.komoot.io/\">Uslovi korišćenja</a>)</li></ul><br><b>2. Definišite provajdera za slojeve mapa.</b><br>Listu njih možete pronaći ovde: <a href=\"https://leaflet-extras.github.io/leaflet-providers/preview/\">https://leaflet-extras.github.io/leaflet-providers/preview/</a>",
+        "unconfirmed_events": "Nepotvrđeni događaji",
+        "past_unconfirmed_events": "Prošli nepotvrđeni događaji"
     },
     "ordinal": {
         "3": "treći",
