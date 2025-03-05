@@ -25,7 +25,7 @@ v-container
             v-model='place.address'
             persistent-hint)
 
-          SearchAddress(:place='place')
+          SearchAddress(v-if='settings.allow_geolocation' :place='place')
           
       v-card-actions
         v-spacer
