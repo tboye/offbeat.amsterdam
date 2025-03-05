@@ -92,7 +92,6 @@ export default {
       }
     }, 1000),
     selectAddress (v) {
-      console.log('called')
       if (!v) { return }
       if (typeof v === 'object') {
           this.place.latitude = v.lat
