@@ -92,7 +92,6 @@ export default {
     },
     showAdvancedDialogButton () {
 
-
       if (!this.place.name) return false
     
       // do not show advanced dialog button in case geolocation is not allowed
@@ -133,13 +132,13 @@ export default {
       }
     }, 200),
     selectPlace (p) {
-      // force online events under place: online address: online
-      // this.event_only_online = false
       this.place.isNew = false
-      // this.whereAdvancedId++
 
       if (!p) { return }
+
+      // existed place selected
       if (typeof p === 'object' && !p.create && !p.online) {
+        this.places = this.places.filter(p => !p.create)
         if (p.id === this.value.id) return
         this.place.name = p.name
         this.place.address = p.address
@@ -148,17 +147,15 @@ export default {
           this.place.longitude = p.longitude
         }
         this.place.id = p.id
-        // if (this.settings.allow_event_only_online && this.place.name === 'online') {
-        //   this.event_only_online = true 
-        // }
         this.disableAddress = true
       } else { // this is a new place
         this.place.isNew = true
         this.place.name = (p.name || p).trim()
-        const tmpPlace = this.place.name.toLocaleLowerCase()
         // search for a place with the same name
+        const tmpPlace = this.place.name.toLocaleLowerCase()
         const place = this.places.find(p => !p.create && p.name.trim().toLocaleLowerCase() === tmpPlace)
         if (place) {
+          this.places = this.places.filter(p => !p.create)
           this.place.name = place.name
           this.place.id = place.id
           this.place.address = place.address
