@@ -25,6 +25,14 @@ $svg-citation-color: "495057";
   max-width: 1200px;
 }
 
+video {
+  max-width: 100%;
+  width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+
 .premonition {
   display: grid;
   grid-template-columns: 43px auto;
