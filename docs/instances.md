@@ -13,7 +13,6 @@ nav_order: 7
 - [lasitua.org](https://lasitua.org) (Brescia, Italy)
 - [balotta.org](https://balotta.org) (Bologna, Italy)
 - [gancio.daghe.xyz](https://gancio.daghe.xyz/) (Trento, Italy)
-- [roma.convoca.la](https://roma.convoca.la)
 - [www.attoppa.it](https://www.attoppa.it/) (Catania, Italy)
 - [nanassa.com/](https://nanassa.com/) (Stretto di Messina, Italy)
 - [camifa.net](https://camifa.net/) (Cosenza, Italy)
