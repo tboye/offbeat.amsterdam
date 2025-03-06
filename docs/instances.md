@@ -21,6 +21,8 @@ nav_order: 7
 - [initiatives.cassiopea.house](https://initiatives.cassiopea.house) Spazio Anarchico a Magnano (Biella)
 - [eventi.miniereurbane.it](https://eventi.miniereurbane.it/) (realtà antagoniste di Lucca e Toscana)
 - [agenda.reteappenninica.it](https://agenda.reteappenninica.it) (Appennini, Italy)
+- [rebaltela.org](https://rebaltela.org) (Verona, Italy)
+- [roma.convoca.la](https://roma.convoca.la) (Roma, Italy)
 - [bcn.convoca.la](https://bcn.convoca.la/) (Barcelona)
 - [mad.convoca.la](https://mad.convoca.la/) (Madrid)
 - [www.aleale.org](https://www.aleale.org/) (Montpellier)
