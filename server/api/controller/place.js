@@ -9,12 +9,14 @@ const { Op, where, col, fn, cast } = require('sequelize')
 module.exports = {
 
   async getEvents (req, res) {
+    // this api returned the events of a selected location by name (now it is by id)
+    // but we maintain backward compatibility
     const name = req.params.placeNameOrId
     const id = Number(req.params.placeNameOrId)
     const place = await Place.findOne({ where: { ...(isNaN(id) ? { name } : { id })}})
     
     if (!place) {
-      log.warn(`Place ${placeNameOrId} not found`)
+      log.warn(`Place ${name} not found`)
       return res.sendStatus(404)
     }
 
