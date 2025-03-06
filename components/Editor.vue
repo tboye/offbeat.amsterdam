@@ -61,7 +61,7 @@
           :value='isActive.link() && getMarkAttrs("link") && getMarkAttrs("link").href || ""'
           @keypress.enter='commands.link({ href: $event.target.value}); editor.focus()')
 
-  editor-content.content(:editor='editor' spellcheck='false' :style="{ 'max-height': maxHeight }" :aria-label='label' :label='label')
+  editor-content.content(:editor='editor' spellcheck='false' :style="{ height }" :aria-label='label' :label='label')
 </template>
 <script>
 import debounce from 'lodash/debounce'
@@ -95,7 +95,7 @@ export default {
     value: { type: String, default: '' },
     border: { type: Boolean, default: false },
     noSave: { type: Boolean, default: false },
-    maxHeight: { type: String, Number, default: '' },
+    height: { type: String, default: '' },
     placeholder: { type: String, default: '' }
   },
   data () {
@@ -235,8 +235,8 @@ export default {
   .ProseMirror {
     padding: 5px 15px 0px 15px;
     outline: 0;
-    min-height: 100px;
-    max-height: 350px;
+    min-height: 150px;
+    height: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #FF4500 transparent;
