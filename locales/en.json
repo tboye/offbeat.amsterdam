@@ -281,7 +281,7 @@
         "title_description": "It is used in the title of the page, in the subject of the e-mail to export RSS and ICS feeds.",
         "description_description": "Appears in the header next to the title (HTML is supported)",
         "instance_place": "Indicative place of this instance",
-        "instance_name_help": "ActivityPub's account to follow",
+        "instance_name_help": "ActivityPub's account to follow: {ap_handler} (please check this very carefully!)",
         "trusted_sources_label": "Navigation label for trusted federated sources",
         "trusted_sources_label_default": "Other locations",
         "trusted_sources_label_help": "The default label is 'Other locations'",
