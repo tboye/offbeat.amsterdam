@@ -28,7 +28,7 @@ beforeAll(async () => {
     // sequelize.sync({ force: true })
     // await sequelize.query('PRAGMA foreign_keys = OFF')
     await sequelize.query('DELETE FROM settings')
-    await sequelize.query(`DELETE FROM ${col('user_followers')}`)
+    // await sequelize.query(`DELETE FROM ${col('user_followers')}`)
     await sequelize.query(`DELETE FROM ${col('events')} where ${col('parentId')} IS NOT NULL`)
     await sequelize.query('DELETE FROM ap_users')
     await sequelize.query('DELETE FROM events')
@@ -73,7 +73,7 @@ describe('Nodeinfo', () => {
     const response = await request(app).get('/.well-known/nodeinfo')
       .expect('Content-Type', /application\/json/)
       .expect(200)
-      expect(response.body.links.find(l => l.rel === 'https://www.w3.org/ns/activitystreams#Application').href).toBe('http://localhost:13120/federation/u/events')
+      expect(response.body.links.find(l => l.rel === 'https://www.w3.org/ns/activitystreams#Application').href).toBe('http://localhost:13120/federation/u/relay')
   })
 })
 
@@ -84,45 +84,45 @@ describe('Webfinger', () => {
   })
 
   test('should return webfinger response', async () => {
-    const response = await request(app).get('/.well-known/webfinger?resource=acct:events@localhost:13120')
+    const response = await request(app).get('/.well-known/webfinger?resource=acct:relay@localhost:13120')
       .expect(200)
       .expect('Content-Type', 'application/jrd+json; charset=utf-8')
     
-    expect(response.body.subject).toBe('acct:events@localhost:13120')
+    expect(response.body.subject).toBe('acct:relay@localhost:13120')
   })
 })
 
 describe('AP', () => {
 
   test('should redirect to / on html as accepted content type', async () => {
-    await request(app).get('/federation/u/events')
+    await request(app).get('/federation/u/relay')
       .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
       .expect(302)
       .expect('Location', '/')
   })
 
   test('should return a json when ld+json is accepted', async () => {
-    await request(app).get('/federation/u/events')
+    await request(app).get('/federation/u/relay')
       .set('Accept', 'application/ld+json')
       .expect(200)
       .expect('Content-Type', /json/)
   })
 
   test('should return a json when activity+json is accepted', async () => {
-    await request(app).get('/federation/u/events')
+    await request(app).get('/federation/u/relay')
       .set('Accept', 'application/activity+json')
       .expect(200)
       .expect('Content-Type', /json/)
   })
 
   test('should return the AP Actor', async () => {
-    const response = await request(app).get('/federation/u/events')
+    const response = await request(app).get('/federation/u/relay')
       .set('Accept', 'application/activity+json')
       .expect(200)
       .expect('Content-Type', /json/)
 
     expect(response.body.type).toBe('Application')
-    expect(response.body.preferredUsername).toBe('events')
+    expect(response.body.preferredUsername).toBe('relay')
     expect(response.body.publicKey.publicKeyPem).toBeDefined()
   })
 
