@@ -7,8 +7,24 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
-## [1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
 
+### [1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
+
+
+### Bug Fixes
+
+* add Serbian Cyrilic ([fd77203](https://framagit.org/les/gancio/commit/fd772030d745f2a3a8c2fa9b8391cad5069a0857))
+
+### [1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* ap handler validator ([3fcccf7](https://framagit.org/les/gancio/commit/3fcccf72b38a6a4d359bacf114c649490b90416d))
+* **AP:** cannot destroy actor on trust removal ([efa7023](https://framagit.org/les/gancio/commit/efa7023ac9239cf43b33ffb3e21bafd18f8ba6e2))
+
+
+## [1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
 
 ### Features
 
