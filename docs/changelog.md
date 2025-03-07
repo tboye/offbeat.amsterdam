@@ -7,6 +7,12 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+### [1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* use the correct language code to send email, fix [#539](https://framagit.org/les/gancio/issues/539) ([89baa98](https://framagit.org/les/gancio/commit/89baa98527202a85ce69eba1b7d70d6c7a803b30))
 
 ### [1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
 
