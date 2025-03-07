@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* ap handler validator ([3fcccf7](https://framagit.org/les/gancio/commit/3fcccf72b38a6a4d359bacf114c649490b90416d))
+* **AP:** cannot destroy actor on trust removal ([efa7023](https://framagit.org/les/gancio/commit/efa7023ac9239cf43b33ffb3e21bafd18f8ba6e2))
+
 ## [1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
 
 
