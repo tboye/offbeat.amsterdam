@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
+
+
+### Bug Fixes
+
+* add Serbian Cyrilic ([fd77203](https://framagit.org/les/gancio/commit/fd772030d745f2a3a8c2fa9b8391cad5069a0857))
+
 ### [1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
 
 
