@@ -371,7 +371,7 @@
     "validators": {
         "email": "Saisissez une adresse courriel valide",
         "required": "{fieldName} est requis",
-        "latitude": "Insérer une latitude valide (entre -90 et 90)",
+        "latitude": "Insérer une latitude comprise entre -90 et 90",
         "longitude": "Insérer une longitude valide (entre -180 et 180)"
     },
     "ordinal": {
