@@ -14,7 +14,7 @@
         <v-icon v-text='mdiContrastCircle' />
       </v-btn>
       <client-only>
-        <v-menu offset-y transition="slide-y-transition">
+        <v-menu offset-y transition="slide-y-transition" bottom max-height=600>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon large v-bind='attrs' v-on='on' aria-label='Language' v-text="$i18n.locale" />
           </template>
