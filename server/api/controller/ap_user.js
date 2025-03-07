@@ -23,8 +23,7 @@ const apUserController = {
       }
 
       // remove trust
-      // await actor.update({ trusted: false })
-      await actor.destroy()
+      await actor.update({ trusted: false })
 
     } catch (e) {
       log.warn(e)
