@@ -18,6 +18,10 @@ export default ({ app }, inject) => {
     ],
     longitude: [
       v => (v < 180 && v > -180) || $t('validators.longitude')
+    ],
+    ap_handler: [
+      v => !!v || $t('validators.required', { fieldName: $t('admin.instance_name') }),
+      v => !!/^[a-zA-Z0-9._-]+$/.test(v) || 'Only chars, numbers, dots, underscores and dashes are allowed'
     ]
   }
 

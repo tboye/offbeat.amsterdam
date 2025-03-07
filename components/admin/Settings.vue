@@ -6,12 +6,15 @@ v-container
     v-text-field(v-model='title'
       :label="$t('common.title')"
       :hint="$t('admin.title_description')"
+      :rules="[$validators.required('common.title')]"
       @blur='save("title", title)'
       persistent-hint)
 
-    v-text-field.mt-5(v-model='instance_name' v-if='setup'
+    v-text-field.mt-5(v-model='instance_name' 
+      v-if='setup'
       :label="$t('admin.instance_name')"
-      :hint="$t('admin.instance_name_help')"
+      :rules="$validators.ap_handler"
+      :hint="$t('admin.instance_name_help', { ap_handler })"
       @blur='save("instance_name", instance_name)'
       persistent-hint)      
 
@@ -122,6 +125,7 @@ export default {
       mdiAlert, mdiArrowRight, mdiMap,
       title: $store.state.settings.title,
       description: $store.state.settings.description,
+      instance_name: 'events',
       locales: Object.keys(locales).map(locale => ({ value: locale, text: locales[locale] })),
       showSMTP: false,
       showGeolocationConfigs: false,
@@ -129,6 +133,9 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    ap_handler () {
+      return `@${this.instance_name}@${this.settings.hostname}`
+    },
     instance_locale: {
       get () { return this.settings.instance_locale },
       set (value) { this.setSetting({ key: 'instance_locale', value }) }
@@ -136,10 +143,6 @@ export default {
     instance_timezone: {
       get () { return this.settings.instance_timezone },
       set (value) { this.setSetting({ key: 'instance_timezone', value }) }
-    },
-    instance_name: {
-      get () { return this.settings.instance_name },
-      set (value) { this.setSetting({ key: 'instance_name', value }) }
     },
     allow_registration: {
       get () { return this.settings.allow_registration },
