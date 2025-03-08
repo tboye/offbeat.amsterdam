@@ -58,7 +58,7 @@
         "what": "Was",
         "when": "Wann",
         "address": "Adresse",
-        "where": "Ort",
+        "where": "Wo",
         "send": "Abschicken",
         "export": "Exportieren",
         "next": "Weiter",
@@ -118,7 +118,9 @@
         "editor": "Bearbeiter",
         "report": "Veranstaltung melden",
         "trusted_sources": "Vertrauenswürdige Quellen",
-        "past_events": "Vergangene Veranstaltungen"
+        "past_events": "Vergangene Veranstaltungen",
+        "enabled": "Aktiviert",
+        "pages": "Seiten"
     },
     "admin": {
         "delete_footer_link_confirm": "Möchtest du diesen Link löschen?",
@@ -267,7 +269,12 @@
         "trusted_source_removed": "Fediverse-Quelle entfernt",
         "federated_events_in_home": "Zeige föderierte Veranstaltungen auf der Startseite",
         "federated_events_in_home_help": "Geteilte Veranstaltungen vertrauenswürdiger Fediverse-Quellen werden standardmäßig auf der Startseite angezeigt. Um nur ausgewählte Veranstaltungen anzuzeigen, benutze Sammlungen.",
-        "add_trusted_source_help": "Benutze eine der folgenden Schreibweisen: <br/><ul><li>die Web-Adresse einer anderen Gancio-Instanz oder Software, welche Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> unterstützt (z.B. <u>https://demo.gancio.org</u>)</li><li>eine ActivityPub-Adresse <u>@gancio@mastodon.cisti.org</u></li><li>die URL eines Profils , bspw. <u>https://instance.tld/actor</u>.</li></ul><br/>Selbstveröffentlichte oder geboostete Veranstaltungen dieser Quellen werden importiert."
+        "add_trusted_source_help": "Benutze eine der folgenden Schreibweisen: <br/><ul><li>die Web-Adresse einer anderen Gancio-Instanz oder Software, welche Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> unterstützt (z.B. <u>https://demo.gancio.org</u>)</li><li>eine ActivityPub-Adresse <u>@gancio@mastodon.cisti.org</u></li><li>die URL eines Profils , bspw. <u>https://instance.tld/actor</u>.</li></ul><br/>Selbstveröffentlichte oder geboostete Veranstaltungen dieser Quellen werden importiert.",
+        "unconfirmed_events": "Unbestätigte Veranstaltungen",
+        "past_unconfirmed_events": "Vergangene unbestätigte Veranstaltungen",
+        "page_description": "In diesem Abschnitt kannst Du eigene Seiten verwalten (z.B. für Regeln oder Anleitungen)",
+        "new_page": "Füge eine neue individuelle Seite hinzu",
+        "delete_page_confirm": "Bist Du sicher, dass Du die Seite \"<strong>{title}</strong>\" entfernen möchtest?"
     },
     "settings": {
         "update_confirm": "Willst du deine Änderung speichern?",
@@ -396,7 +403,10 @@
         "email_description": "Du kannst interessante Veranstaltungen per E-Mail erhalten.",
         "feed_description": "Um Aktualisierungen auf deinem Computer oder Smartphone zu erhalten, ohne regelmäßig diese Seite zu öffnen, kannst du RSS-Feeds benutzen. </p>\n\n<p> Mit RSS-Feeds nutzt du eine spezielle App, um Aktualisierungen von den Seiten, die dich interessieren, zu erhalten. Damit kannst du viele Seiten überblicken, ohne ein Benutzerkonto erstellen zu müssen oder sonstige Komplikationen. </p>\n\n\n<li> Für Android-Geräte empfehlen wir <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> oder Feeder </li>\n<li> Auf iPhones / iPads kannst du <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> nutzen</li>\n<li> Auf Desktop-PCs oder Laptops empfehlen wir Feedbro, den du in <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> oder <a \nref=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a> installieren kannst. </li>\n<br/>\nFügst du diesen Link dem RSS-Feed-Reader hinzu, wird dieser dich auf dem Laufenden halten.",
         "intro": "Anders als unsoziale Netzwerke, die alles unternehmen, um nutzende Personen und deren Daten bei sich zu (be)halten, glauben wir, dass Informationen und Menschen gleichermaßen frei sein müssen. Deshalb kannst du dich über Veranstaltungen aktuell informieren, ohne zwangsläufig über diese Seite zu gehen.",
-        "filter_description": "Du kannst deinen Export hier nach Schlagwort und Ort oder nach einer voreingestellten Sammlung filtern"
+        "filter_description": "Du kannst deinen Export hier nach Schlagwort und Ort oder nach einer voreingestellten Sammlung filtern",
+        "list_title": "Liste",
+        "filter_title": "Filter",
+        "ical_title": ""
     },
     "recover": {
         "not_valid_code": "Etwas ist schief gelaufen."
