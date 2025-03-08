@@ -12,19 +12,13 @@
   {
     "id" : "https://virtual.location.org",
     "name" : "A Virtual location",
-    "address": {
-      "type": "VirtualLocation",
-      "url": "https://virtual.location.org"
-    },
-    "type" : "Place"
+    "type": "VirtualLocation",
+    "url": "https://virtual.location.org"
   },
   {
     "id" : "https://a.second.fallback.virtual.location.org",
     "name" : "A Fallback Virtual location",
-    "address": {
-      "type": "VirtualLocation",
-      "url": "https://a.second.fallback.virtual.location.org"
-    },
-    "type" : "Place"
+    "type": "VirtualLocation",
+    "url": "https://a.second.fallback.virtual.location.org"
   }
 ]

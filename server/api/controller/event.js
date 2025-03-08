@@ -392,12 +392,12 @@ const eventController = {
         where: {
           parentId: null,
           is_visible: false,
-          start_datetime: { [Op.gt]: DateTime.local().toUnixInteger() }
         },
         order: [['start_datetime', 'ASC']],
         include: [{ model: Tag, required: false }, Place]
       })
-      res.json(events)
+      const now = DateTime.local().toUnixInteger()
+      res.json({ events: events.filter(e => e.start_datetime >= now) , oldEvents: events.filter(e => e.start_datetime < now) })
     } catch (e) {
       log.info(e)
       res.sendStatus(400)

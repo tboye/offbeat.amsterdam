@@ -40,16 +40,17 @@ module.exports = {
     if(!await Tag.findOne({ where: { tag } })) {
       return res.sendStatus(404)
     }
-    const events = await eventController._select({ tags: tag, show_recurrent: true, show_multidate: true })
+    const events = await eventController._select({ tags: tag, show_recurrent: true, show_multidate: true, show_federated: true })
     switch (format) {
       case 'rss':
         return exportController.feed(req, res, events,
             `${res.locals.settings.title} - Tag #${tag}`,
-            `${res.locals.settings.baseurl}/feed/rss/tag/${tag}`)
+            `${res.locals.settings.baseurl}/feed/rss/tag/${encodeURIComponent(tag)}`)
       case 'ics':
         return exportController.ics(req, res, events)
       default:
-        return res.json(events)
+        const pastEvents = await eventController._select({ tags: tag, show_recurrent: true, show_multidate: true, show_federated: true, older: true, reverse: true })
+        return res.json({ pastEvents, events })
     }
   },
 

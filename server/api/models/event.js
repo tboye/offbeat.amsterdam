@@ -99,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
     tags = tags?.map(tag => ({
       type: 'Hashtag',
       name: '#' + tag,
-      href: `${config.baseurl}/tag/${tag}`
+      href: `${config.baseurl}/tag/${encodeURIComponent(tag)}`
     })) ?? []
 
     return {

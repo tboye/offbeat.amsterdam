@@ -1,36 +1,40 @@
 const { Event } = require('../api/models/models')
 const config = require('../config')
 const log = require('../log')
+const { NotFoundError } = require('../helpers')
 
 module.exports = {
-  async boost (req, res) {
-    if (typeof req.body?.object !== 'string') {
-      log.debug('[FEDI] Ignore Announce for a whole object (Announce are currently supported for internal events only): %s', JSON.stringify(req.body?.object))
-      return res.status(404).send('Announce is supported for internal events only')
-    }
-    const match = req.body?.object?.match(`${config.baseurl}/federation/m/(.*)`)
+  async boost (APMessage, actor) {
+    const match = APMessage?.match(`${config.baseurl}/federation/m/(.*)`)
     if (!match || match.length < 2) {
-      log.debug('[FEDI] Boosted something not local: %s', req.body.object)
-      return res.status(404).send('Event not found!')
+      log.debug('[FEDI] Boosted something not local: %s', APMessage)
+      throw new NotFoundError('Event not found')
     }
     log.info(`[FEDI] boost ${match[1]}`)
     const event = await Event.findByPk(Number(match[1]))
     if (!event) {
-      log.debug('[FEDI] Boosted event not found: %s', req.body.object)
-      return res.status(404).send('Event not found!')
+      log.debug('[FEDI] Boosted event not found: %s', APMessage)
+      throw new NotFoundError('Event not found')
     }
 
-    await event.update({ boost: [...event.boost, req.body.actor] })
-    res.sendStatus(201)
+    return event.update({ boost: [...event.boost, actor] })
   },
 
   async unboost (req, res) {
-    const match = req.body?.object?.match(`${config.baseurl}/federation/m/(.*)`)
-    if (!match || match.length < 2) { return res.status(404).send('Event not found!') }
-    log.info(`unboost ${match[1]}`)
-    const event = await Event.findByPk(Number(match[1]))
-    if (!event) { return res.status(404).send('Event not found!') }
-    await event.update({ boost: event.boost.filter(actor => actor !== req.body.actor) })
+    const APMessage = req.body?.object
+    const ap_id = APMessage?.object?.object ?? APMessage?.object
+    log.info(`[FEDI] Unboost ${ap_id}`)
+    const match = ap_id?.match(`${config.baseurl}/federation/m/(.*)`)
+    if (!match || match.length < 2) {
+      // unboost remote event
+      const event = await Event.findOne({ where: { ap_id } })
+      if (!event) { return res.status(404).send('Event not found!') }
+      await event.destroy()
+    } else {
+      const event = await Event.findByPk(Number(match[1]))
+      if (!event) { return res.status(404).send('Event not found!') }
+      await event.update({ boost: event.boost.filter(actor => actor !== req.body.actor) })
+    }
   },
 
   async bookmark (req, res) {
@@ -40,9 +44,8 @@ module.exports = {
       return res.status(404).send('Event not found!')
     }
     const event = await Event.findByPk(Number(match[1]))
-    log.info(`${req.body.actor} bookmark ${event.title} (${event.likes.length})`)
+    log.info(`[FEDI] ${req.body.actor} bookmark ${event.title} (${event.likes.length})`)
     if (!event) { return res.status(404).send('Event not found!') }
-    // TODO: has to be unique
     await event.update({ likes: [...event.likes, req.body.actor] })
     res.sendStatus(201)
   },
@@ -53,9 +56,9 @@ module.exports = {
     const match = object.object.match(`${config.baseurl}/federation/m/(.*)`)
     if (!match || match.length < 2) { return res.status(404).send('Event not found!') }
     const event = await Event.findByPk(Number(match[1]))
-    log.info(`${body.actor} unbookmark ${event.title} (${event.likes.length})`)
+    log.info(`[FEDI] ${body.actor} unbookmark ${event.title} (${event.likes.length})`)
     if (!event) { return res.status(404).send('Event not found!') }
     await event.update({ likes: event.likes.filter(actor => actor !== body.actor) })
-    res.sendStatus(201)
+    res.status(201).send()
   }
 }

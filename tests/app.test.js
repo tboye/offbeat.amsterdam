@@ -28,7 +28,7 @@ beforeAll(async () => {
     const { col } = require('../server/helpers')
     // sequelize.sync({ force: true })
     // await sequelize.query('PRAGMA foreign_keys = OFF')
-    await sequelize.query(`DELETE FROM ${col('user_followers')}`)
+    // await sequelize.query(`DELETE FROM ${col('user_followers')}`)
     await sequelize.query(`DELETE FROM ${col('events')} where ${col('parentId')} IS NOT NULL`)
     await sequelize.query('DELETE FROM ap_users')
     await sequelize.query('DELETE FROM events')
@@ -750,5 +750,12 @@ describe('Geocoding', () => {
       .expect(200)
 
     expect(response.body).toBeDefined()
+  })
+
+  describe('SMTP', () => {
+    it ('should send email', async () => {
+      const mail = require('../server/api/mail.js')
+      await expect(mail._send('test@cisti.org', 'test')).rejects.toThrow("connect ECONNREFUSED")
+    })
   })
 })

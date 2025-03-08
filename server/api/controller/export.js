@@ -113,7 +113,7 @@ const exportController = {
       const tmpStart = DateTime.fromSeconds(e.start_datetime, { zone: 'UTC' })
       const start = [ tmpStart.year, tmpStart.month, tmpStart.day, tmpStart.hour, tmpStart.minute ]
 
-      const location = e.place.name !== 'online' ? `${e.place.name} - ${e.place.address}` : `${e.place.name} - ${e?.online_locations[0]}`
+      const location = e?.place ? (e.place?.name !== 'online' ? `${e.place?.name} - ${e.place?.address}` : `${e.place?.name} - ${e?.online_locations?.[0]}`) : ''
       const ret = {
         uid: `${e.id}@${settings.hostname}`,
         start,
@@ -129,7 +129,7 @@ const exportController = {
         alarms
       }
 
-      if (e.place.latitude && e.place.longitude) {
+      if (e.place?.latitude && e.place?.longitude) {
         ret.geo = { lat: e.place.latitude, lon: e.place.longitude }
       }
 

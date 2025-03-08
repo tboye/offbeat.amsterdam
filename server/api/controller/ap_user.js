@@ -9,7 +9,7 @@ const apUserController = {
 
   async removeTrust (req, res) {
     let ap_id = req.query.ap_id
-    log.info(`Remove trust on node ${ap_id} ...`)
+    log.info(`Remove trust on node ${ap_id}`)
     
     try {
       const actor = await getActor(ap_id)
@@ -19,7 +19,7 @@ const apUserController = {
 
       if (actor.following) {
         // unfollow
-        await unfollowActor(actor)
+        await unfollowActor(actor).catch(e => {})
       }
 
       // remove trust
@@ -124,19 +124,21 @@ const apUserController = {
       try {
         log.debug('[FEDI] Trying to use %s as actor', url)
         actor = await getActor(url, instance)
-        log.debug('[FEDI] Actor %s', actor)
-        await actor.update({ trusted: true })
-        await followActor(actor)
-        return res.json(actor)
+        if (actor) {
+          log.debug('[FEDI] Actor %s', actor.ap_id)
+          await actor.update({ trusted: true })
+          await followActor(actor)
+          return res.json(actor)
+        }
       } catch (e) {
-        log.debug('[FEDI] %s is probably not an actor: %s', url, e)
+        log.debug('[FEDI] %s is probably not an actor: %s', url, String(e))
       }
 
       // ok this wasn't an actor, let's use the applicationActor if exists
       if (!actor && instance?.applicationActor) {
         log.debug('[FEDI] This node supports FEP-2677 and applicationActor is: %s', instance.applicationActor)
         actor = await getActor(instance.applicationActor, instance, true)
-        log.debug('[FEDI] Actor %s', actor)
+        log.debug('[FEDI] Actor %s', actor.ap_id)
         await actor.update({ trusted: true })
         return res.json(actor)
       }

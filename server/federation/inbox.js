@@ -6,6 +6,7 @@ const Users = require('./users')
 const Ego = require('./ego')
 const log = require('../log')
 const { APUser, Resource } = require('../api/models/models')
+const { parseAPMessage } = require('./helpers')
 
 module.exports = async (req, res) => {
   const message = req.body
@@ -15,14 +16,15 @@ module.exports = async (req, res) => {
     log.warn('[FEDI] message without `object` or `type` property: %s', message)
     return res.status(404).send('Wrong AP message: no object or type property')
   }
-
+  
+  res.set('Content-Type', 'application/activity+json')
   log.debug('[FEDI] Type %s', message.type)
   switch (message.type) {
     case 'Follow':
       Follows.follow(req, res)
       break
     case 'Accept':
-      return res.sendStatus(202)
+      return res.status(202).send()
     case 'Undo':
       // unfollow || unlike || unboost
       if (message.object?.type === 'Follow') {
@@ -32,14 +34,16 @@ module.exports = async (req, res) => {
       } else if (message.object?.type === 'Announce') {
         Ego.unboost(req, res)
       } else {
-        log.warn('[FEDI] Undo message type with unsupported object: %s', JSON.stringify(message.object))
+        log.warn('[FEDI] Undo Activity for unsupported Object: %s', JSON.stringify(message.object))
+        return res.status(400).send('Undo Activity for unsupported Object')
       }
       break
     case 'Announce':
-      Ego.boost(req, res)
-      break
+      log.debug(`[FEDI] Announce incoming from ${res.locals.fedi_user.ap_id}`)
+      await parseAPMessage(message, res.locals.fedi_user)
+      return res.status(201).send()
     case 'Note':
-      log.debug('[FEDI] This is a note and it is not supported: %s', JSON.stringify(message.object))
+      log.debug('[FEDI] Direct Note Activity is not supported: %s', JSON.stringify(message.object))
       break
     case 'Like':
       Ego.bookmark(req, res)
@@ -63,22 +67,17 @@ module.exports = async (req, res) => {
             await Resources.remove(req, res)
           }
         }
-    
       }
       break
     case 'Update':
       if (message.object?.type === 'Event') {
         log.debug(`[FEDI] Event update is coming from ${res.locals.fedi_user.ap_id}`)
-        if (!res.locals.fedi_user.following || !res.locals.fedi_user.trusted) {
-          log.warn(`[FEDI] APUser not followed or not trusted`)
-          return res.sendStatus(404)
-        }
         await Events.update(req, res)
       } else if (message.object?.type === 'Note') {
         log.debug('[FEDI] Note update is coming from %s', res.locals.fedi_user.ap_id)
         await Resources.update(req, res)
       } else {
-        log.debug('[FEDI] Unsupported Update: %s', JSON.stringify(message?.object))
+        log.debug('[FEDI] Update unsupported Object: %s', JSON.stringify(message?.object))
       }
       break
     case 'Create':
@@ -86,15 +85,15 @@ module.exports = async (req, res) => {
       if (message.object?.type === 'Note') {
         await Resources.create(req, res)
       } else if (message.object?.type === 'Event') {
-        log.debug(`[FEDI] Event is coming from ${res.locals.fedi_user.ap_id}`)
+        log.debug(`[FEDI] Create Activity with Event type incoming from ${res.locals.fedi_user.ap_id}`)
         if (!res.locals.fedi_user.following || !res.locals.fedi_user.trusted) {
-          log.warn(`[FEDI] APUser not followed nor trusted`)
+          log.warn(`[FEDI] APUser not followed or not trusted`)
           return res.sendStatus(404)
-        }        
-        await Events.create(req, res)
+        }
+        await parseAPMessage(message, res.locals.fedi_user)
+        return res.status(201).send()
       } else {
-        // await Resources.create(req, res)
-        log.warn('[FEDI] Create with unsupported Object or not a reply => %s', JSON.stringify(message?.object))
+        log.warn('[FEDI] Create unsupported Object => %s', JSON.stringify(message?.object))
         return res.sendStatus(404)
       }
       break

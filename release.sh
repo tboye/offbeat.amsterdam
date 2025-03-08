@@ -9,11 +9,9 @@ cp gancio-$RELEASE.tgz releases/
 mv gancio-$RELEASE.tgz releases/latest.tgz
 cp gancio-$RELEASE.tgz.sig releases/
 mv gancio-$RELEASE.tgz.sig releases/latest.tgz.sig
-docker build . -t cisti/gancio
-
-
 yarn doc
 rsync -a docs/_site/ --chown=www-data:www-data cisti.web:/var/www/gancio/
+docker build . -t cisti/gancio
 # git tag $RELEASE
 # git push --tags
 # cd docs

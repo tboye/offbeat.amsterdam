@@ -1,4 +1,12 @@
+# 0.2.0 (in progress)
+- Merge Gancio changes
+[1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
+[1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
+[1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
+[1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3) (2025-03-07)
+
 # 0.1.2 (14-02-2025)
+## Fixes
 - Fix sitemap: show all events (with weekly freq) and last mod date, root page as daily + exclude unwanted routes
 [#8](https://github.com/tboye/offbeat.amsterdam/pull/8)
 

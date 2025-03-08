@@ -45,7 +45,6 @@ const defaultSettings = {
   'theme.is_dark': true,
   dark_colors: { primary: '#FF6E40', error: '#FF5252', info: '#2196F3', success: '#4CAF50', warning: '#FB8C00' },
   light_colors: { primary: '#FF4500', error: '#FF5252', info: '#2196F3', success: '#4CAF50', warning: '#FB8C00' },
-  trusted_sources_label: '',
   hide_thumbs: false,
   hide_calendar: false,
   footerLinks: [
@@ -120,7 +119,7 @@ const settingsController = {
         where: { key },
         defaults: { value, is_secret }
       })
-      if (!created) { setting.update({ value, is_secret }) }
+      if (!created) { await setting.update({ value, is_secret }) }
       settingsController[is_secret ? 'secretSettings' : 'settings'][key] = value
       return true
     } catch (e) {

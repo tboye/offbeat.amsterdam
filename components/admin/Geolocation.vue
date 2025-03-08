@@ -52,7 +52,7 @@ v-card
       Map(:key='mapKey' v-if='mapPreview'
         @tileerror='tilelayerTestError'
         @tileload='tilelayerTestSuccess'
-        height="20rem" 
+        :LMapStyles="{height:'20rem'}" 
         showMarker=false 
         :mapCenter='mapCenter' 
         :zoom='10')

@@ -116,7 +116,9 @@
         "contact_user": "Benutzer kontaktieren",
         "role": "Rolle",
         "editor": "Bearbeiter",
-        "report": "Veranstaltung melden"
+        "report": "Veranstaltung melden",
+        "trusted_sources": "Vertrauenswürdige Quellen",
+        "past_events": "Vergangene Veranstaltungen"
     },
     "admin": {
         "delete_footer_link_confirm": "Möchtest du diesen Link löschen?",
@@ -133,7 +135,7 @@
         "filter_instances": "Instanzen filtern",
         "filter_users": "nutzende Person filtern",
         "resources": "Ressourcen",
-        "user_blocked": "Die nutzende Person {user} kann keine Ressourcen mehr hinzufügen",
+        "user_blocked": "Benutzer {user} blockiert",
         "user_block_confirm": "Bestätige, dass du die nutzende Person {user} sperren möchtest?",
         "instance_locale": "Vorgegebene Sprache",
         "instance_place": "Vorläufiger Ort dieser Instanz",
@@ -255,7 +257,17 @@
         "default_fedi_hashtags_help": "Die angegebenen Schlagworte werden beim Übermitteln der Ereignisse ins Fediverse hinzugefügt",
         "stats": "{n_followers} \"Akteure\" aus dem Fediverse folgen dieser Instanz. Aus dem Fediverse kommen im Gegenzug {n_events} Ereignisse und {n_resources} Kommentare",
         "show_download_media": "Weise auf Mediendownload hin",
-        "show_download_media_hint": "Stelle einen Knopf zum Mediendownload auf der Ereignisseite dar"
+        "show_download_media_hint": "Stelle einen Knopf zum Mediendownload auf der Ereignisseite dar",
+        "trusted_sources_label": "Menüeintrag für vertrauenswürdige Fediverse-Quellen",
+        "trusted_sources_label_default": "Andere Instanzen",
+        "trusted_sources_label_help": "Die vorgebene Bezeichnung ist \"Andere Instanzen\"",
+        "add_trusted_source": "Füge eine vertrauenswürdige Fediverse-Quellen hinzu",
+        "add_source": "Hinzufügen vertrauenswürdiger Fediverse-Quellen",
+        "delete_trusted_source_confirm": "Möchtest du die Fediverse-Quelle wirklich entfernen?",
+        "trusted_source_removed": "Fediverse-Quelle entfernt",
+        "federated_events_in_home": "Zeige föderierte Veranstaltungen auf der Startseite",
+        "federated_events_in_home_help": "Geteilte Veranstaltungen vertrauenswürdiger Fediverse-Quellen werden standardmäßig auf der Startseite angezeigt. Um nur ausgewählte Veranstaltungen anzuzeigen, benutze Sammlungen.",
+        "add_trusted_source_help": "Benutze eine der folgenden Schreibweisen: <br/><ul><li>die Web-Adresse einer anderen Gancio-Instanz oder Software, welche Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> unterstützt (z.B. <u>https://demo.gancio.org</u>)</li><li>eine ActivityPub-Adresse <u>@gancio@mastodon.cisti.org</u></li><li>die URL eines Profils , bspw. <u>https://instance.tld/actor</u>.</li></ul><br/>Selbstveröffentlichte oder geboostete Veranstaltungen dieser Quellen werden importiert."
     },
     "settings": {
         "update_confirm": "Willst du deine Änderung speichern?",
@@ -324,7 +336,7 @@
         "coordinates_search": "Suche nach Koordinaten",
         "coordinates_search_description": "Sie können den Ort anhand des Namens suchen oder das Koordinatenpaar einfügen.",
         "follow_me_description": "Eine Möglichkeit, über die hier auf {title} veröffentlichten Veranstaltungen auf dem Laufenden zu bleiben,\nbesteht darin, dem Account <u>{account}</u> aus dem Fediverse zu folgen, zum Beispiel über Mastodon, und von dort aus eventuell Ressourcen für eine Veranstaltung hinzuzufügen.<br/><br/>\nWenn Du noch nie von Mastodon und dem Fediverse gehört hast, empfehlen wir dir, diesen Artikel <a href='https://www.savjee.be/videos/simply-explained/mastodon-and-fediverse-explained/'> zu lesen</a>.<br/><br/>Gib unten deine Instanz ein (z.B. mastodon.social)",
-        "media_description": "Du kannst (optional) ein Flyer-Bild hinzufügen",
+        "media_description": "Du kannst (optional) ein Bild hinzufügen",
         "edit_recurrent": "Bearbeite eine sich wiederholende Veranstaltung :",
         "show_recurrent": "Serientermine",
         "show_past": "auch ältere Veranstaltungen",
@@ -347,7 +359,7 @@
         "interact_with_me_at": "Tausche dich mit mir auf dem Fediverse aus unter",
         "interact_with_me": "Folge mir",
         "import_ICS": "Einlesen von ICS",
-        "download_flyer": "Lade den Flyer herunter",
+        "download_flyer": "Bild herunterladen",
         "remove_media_confirmation": "Möchtest du das Bild löschen?",
         "alt_text_description": "Beschreibung für Menschen mit Sehbehinderungen",
         "choose_focal_point": "Auswahl des Schwerpunkts",

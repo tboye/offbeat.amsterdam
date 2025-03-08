@@ -7,14 +7,14 @@
       <nuxt-link id="title" v-text="settings.title" to="/" />
       <div
         class="text-body-1 font-weight-light pb-3"
-        v-text="settings?.description"
+        v-html="settings?.description"
       />
     </h1>
     <div v-else class="text-center">
       <nuxt-link id="title" v-text="settings.title" to="/" />
       <div
         class="text-body-1 font-weight-light pb-3"
-        v-text="settings?.description"
+        v-html="settings?.description"
       />
     </div>
 

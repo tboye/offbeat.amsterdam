@@ -1,25 +1,29 @@
-const { Event, Place, APUser, Tag } = require('../api/models/models')
-
+const { DateTime } = require('luxon')
 const escape = require('lodash/escape')
+const get = require('lodash/get')
+
+const { Event, Place, APUser, Tag } = require('../api/models/models')
 const config = require('../config')
 const log = require('../log')
-const settingsController = require('../api/controller/settings')
-const { DateTime } = require('luxon')
 const Helpers = require('./helpers')
-const get = require('lodash/get')
+const settingsController = require('../api/controller/settings')
 
 module.exports = {
   get (req, res) {
-    if (req.accepts('application/activity+json', 'application/ld+json', 'application/json', 'html') === 'html'){
+    const { preferHTML } = require('../helpers')
+    if (preferHTML(req)){
       log.debug('[FEDI] Get actor but prefer text/html, redirect to homepage')
       return res.redirect(302, '/')
     }
-    log.debug('[FEDI] Get actor')
     const settings = settingsController.settings
     const name = req.params.name
     if (!name) { return res.status(400).send('Bad request.') }
-
-    if (name !== settings.instance_name) { return res.status(404).send(`No record found for ${escape(name)}`) }
+    
+    if (name !== settings.instance_name) {
+      log.debug(`[FEDI] Get unknown actor ${name}`)
+      return res.status(404).send(`No record found for ${escape(name)}`)
+    }
+    log.debug('[FEDI] Get actor aa')
     const ret = {
       '@context': [
         'https://www.w3.org/ns/activitystreams',

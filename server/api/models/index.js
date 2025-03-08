@@ -24,7 +24,8 @@ const models = {
   Setting: require('./setting'),
   Tag: require('./tag'),
   User: require('./user'),
-  Message: require('./message')
+  Message: require('./message'),
+  Page: require('./page')
 }
 
 const db = {
@@ -36,11 +37,9 @@ const db = {
     }
 
   },
-  associates() {
-    const {
-      Filter, Collection, APUser, Instance, User, Event, EventNotification, Tag,
-      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification, Message
-    } = DB
+  associates () {
+    const { Filter, Collection, APUser, Instance, User, Event, EventNotification, Tag,
+      OAuthCode, OAuthClient, OAuthToken, Resource, Place, Notification, Message, Page } = DB
 
     Filter.belongsTo(Collection)
     Collection.hasMany(Filter)
@@ -84,6 +83,7 @@ const db = {
     Event.belongsTo(Event, { as: 'parent' })
 
     SequelizeSlugify.slugifyModel(Event, { source: ['title'], overwrite: false })
+    SequelizeSlugify.slugifyModel(Page, { source: ['title'], overwrite: false })
 
   },
   close() {

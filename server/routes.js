@@ -46,8 +46,6 @@ async function main () {
     app.get('/feed/:format/collection/:name', cors(), collectionController.getEvents)
     app.get('/feed/:format', cors(), exportController.export)
     
-    app.use('/event/:slug', helpers.APRedirect)
-    
     // federation api / activitypub / webfinger / nodeinfo
     app.use('/federation', federation)
     app.use('/.well-known', webfinger)
@@ -65,10 +63,21 @@ async function main () {
   // api!
   app.use('/api', api())
 
-  // // Handle 500
-  app.use((error, _req, res, _next) => {
-    log.error('[ERROR] %s', error)
-    return res.sendStatus(500) //.send('500: Internal Server Error')
+  // redirect to ld+json AP event representation if json content-type is preferred
+  app.use('/event/:slug', helpers.APEventRedirect)
+
+  // redirect to Application Actor if json content-type is preferred
+  app.use('/', helpers.APRedirect)
+
+  // Handle 500
+  app.use((err, _req, res, _next) => {
+    if (err instanceof helpers.HttpError) {
+      log.warn(err.message)
+      res.status(err.status).send(err.message)
+    } else {
+      log.error(err)
+      res.status(501).send('Internal Server Error')
+    }
   })
 
   // remaining request goes to nuxt

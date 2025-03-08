@@ -1,5 +1,4 @@
 const ical = require('ical.js')
-const settingsController = require('./api/controller/settings')
 const express = require('express')
 const dayjs = require('dayjs')
 const timezone = require('dayjs/plugin/timezone')
@@ -20,6 +19,7 @@ const { JSDOM } = require('jsdom')
 const { window } = new JSDOM('<!DOCTYPE html>')
 const domPurify = DOMPurify(window)
 const URL = require('url')
+const settingsController = require('./api/controller/settings')
 
 domPurify.addHook('beforeSanitizeElements', node => {
   if (node.hasAttribute && node.hasAttribute('href')) {
@@ -43,7 +43,37 @@ domPurify.addHook('beforeSanitizeElements', node => {
   return node
 })
 
-module.exports = {
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
+class BadRequestError extends HttpError {
+  constructor(message = 'Bad Request') {
+    super(400, message);
+  }
+}
+
+class UnauthorizedError extends HttpError {
+  constructor(message = 'Unauthorized') {
+    super(401, message);
+  }
+}
+
+class NotFoundError extends HttpError {
+  constructor(message = 'Not Found') {
+    super(404, message);
+  }
+}
+
+const Helpers = {
+  HttpError,
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,  
 
   randomString(length = 12) {
     const wishlist = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -60,6 +90,13 @@ module.exports = {
     })
   },
 
+  preferHTML (req) {
+    return req.accepts('html', 'application/activity+json', 'application/ld+json') === 'html'
+  },
+
+  preferJSON (req) {
+    return ['application/activity+json', 'application/ld+json'].includes(req.accepts('html', 'application/activity+json', 'application/ld+json'))
+  },
 
   async initSettings(_req, res, next) {
     // initialize settings
@@ -86,7 +123,7 @@ module.exports = {
       enable_federation: settings.enable_federation,
       enable_resources: settings.enable_resources,
       hide_boosts: settings.hide_boosts,
-      trusted_sources_label: settings.trusted_sources_label || settings.trusted_instances_label,
+      trusted_sources_label: settings?.trusted_sources_label ?? settings.trusted_instances_label,
       'theme.is_dark': settings['theme.is_dark'],
       dark_colors: settings.dark_colors,
       light_colors: settings.light_colors,
@@ -114,7 +151,7 @@ module.exports = {
     const router = express.Router()
     // serve images/thumb
     router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }), 
-      (req, res) => res.redirect('/fallbackimage.png')
+      (_req, res) => res.redirect('/fallbackimage.png')
     )
     
     router.use('/download/:filename', (req, res) => {
@@ -314,17 +351,25 @@ module.exports = {
     return cursor
   },
 
-  async APRedirect(req, res, next) {
+  async APEventRedirect(req, res, next) {
     const eventController = require('../server/api/controller/event')
-    const acceptJson = req.accepts('html', 'application/activity+json', 'application/ld+json', 'application/json') !== 'html'
 
-    if (acceptJson) {
+    if (Helpers.preferJSON(req)) {
       const event = await eventController._get(req.params.slug)
       if (event) {
         log.debug('[FEDI] APRedirect for %s', event.title)
-        return res.redirect(event?.ap_id ?? `/federation/m/${event.id}`)
+        return res.redirect(301, event?.ap_id ?? `/federation/m/${event.id}`)
       }
       log.warn('[FEDI] Accept JSON but event not found: %s', req.params.slug)
+      return res.redirect(`/federation/u/${settingsController.settings.instance_name}`, 302)
+    }
+    next()
+  },
+
+  async APRedirect (req, res, next) {
+    if (Helpers.preferJSON(req)) {
+      log.debug(`[FEDI] JSON preferred ${req.path}`)
+      return res.redirect(301, `/federation/u/${settingsController.settings.instance_name}`)
     }
     next()
   },
@@ -361,3 +406,5 @@ module.exports = {
   }
 
 }
+
+module.exports = Helpers

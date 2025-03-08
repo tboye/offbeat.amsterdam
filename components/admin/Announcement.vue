@@ -21,28 +21,33 @@ v-container
   v-card-text
     v-data-table(
       v-if='announcements.length'
+      :hide-default-footer='announcements.length<10'
       :footer-props='{ prevIcon: mdiChevronLeft, nextIcon: mdiChevronRight }'
       :header-props='{ sortIcon: mdiChevronDown }'
       :headers='headers'
       :items='announcements')
       template(v-slot:item.actions='{ item }')
-        v-btn(text small @click.stop='toggle(item)'
-          :color='item.visible ? "warning" : "success"') {{ item.visible ? $t('common.disable') : $t('common.enable') }}
-        v-btn(text small @click='edit(item)' color='primary') {{ $t('common.edit') }}
-        v-btn(text small @click='remove(item)' color='error') {{ $t('common.delete') }}
+        t-btn(@click='toggle(item)' :color='item.visible ? "warning" : "success"' :tooltip="item.visible ? $t('common.disable') : $t('common.enable')")
+          v-icon(v-text='item.visible ? mdiEyeOff : mdiEye')
+        t-btn(@click='edit(item)' color='info' :tooltip="$t('common.edit')")
+          v-icon(v-text='mdiPencil')
+        t-btn(@click='remove(item)' color='error' :tooltip="$t('common.delete')")
+          v-icon(v-text='mdiDeleteForever')
 </template>
 <script>
 import { mapActions } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import Editor from '../Editor'
 import Announcement from '../Announcement'
-import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown } from '@mdi/js'
+import TBtn from '../../components/TBtn.vue'
+
+import { mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEye, mdiEyeOff } from '@mdi/js'
 
 export default {
-  components: { Editor, Announcement },
+  components: { Editor, Announcement, TBtn },
   data() {
     return {
-      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown,
+      mdiPlus, mdiChevronRight, mdiChevronLeft, mdiChevronDown, mdiDeleteForever, mdiPencil, mdiEyeOff, mdiEye,
       valid: false,
       dialog: false,
       editing: false,
@@ -50,7 +55,7 @@ export default {
       loading: false,
       headers: [
         { value: 'title', text: this.$t('common.title') },
-        { value: 'actions', text: this.$t('common.actions'), align: 'right' }
+        { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
       ],
       announcement: { title: '', announcement: '' }
     }

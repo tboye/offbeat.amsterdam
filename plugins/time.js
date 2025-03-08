@@ -55,7 +55,7 @@ export default ({ app, store }, inject) => {
 
     when (event) {
       const currentYear = app.$time.currentYear()
-      const addTimezone = event.ap_id || event.place.name === 'online'
+      const addTimezone = event.ap_id || event.place?.name === 'online'
 
       const opt = {
         zone: store.state.settings.instance_timezone,
@@ -63,16 +63,12 @@ export default ({ app, store }, inject) => {
       }
 
       const start = DateTime.fromSeconds(event.start_datetime, opt)
-      let time = start.toLocaleString({ weekday: 'long', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', ...( addTimezone && { timeZoneName: 'short' }) })
+      let time = start.toLocaleString({ weekday: 'long', ...(currentYear !== start.year && { year: 'numeric'}), month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', ...( addTimezone && { timeZoneName: 'short' }) })
       const end = event.end_datetime && DateTime.fromSeconds(event.end_datetime, opt)
-
       if (end) {
-        time += event.multidate ? ` → ${end.toLocaleString({ weekday: 'long', month: 'short', day: '2-digit'})}` : `-${end.toLocaleString({hour: '2-digit', minute: '2-digit'})}`
+        time += event.multidate ? ` → ${end.toLocaleString({ weekday: 'long', ...(currentYear !== end.year && { year: 'numeric'}), month: 'short', day: '2-digit'})}` : `-${end.toLocaleString({hour: '2-digit', minute: '2-digit'})}`
       }
 
-      if (currentYear !== start.year) {
-        time += ` (${start.year})`
-      }
       return time
     },
 

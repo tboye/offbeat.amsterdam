@@ -1,6 +1,6 @@
 {
   "name": "offbeat_amsterdam",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A fork of Gancio by lesion, with modifications for offbeat.amsterdam.",
   "author": "lesion",
   "contributors": ["tboye"],
@@ -18,7 +18,7 @@
     "migrate": "NODE_ENV=production sequelize db:migrate",
     "migrate:dev": "sequelize db:migrate",
     "analyze": "nuxt build --analyze",
-    "build:wc": "cd webcomponents; yarn build:lib; cp dist/gancio-events.js ../wp-plugin/js/gancio-events.es.js; cp dist/gancio-events.js ../assets/gancio-events.es.js; cp dist/gancio-events.js ../docs/assets/js/gancio-events.es.js; cp dist/gancio-events.js ../static/gancio-events.es.js;"
+    "build:wc": "cd webcomponents; yarn build:lib; cp dist/gancio-events.umd.cjs ../wp-plugin/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../assets/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../docs/assets/js/gancio-events.es.js; cp dist/gancio-events.umd.cjs ../static/gancio-events.es.js;"
   },
   "files": [
     "server/",

@@ -33,16 +33,21 @@ module.exports = {
         // in reply to another resource...
         const resource = await Resource.findOne({ where: { activitypub_id: inReplyTo }, include: [Event] })
         event = resource && resource.event
+
+        if (!event) {
+          // in reply to a remote event
+          event = await Event.findOne({ where: { ap_id: inReplyTo }})
+        }
       }
     }
 
     if (!event) {
-      log.error('This is a direct message. Just ignore it')
+      log.error('[FEDI] Create Activity for Note object are only supported for events or other local notes')
       log.error(body)
       return res.status(404).send('Not found')
     }
 
-    log.debug(`[FEDI] Reply from ${req.body.actor} to "${event.title}"`)
+    log.debug(`[FEDI] Reply from ${req.body.actor} to "${res.locals.settings.baseurl}/event/${event.slug}"`)
 
     body.object.content = helpers.sanitizeHTML(linkifyHtml(body.object.content || '', { target: '_blank', render: { email: ctx => ctx.content }}))
 
@@ -90,7 +95,7 @@ module.exports = {
       include: [{ model: APUser, required: true, attributes: ['ap_id'] }]
     })
     if (!resource) {
-      log.info(`[FEDI] Comment not found`)
+      log.warn(`[FEDI] Comment not found`)
       return res.status(404).send('Not found')
     }
     // check if fedi_user that requested resource removal
