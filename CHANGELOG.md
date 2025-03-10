@@ -1,5 +1,5 @@
-# 0.2.0 (in progress)
-- Merge Gancio changes
+# 0.2.0 (10-03-2025)
+- Align with Gancio `1.24.3`
 [1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
 [1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
 [1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
