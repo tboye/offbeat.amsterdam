@@ -8,17 +8,18 @@ Building software means taking a stand, making decisions, choices. These choices
 
 
 
-### Small is better
-The use case we have in mind is that of small nodes tied either to a specific territory or at the limit a small thematic community. This choice is not very fashionable, for a long time in IT one of the priority values is scalability, this is because you are forced to imagine platforms that are suitable for hosting millions of people, millions of customers.
-Structuring a project in this way simply means creating a lot of power and centralizing it in a specific place. long story short, even if fb/insta/tiktok was in our hands it wouldn't work, it's not only the wrong owner, it's just the tool that wasn't designed with decent values.
-when we started developing gancio, we were asked to imagine a national platform, fortunately we were not convinced and preferred to imagine small nodes for local communities.
+#### Small is better
+The use case we have in mind is that of small nodes tied either to a specific territory or at the limit a small thematic community. This choice is not very fashionable: for a long time in IT one of the priority values is scalability, this is because you are forced to imagine platforms that are suitable for hosting millions of people, millions of customers.  
+Structuring a project in this way simply means creating a lot of power and centralizing it in a specific place.  
+Long story short, even if fb/insta/tiktok was in our hands it wouldn't work, it's not only the wrong owner, it's just the tool that wasn't designed with decent values.  
+When we started developing gancio, we were asked for a national platform, we preferred to imagine small nodes for local communities.
 
 This has consequences, for example there is no timezone per event as it is not relevant for this use case. 
 
 
 #### Focus on content
 All people looking at the home page see the same events, there are no personal timelines.
-Nowhere on gancio appears the identity of who published the event, not even under a nickname, not even to administrators.
+Nowhere on gancio appears the identity of who published the event, not even under a nickname, not even to administrators.  
 The reason for this is not only to avoid gamification but also to consider the use case we're all going into of states increasingly intolerant of displays of dissent.
 That's also the reason why adding events by anonymous people is a feature enabled by default.
 
