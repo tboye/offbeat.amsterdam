@@ -177,7 +177,7 @@
         "only_future": "samo predstojeći događaji",
         "multidate_description": "Da li je u pitanju festival? Izaberite kada počinje i kada se završava",
         "normal_description": "Izaberite dan.",
-        "normal": "Normalno",
+        "normal": "Normalan",
         "multidate": "Višednevan",
         "recurrent_1w_days": "Svaki {days}",
         "recurrent_2w_days": "Svaki drugi {days}",
@@ -357,7 +357,10 @@
         "smtp_description": "<ul><li>Administrator treba da primi e-mail kada anoniman događaj bude dodat (ako je omogućeno).</li><li>Administrator treba da primi e-mail o zahtevu za registraciju (ako je omogućeno).</li><li>Korisnik treba da primi e-mail o zahtevu za registraciju.</li><li>Korisnik treba da primi e-mail o potvrđenoj registraciji.</li><li>Korisnik treba da primi e-mail sa potvrdom kada ga direktno registruje administrator.</li><li>Korisnici treba da prime e-mail za vraćanje lozinke kada je zaborave.</li></ul>",
         "geolocation_description": "<b>1. Definišite provajdera za geokodiranje usluge</b>.<br>Trenutno, među onima navedenim u <a href=\"https://wiki.openstreetmap.org/wiki/Nominatim#Alternatives_.2F_Third-party_providers\">wiki stranici OpenStreetMap-a</a>, postoji podrška za softver <a href=\"https://github.com/osm-search/Nominatim\">Nominatim</a> i <a href=\"https://github.com/komoot/photon\">Photon</a>.<br>Možete koristiti jedan od zvaničnih demo linkova kopiranjem linka u polje 'Geocoding provider':<ul><li>https://nominatim.openstreetmap.org/search (<a href=\"https://operations.osmfoundation.org/policies/nominatim/\">Uslovi korišćenja</a>)</li><li>https://photon.komoot.io/api/ (<a href=\"https://photon.komoot.io/\">Uslovi korišćenja</a>)</li></ul><br><b>2. Definišite provajdera za slojeve mapa.</b><br>Listu njih možete pronaći ovde: <a href=\"https://leaflet-extras.github.io/leaflet-providers/preview/\">https://leaflet-extras.github.io/leaflet-providers/preview/</a>",
         "unconfirmed_events": "Nepotvrđeni događaji",
-        "past_unconfirmed_events": "Prošli nepotvrđeni događaji"
+        "past_unconfirmed_events": "Prošli nepotvrđeni događaji",
+        "new_page": "Dodajte novu prilagođenu stranicu",
+        "delete_page_confirm": "Da li ste sigurni da želite da uklonite stranicu „<strong>{title}</strong>“?",
+        "page_description": "U ovom odeljku možete upravljati prilagođenim stranicama (npr. pravilima, uputstvima)"
     },
     "ordinal": {
         "3": "treći",
