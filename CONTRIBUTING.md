@@ -22,10 +22,12 @@ Please use the search function to make sure that you are not submitting duplicat
 You can submit translations via [weblate.org](https://hosted.weblate.org/projects/gancio/). Note that if you want to change some label for your own instance [you can do it](https://gancio.org/install/config#user-locale).
 
 
-## Pull requests
+## Code
 
 Building software means taking a stand, making decisions, choices.
 These choices start from a precise look at reality, from specific needs and ends implementing specific features, choose default values, simplify some flow and patterns while making difficult others.
+
+To help with issues you can check for [Contibution welcome](https://framagit.org/les/gancio/-/issues/?sort=updated_desc&state=opened&label_name%5B%5D=Contribution%20welcome&first_page_size=100), [good first issue](https://framagit.org/les/gancio/-/issues/?sort=updated_desc&state=opened&label_name%5B%5D=good%20first%20issue&first_page_size=100 ) or [help needed](https://framagit.org/les/gancio/-/issues/?sort=updated_desc&state=opened&label_name%5B%5D=good%20first%20issue&first_page_size=100) tags.
 
 **Please use clean, concise titles for your pull requests.** Unless the pull request is about refactoring code or other internal tasks, assume that the person reading the pull request title is not a programmer but an user and **try to describe your change or fix from their perspective**. We use commit squashing, so the final commit in the main branch will carry the title of the pull request, and commits from the main branch are fed into the changelog. 
 Please use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) in your commit messages.
