@@ -63,7 +63,7 @@
         "description_description": "Појављује се у заглављу поред наслова (HTML је подржан)",
         "instance_place": "Индикативно место ове инстанце",
         "trusted_sources_label_default": "Остале локације",
-        "instance_name_help": "АцтивитyПуб налог за праћење",
+        "instance_name_help": "ActivityPub налог за праћење: {ap_handler} (молимо вас да ово пажљиво проверите!)",
         "trusted_sources_label": "Ознака навигације за поуздане федерисане изворе",
         "trusted_sources_label_help": "Подразумевана ознака је 'Остале локације'",
         "add_trusted_source": "Додај поуздан федерисани извор",
@@ -136,7 +136,10 @@
         "geolocation_description": "<b>1. Дефинишите провајдера за геокодирање услуге</b>.<br>Тренутно, међу онима наведеним у <a href=\"https://wiki.openstreetmap.org/wiki/Nominatim#Alternatives_.2F_Third-party_providers\">wiki страници OpenStreetMap-а</a>, постоји подршка за софтвер <a href=\"https://github.com/osm-search/Nominatim\">Nominatim</a> и <a href=\"https://github.com/komoot/photon\">Photon</a>.<br>Можете користити један од званичних демо линкова копирањем линка у поље 'Геоцодинг провидер':<ul><li>https://nominatim.openstreetmap.org/search (<a href=\"https://operations.osmfoundation.org/policies/nominatim/\">Услови коришћења</a>)</li><li>https://photon.komoot.io/api/ (<a href=\"https://photon.komoot.io/\">Услови коришћења</a>)</li></ul><br><b>2. Дефинишите провајдера за слојеве мапа.</b><br>Листу њих можете пронаћи овде: <a href=\"https://leaflet-extras.github.io/leaflet-providers/preview/\">https://leaflet-extras.github.io/leaflet-providers/preview/</a>",
         "custom_js_help": "Можете интегрисати неки Javascript код који ће бити учитан за сваког корисника писањем у овај текстуални оквир испод. Вероватно желите прво да прочитате <a href='https://gancio.org/usage/custom_js'>документацију</a>.",
         "past_unconfirmed_events": "Прошли непотврђени догађаји",
-        "unconfirmed_events": "Непотврђени догађаји"
+        "unconfirmed_events": "Непотврђени догађаји",
+        "new_page": "Додајте нову прилагођену страницу",
+        "delete_page_confirm": "Да ли сте сигурни да желите да уклоните страницу „<strong>{title}</strong>“?",
+        "page_description": "У овом одељку можете управљати прилагођеним страницама (нпр. правилима, упутствима)"
     },
     "confirm": {
         "not_valid": "Нешто је пошло наопако.",
@@ -339,7 +342,7 @@
         "show_multidate": "догађаји са више датума",
         "recurrent_description": "Изаберите учесталост и одаберите дане",
         "multidate_description": "Да ли је у питању фестивал? Изаберите када почиње и када се завршава",
-        "normal": "Нормално",
+        "normal": "Нормалан",
         "normal_description": "Изаберите дан.",
         "recurrent_1m_days": "{days}. сваког месеца",
         "recurrent_1m_ordinal": "Свака/и {n}. {days} у месецу",
