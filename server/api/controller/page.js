@@ -10,7 +10,7 @@ const pageController = {
 
   async get (req, res) {
     const slug = req.params.page_slug
-    const allowed = req.user.is_admin
+    const allowed = req?.user?.is_admin || req?.user?.is_editor
 
     try {
       const page = await Page.findOne({ where: { slug, ...( !allowed && { visible: true }) }})
