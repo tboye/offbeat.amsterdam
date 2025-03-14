@@ -7,6 +7,15 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+
+### [1.24.4](https://framagit.org/les/gancio/compare/v1.24.3...v1.24.4) (2025-03-14)
+
+
+### Bug Fixes
+
+* allow `page` preview to admin and editor and fix [#544](https://framagit.org/les/gancio/issues/544) ([e7bfc5b](https://framagit.org/les/gancio/commit/e7bfc5b81c150cd8494ed80591e725852184e5f0))
+* page content could contain any text, fix [#543](https://framagit.org/les/gancio/issues/543) ([f93c759](https://framagit.org/les/gancio/commit/f93c759421e7ff0c16b2a20ccd618ad1f298ef9a))
+
 ### [1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3) (2025-03-07)
 
 
