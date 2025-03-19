@@ -117,7 +117,11 @@
         "sent": "Enviar",
         "contact_user": "Usuario de contacto",
         "report": "Informar del evento",
-        "role": "Función"
+        "role": "Función",
+        "enabled": "Habilitado",
+        "pages": "Páginas",
+        "trusted_sources": "Fuentes federadas confiables",
+        "past_events": "Eventos pasados"
     },
     "login": {
         "description": "Entrando podrás publicar nuevos eventos.",
@@ -138,7 +142,10 @@
         "feed_description": "Para seguir las actualizaciones desde un ordenador o teléfono inteligente sin la necesidad de abrir periódicamente el sitio, el método recomendado es usar los feeds RSS.</p>\n\n<p>Con rss feeds, utilizas una aplicación especial para recibir actualizaciones de los sitios que más te interesan, como por ejemplo éste. Es una buena manera de seguir muchos sitios muy rápidamente, sin la necesidad de crear una cuenta u otras complicaciones.</p>\n\n<li>Si tienes Android, te sugerimos <a href=\"https://f-droid.org/es/packages/com.nononsenseapps.feeder/\">Feeder</a> o Feeder</li>\n<li>Para iPhone/iPad puedes usar <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a></li>\n<li>En el caso de un ordenador aconsejamos Feedbro, se instala como plugin <a href=\"https://addons.mozilla.org/es-ES/firefox/addon/feedbroreader/\">de Firefox </a>o <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">de Chrome</a> y funciona con todos los principales sistemas.</li>\n<br/>\nAgregando este link a tu lector de feed, estarás siempre actualizado/a.",
         "ical_description": "Las computadoras y los teléfonos inteligentes suelen estar equipados con una aplicación para administrar un calendario. Estos programas generalmente se pueden usar para importar un calendario remoto.",
         "list_description": "Si tienes un sitio web y quieres mostrar una lista de eventos, puedes usar el siguiente código",
-        "filter_description": "Aquí puede filtrar su exportación por etiquetas y lugar o por una colección preestablecida"
+        "filter_description": "Aquí puede filtrar su exportación por etiquetas y lugar o por una colección preestablecida",
+        "filter_title": "Filtro",
+        "ical_title": "ics/ical",
+        "list_title": "Lista"
     },
     "register": {
         "description": "Los movimientos sociales necesitan organizarse y autofinanciarse. <br/>\n<br/>Antes de que puedas publicar, <strong> debemos aprobar la cuenta </strong>. Como imaginarás, <strong> detrás de este sitio hay personas de carne y hueso</strong>, por esto te pedimos escribir algo para hacernos saber que tipos de eventos te gustaría publicar.",
@@ -161,7 +168,7 @@
         "coordinates_search_description": "Puede buscar el lugar por nombre o pegar el par de coordenadas.",
         "confirmed": "Evento confirmado",
         "not_found": "Evento no encontrado",
-        "remove_confirmation": "¿Estás seguro/a de querér eliminar este evento?",
+        "remove_confirmation": "¿Estás seguro/a de querér eliminar este evento \"<strong>{event}</strong>\"?",
         "recurrent": "Recurrente",
         "recurrent_description": "Elegí la frecuencia y selecciona los días",
         "multidate_description": "¿Un festival o más de un día? Elegí cuándo comienza y cuándo termina",
@@ -263,8 +270,8 @@
         "instance_locale_description": "El idioma utilizado para mostrar las páginas es el idioma preferido por el usuario. Sin embargo, en algunos casos tenemos que mostrar los mensajes para todos de la misma manera (por ejemplo, cuando publicamos a través de ActivityPub o cuando enviamos algunos correos electrónicos). En estos casos utilizaremos el idioma seleccionado anteriormente.",
         "instance_place": "Lugar indicativo de esta instancia",
         "title_description": "Se utiliza en el título de la página, en la línea de asunto del correo electrónico, en la exportación de feeds y ics.",
-        "description_description": "Aparece en el encabezado junto al título",
-        "instance_name_help": "Nombre de la cuenta de ActivityPub a seguir",
+        "description_description": "Aparece en el encabezado junto al título (se puede usar HTML)",
+        "instance_name_help": "Nombre de la cuenta de ActivityPub a seguir: {ap_handler} (por favor, revisa esto con cuidado)",
         "enable_trusted_instances": "Activar los nodos de confianza",
         "trusted_instances_help": "La lista de nodos de confianza se mostrará en la cabecera",
         "trusted_instances_label": "Etiqueta de navegación para nodos de confianza",
@@ -356,7 +363,22 @@
         "custom_css": "Estilo CSS personalizado",
         "custom_js_help": "Puedes integrar algún código javascript que se cargará para cada usuario escribiendo en el área de texto a continuación. Probablemente quieras leer primero la <a href='https://gancio.org/usage/custom_js'>documentation</a>.",
         "default_fedi_hashtags_help": "Las etiquetas especificadas se agregarán a los eventos enviados al fediverse",
-        "default_fedi_hashtags": "Hashtags fediverse por defecto"
+        "default_fedi_hashtags": "Hashtags fediverse por defecto",
+        "add_trusted_source_help": "Usa una de las siguientes sintaxis: <br/><ul><li>la dirección web de otro Gancio o software que soporte un Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (e.g. <u>https://demo.gancio.org</u>)</li><li>un handle ActivityPub handle como <u>@gancio@mastodon.cisti.org</u></li><li>la url de una cuenta como <u>https://instance.tld/actor</u>.</li></ul><br/>Los eventos publicados o republicados por estas fuentes serán importados.",
+        "new_page": "Añade una nueva página customizada",
+        "federated_events_in_home_help": "Los eventos entrantes de fuentes federadas confiables serán mostrados por defecto en la página home. Para mostrar solo algunos de ellos puedes utilizar las colecciones.",
+        "page_description": "En esta sección puedes administrar páginas customizadas (p.ej. políticas, tutoriales)",
+        "trusted_sources_label": "Etiqueta de navegación para las fuentes federadas confiables",
+        "trusted_source_removed": "Fuente confiable borrada",
+        "federated_events_in_home": "Muestra eventos federados en la página home",
+        "unconfirmed_events": "Eventos no confirmados",
+        "past_unconfirmed_events": "Eventos pasados no confirmados",
+        "add_source": "Añade una fuente federada confiable",
+        "delete_trusted_source_confirm": "Realmente quieres borrar esta fuente confiable?",
+        "trusted_sources_label_default": "Otras localizaciones",
+        "trusted_sources_label_help": "La etiqueta por defecto es \"Otras localizaciones\"",
+        "add_trusted_source": "Añade una fuente federada confiable",
+        "delete_page_confirm": "Estás segure de querer borrar la página \"<strong>{title}</strong>\"?"
     },
     "auth": {
         "not_confirmed": "Todavía no hemos confirmado este email…",
