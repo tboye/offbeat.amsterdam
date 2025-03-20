@@ -323,7 +323,7 @@ const Helpers = {
       announceController._getVisible(),
       collectionController._getVisible(),
       collection_in_home ?
-        collectionController._getEvents({ name: collection_in_home, start: DateTime.local().toUnixInteger(), show_recurrent }) :
+        collectionController._getEvents({ name: collection_in_home, start: DateTime.local().startOf('month').toUnixInteger(), show_recurrent }) :
         eventController._select({ start: DateTime.local().startOf('month').toUnixInteger(), show_multidate, show_recurrent, show_federated })
     ])
     
