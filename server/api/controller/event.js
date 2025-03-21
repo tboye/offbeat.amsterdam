@@ -899,7 +899,7 @@ const eventController = {
       where,
       attributes: {
         exclude: [
-        'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
+        'likes', 'boost', 'userId', 'createdAt', 'updatedAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
           ...(!include_parent ? ['recurrent']: []),
           ...(!include_unconfirmed ? ['is_visible']: []),
           ...(!include_description ? ['description']: [])
@@ -941,7 +941,10 @@ const eventController = {
       }
       if (e.ap_user) {
         e.ap_user = { image: e.ap_user?.object?.icon?.url ?? `${e.ap_user?.url}/favicon.ico` }
-      }      
+      } else {
+        delete e.ap_user
+        delete e.apUserApId
+      }
       return e
     })
   },
