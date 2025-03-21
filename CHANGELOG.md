@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.25.0](https://framagit.org/les/gancio/compare/v1.24.4...v1.25.0) (2025-03-21)
+
+
+### Features
+
+* add moderation panel for events in administration panel and number of messages in event's page too ([6cbdc2a](https://framagit.org/les/gancio/commit/6cbdc2a93025aae5eee8dc974a6454df88acda84))
+* allow to add pages, fix [#520](https://framagit.org/les/gancio/issues/520) ([92318f2](https://framagit.org/les/gancio/commit/92318f22c6191b443a150a4bee7eec72fe01c661))
+* **CLI:** allow to enable/disable users from CLI, [doc](https://gancio.org/usage/cli) ([477b811](https://framagit.org/les/gancio/commit/477b81112dec4da2cdeb50b08481d33cb5c70050))
+* copy activitypub handler from "Follow Me" dialog ([f73ccfb](https://framagit.org/les/gancio/commit/f73ccfb51eed51036903b6a06cb246ddd1b5fba5))
+* show instance description in html ([075472e](https://framagit.org/les/gancio/commit/075472e44c623d3d27a51542859976ced499905a))
+
+
+### Bug Fixes
+
+* add Serbian Cyrilic ([64fd8bd](https://framagit.org/les/gancio/commit/64fd8bd33d538d5841ce93d7c19ab0f1a155991c))
+* **Admin:** show unapproved past events in admin, fix [#516](https://framagit.org/les/gancio/issues/516) ([dae2b37](https://framagit.org/les/gancio/commit/dae2b3774a77fd611c7c048f69b1a16d20218507))
+* allow `page` preview to admin and editor and fix [#544](https://framagit.org/les/gancio/issues/544) ([824af1a](https://framagit.org/les/gancio/commit/824af1a154c39cf1d9eff9bf49b0102d1cbc8111))
+* allow page preview, hide page if not visible ([da4aa6b](https://framagit.org/les/gancio/commit/da4aa6be21f7015eccc1f140337b9b65d7e04cb2))
+* ap handler validator ([a3e4cb0](https://framagit.org/les/gancio/commit/a3e4cb04ff623c421cf42525bb11aff1a9a20f1a))
+* **AP:** cannot destroy actor on trust removal ([f6ec1dd](https://framagit.org/les/gancio/commit/f6ec1dd1c4ce7767aa38d51d121afb29bb7d70fb))
+* better date time representation on different year ([97445df](https://framagit.org/les/gancio/commit/97445dff985ae912508713e55d64c640dbd573fa))
+* cannot reset trusted nodes label on old installation, fix [#528](https://framagit.org/les/gancio/issues/528) ([2a9ad9b](https://framagit.org/les/gancio/commit/2a9ad9b81408fc0475b690b3896bcd080b189560))
+* change default instance_name to `events`, fix [#532](https://framagit.org/les/gancio/issues/532) ([f0e566d](https://framagit.org/les/gancio/commit/f0e566dcb19a3c9941ffa1d79a5d69636f201748))
+* force trust removal on unfollowing issue ([f397376](https://framagit.org/les/gancio/commit/f397376f4e2be52e0ddd9f7a312362e3f646967c))
+* map BCP 47 to ISO 639, fix [#539](https://framagit.org/les/gancio/issues/539) ([f7fdc64](https://framagit.org/les/gancio/commit/f7fdc6488d948d9cf8490d72674fd13c74ec1542))
+* minor on map component styles ([a3195cb](https://framagit.org/les/gancio/commit/a3195cb40663af0efad6f2c1ac852ab8777a6f7c))
+* minor refactor add SearchAddress component ([e2409ab](https://framagit.org/les/gancio/commit/e2409abb278aea766727e1db7fac4bd4b4b0f562))
+* page content could contain any text, fix [#543](https://framagit.org/les/gancio/issues/543) ([1d356cd](https://framagit.org/les/gancio/commit/1d356cd0f021aa15c5292c6a27934eb9c78589bc))
+* preload events from start of month, fix [#549](https://framagit.org/les/gancio/issues/549) ([e3c8643](https://framagit.org/les/gancio/commit/e3c864332ccca0f64315c64abc3e5bd368185c53))
+* preload events from start of month, fix [#549](https://framagit.org/les/gancio/issues/549) ([ceacaa3](https://framagit.org/les/gancio/commit/ceacaa3560a7f337b2d6d1bb680f49951bd16dd5))
+* redirect to actor if prefer json ([1c207d3](https://framagit.org/les/gancio/commit/1c207d33ac4c7edc914c5f3baaf11f2760f929cf))
+* set sameSite: Strict as cookie option policy, fix [#545](https://framagit.org/les/gancio/issues/545) ([6ee00e5](https://framagit.org/les/gancio/commit/6ee00e5e54549554617cba6e3d6ffe41ebda458a))
+* set sameSite: Strict as cookie option policy, fix [#545](https://framagit.org/les/gancio/issues/545) ([4f4bc91](https://framagit.org/les/gancio/commit/4f4bc91486bd78130ef995e4a620f30f5e0d4a62))
+* **style:** increase min Editor heigth (page, announcement, about, event) ([6ee3273](https://framagit.org/les/gancio/commit/6ee327351dd1180a8a355242004a88fc04ae9278))
+* **UI:** use icon, tooltip in admin announcement ([1e087a5](https://framagit.org/les/gancio/commit/1e087a5f04f89afbf0b92d62f1fdd49fc60bc8ad))
+
 ### [1.24.4](https://framagit.org/les/gancio/compare/v1.24.3...v1.24.4) (2025-03-14)
 
 
