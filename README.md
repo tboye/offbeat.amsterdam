@@ -14,8 +14,6 @@ Structuring a project in this way simply means creating a lot of power and centr
 Long story short, even if fb/insta/tiktok was in our hands it wouldn't work, it's not only the wrong owner, it's just the tool that wasn't designed with decent values.  
 When we started developing gancio, we were asked for a national platform, we preferred to imagine small nodes for local communities.
 
-This has consequences, for example there is no timezone per event as it is not relevant for this use case. 
-
 
 #### Focus on content
 All people looking at the home page see the same events, there are no personal timelines.
