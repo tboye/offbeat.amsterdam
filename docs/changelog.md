@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ## [1.25.0](https://framagit.org/les/gancio/compare/v1.24.4...v1.25.0) (2025-03-21)
 
+⚠️ Warning.
+This release includes important security fixes.
 
 ### Features
 
