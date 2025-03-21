@@ -229,7 +229,7 @@
         "filter_users": "Filtrar usuarias",
         "title_description": "Utilízase no título da páxina, no asunto do email e para as fontes RSS e ICS exportadas.",
         "description_description": "Aparece na cabeceira a carón do título (admite HTML)",
-        "instance_name_help": "Conta ActivityPub a seguir",
+        "instance_name_help": "Conta ActivityPub a seguir: {ap_handler} (pon atención nisto!)",
         "add_trusted_instance": "Engade un nodo de confianza",
         "edit_place": "Editar lugar",
         "smtp_test_success": "Enviado un email de proba a {admin_email}, comproba a caixa de correo",
@@ -368,7 +368,10 @@
         "federated_events_in_home": "Mostrar eventos federados na páxina de inicio",
         "federated_events_in_home_help": "Os eventos recibidos desde orixes federadas de confianza serán mostrados de xeito predeterminado na páxina de inicio. Para só mostrar algúns eventos podes usar as coleccións",
         "unconfirmed_events": "Eventos non confirmados",
-        "past_unconfirmed_events": "Eventos pasados non confirmados"
+        "past_unconfirmed_events": "Eventos pasados non confirmados",
+        "delete_page_confirm": "Tes certeza de querer retirar a páxina «<strong>{title}</strong>»?",
+        "new_page": "Engadir nova páxina persoal",
+        "page_description": "Nesta sección podes xestionar as páxinas personalizadas (ex. titoriais, termos)"
     },
     "auth": {
         "not_confirmed": "Aínda non foi confirmado…",

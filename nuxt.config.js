@@ -1,6 +1,5 @@
 const config = require('./server/config.js')
 const locales = require('./locales/index')
-
 const dns = require('node:dns')
 dns.setDefaultResultOrder('ipv4first')
 
@@ -142,6 +141,8 @@ module.exports = {
     cookie: {
       prefix: 'auth.',
       options: {
+        sameSite: 'Strict',
+        secure: true,
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },

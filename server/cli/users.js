@@ -1,5 +1,5 @@
 let db
-function _initializeDB () {
+async function _initializeDB () {
   const config = require('../config')
   if (config.status !== 'CONFIGURED') {
     console.error(`> Cannot run CLI before setup (are you in the correct path?)`)
@@ -87,15 +87,39 @@ async function list () {
   await db.close()
 }
 
+async function enable (args, enable) {
+  await _initializeDB()
+  const { User } = require('../api/models/models')
+  const user = await User.findOne({ where: { email: args.email } })
+  console.log()
+  if (!user) {
+    console.error(`User ${args.email} not found`)
+    return
+  }
+
+  if (user.is_active == enable) {
+    console.warn(`User ${args.email} is already ${enable ? 'enabled' : 'disabled'}!`)
+    await db.close()
+    return
+  }
+
+  user.is_active = enable
+  await user.save()
+  console.info(`User ${user.email} is now ${enable ? 'enabled' : 'disabled'}!`)
+  await db.close()
+}
+
 const usersCLI = yargs => yargs
   .command('list', 'List all users', list)
-  .command('reset-password <email|username>', 'Resets the password of the given user', {
+  .command('enable <email>', 'Enable an user', {}, args => enable(args, true))
+  .command('disable <email>', 'Enable an user', {}, args => enable(args, false))
+  .command('reset-password <email>', 'Resets the password of the given user', {
   }, resetPassword)
-  .command('set_role <email|username> <role>', 'Set specified role privileges to the given user',
+  .command('set_role <email> <role>', 'Set specified role privileges to the given user',
     { role: { describe: 'Define this user role', choices: ['user', 'admin', 'editor' ] } }, setRole)
-  .command('create <email|username> [password] [role]', 'Create an user',
+  .command('create <email> [password] [role]', 'Create an user (role could be `user`, `admin` or `editor`)',
     { role: { describe: 'Define this user role', choices: ['user', 'admin', 'editor' ] } }, create)
-  .command('remove <email|username>', 'Remove an user', {}, remove)
+  .command('remove <email>', 'Remove an user', {}, remove)
     // .positional('email', { describe: 'user email or username', type: 'string', demandOption: true })
     // .positional('password', { describe: 'Password', type: 'string', demandOption: false })
   .recommendCommands()

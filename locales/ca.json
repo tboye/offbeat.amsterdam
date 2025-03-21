@@ -119,7 +119,9 @@
         "report": "Denuncia l'activitat",
         "role": "Rol",
         "trusted_sources": "Fonts federades de confiança",
-        "past_events": "Activitats passades"
+        "past_events": "Activitats passades",
+        "enabled": "Habilitat",
+        "pages": "Pàgines"
     },
     "login": {
         "description": "Amb la sessió iniciada pots afegir activitats noves.",
@@ -140,7 +142,10 @@
         "feed_description": "Per tal de seguir les actualitzacions sense haver d'entrar periòdicament aquí, et recomanem fer servir el flux RSS</p>\n\n<p>Hi ha aplicacions que agrupen i llegeixen fluxos RSS de diverses webs, blogs i aplicacions web. És una bona manera de mantenir-te informada sense haver de crear comptes a tot arreu.</p>\n\n<li>Per a Android recomanem <a href=\"https://play.google.com/store/apps/details?id=net.frju.flym\"> Flym </a> o Feeder</li>\n<li>Per a iPhone / iPad pots fer servir <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a></li>\n<li>Per a l'ordinador recomanem Feedbro, que és una extensió de navegador disponible per a <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> i per a <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome i Chromium</a>. Funciona en els principals sistemes operatius.</li>\n<br/>\nAfegeix aquest enllaç al teu lector de fluxos per mantenir-te al dia sense esforç.",
         "ical_description": "Els sistemes operatius d'ordinadors i mòbils solen oferir aplicacions de calendari. Algunes permeten importar calendaris remots, que van comprovant periòdicament.",
         "list_description": "Si tens una web i vols encastar una llista d'activitats, pots fer servir el codi de sota",
-        "filter_description": "Pots filtrar les activitats a exportar segons etiquetes, lloc o coŀleccions existents"
+        "filter_description": "Pots filtrar les activitats a exportar segons etiquetes, lloc o coŀleccions existents",
+        "filter_title": "Filtre",
+        "ical_title": "ics/ical",
+        "list_title": "Llista"
     },
     "register": {
         "description": "Els moviments socials necessitem organitzar-nos i auto-finançar-nos.<br/>\n<br/>Abans que puguis publicar, <strong> hem d'aprovar el teu compte </strong>, tingues en compte que <strong> darrere d'aquesta web hi ha persones </strong> de carn i ossos, així que escriviu dues línies per fer-nos saber quins esdeveniments voleu publicar.",
@@ -163,7 +168,7 @@
         "coordinates_search_description": "Podeu cercar el lloc pel nom o enganxar el parell de coordenades",
         "confirmed": "S'ha confirmat l'activitat",
         "not_found": "No s'ha trobat l'activitat",
-        "remove_confirmation": "Segur que vols esborrar l'activitat?",
+        "remove_confirmation": "Segur que vols esborrar l'activitat  \"<strong>{event}</strong>\"?",
         "recurrent": "Periòdica",
         "show_recurrent": "també les periòdiques",
         "show_past": "també les passades",
@@ -264,8 +269,8 @@
         "instance_locale_description": "La llengua amb què es mostren les pàgines és la preferida per la usuària. Ara bé, en alguns casos, hem de mostrar missatges per tothom en la mateixa llengua (per exemple, quan publiquem via ActivityPub o en alguns correus). En aquests casos, es farà servir la llengua predeterminada.",
         "instance_place": "Lloc indicatiu d'aquesta instància",
         "title_description": "Es fa servir al títol de la pàgina, a l'assumpte dels correus i en els formats exportats de flux RSS i ICS.",
-        "description_description": "Apareix a la capçalera al costat del títol",
-        "instance_name_help": "Nom del compte ActivityPub per a seguir",
+        "description_description": "Apareix a la capçalera al costat del títol (HTML no suportat)",
+        "instance_name_help": "Nom del compte ActivityPub per a seguir: {ap_handler} (si us plau, reviseu el que escriviu aqui amb cura!)",
         "enable_trusted_instances": "Mostra les agendes de confiança",
         "trusted_instances_help": "Les agendes de confiança apareixeran en la capçalera, a la barra de navegació superior",
         "trusted_instances_label": "Etiqueta de navegació per les agendes de confiança",
@@ -370,7 +375,12 @@
         "federated_events_in_home": "Mostra activitats federades a la pàgina principal",
         "federated_events_in_home_help": "Per defecte, les activitats provinents de fonts federades de confiança es mostres a la pàgina principal. Per mostrar-ne només alguns, es pot aconseguir amb les coŀleccions",
         "delete_trusted_source_confirm": "De debò que vols esborrar aquesta font de confiança?",
-        "add_trusted_source_help": "Fes servir una d'aquestes sintaxis: <br/><ul><li>l'adreça web normal d'un altre Gancio o altre software compatible amb la \"Application Actor\" / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (ex: <u>https://demo.gancio.org</u>)</li><li>una adreça ActivityPub de l'estil <u>@gancio@mastodon.cisti.org</u></li><li>la url d'un compte, com <u>https://instance.tld/actor</u>.</li></ul><br/>S'importaran totes les activitats publicades o impulsades d'aquestes fonts."
+        "add_trusted_source_help": "Fes servir una d'aquestes sintaxis: <br/><ul><li>l'adreça web normal d'un altre Gancio o altre software compatible amb la \"Application Actor\" / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (ex: <u>https://demo.gancio.org</u>)</li><li>una adreça ActivityPub de l'estil <u>@gancio@mastodon.cisti.org</u></li><li>la url d'un compte, com <u>https://instance.tld/actor</u>.</li></ul><br/>S'importaran totes les activitats publicades o impulsades d'aquestes fonts.",
+        "page_description": "A aquesta secció pots administrar pàgines customitzades (p.ex. polítiques, articles tutorials)",
+        "unconfirmed_events": "Events encara no confirmats",
+        "past_unconfirmed_events": "Events passats no confirmats",
+        "new_page": "Afegeix una pàgina customitzada nova",
+        "delete_page_confirm": "Estàs seguri que vols esborrar la pàgina \"<strong>{title}</strong>\"?"
     },
     "auth": {
         "not_confirmed": "Encara no s'ha confirmat…",

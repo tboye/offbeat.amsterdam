@@ -102,7 +102,7 @@
         "admin_actions": "Radnje administratora",
         "recurring_event_actions": "Radnje za ponavljajući događaj",
         "longitude": "Longtituda",
-        "online": "Online",
+        "online": "On-line",
         "test": "Test",
         "show_preview": "Prikaži pregled",
         "clone": "Kloniraj",
@@ -288,7 +288,7 @@
         "instance_place": "Indikativno mjesto ove instance",
         "trusted_sources_label_help": "Zadana oznaka je 'Ostale lokacije'",
         "add_trusted_source": "Dodaj pouzdani federirani izvor",
-        "instance_name_help": "ActivityPub račun za praćenje",
+        "instance_name_help": "ActivityPub račun za praćenje: {ap_handler} (molimo vas da ovo pažljivo provjerite!)",
         "trusted_sources_label": "Oznaka navigacije za pouzdane federirane izvore",
         "trusted_sources_label_default": "Ostale lokacije",
         "allow_event_without_end_time": "Dopustiti događaje bez vremena završetka",
@@ -354,7 +354,10 @@
         "default_fedi_hashtags_help": "Navedeni tagovi bit će dodani događajima koji se šalju na Fediverse",
         "federated_events_in_home": "Prikaži federirane događaje na početnoj stranici",
         "unconfirmed_events": "Nepotvrđeni događaji",
-        "past_unconfirmed_events": "Prošli nepotvrđeni događaji"
+        "past_unconfirmed_events": "Prošli nepotvrđeni događaji",
+        "page_description": "U ovom odjeljku možete upravljati prilagođenim stranicama (npr. pravilima, uputama)",
+        "new_page": "Dodajte novu prilagođenu stranicu",
+        "delete_page_confirm": "Jeste li sigurni da želite ukloniti stranicu „<strong>{title}</strong>“?"
     },
     "auth": {
         "not_confirmed": "Još nije potvrđeno…",

@@ -1,9 +1,14 @@
+# 0.3.0 (22-03-2025)
+- Align with Gancio `1.25.0`
+[1.24.4](https://framagit.org/les/gancio/compare/v1.24.3...v1.24.4)
+[1.25.0](https://framagit.org/les/gancio/compare/v1.24.4...v1.25.0)
+
 # 0.2.0 (10-03-2025)
 - Align with Gancio `1.24.3`
-[1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
-[1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
-[1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
-[1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3) (2025-03-07)
+[1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0)
+[1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1)
+[1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2)
+[1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3)
 
 # 0.1.2 (14-02-2025)
 ## Fixes
