@@ -18,7 +18,7 @@ v-container
       t-btn(:to='`/add/${item.id}`' color='warning' :tooltip="$t('common.edit')")
         v-icon(v-text='mdiPencil')
       t-btn(@click='remove(item)' color='error' :tooltip="$t('common.delete')")
-        v-icon(v-text='mdiDeleteForever') 
+        v-icon(v-text='mdiDeleteForever')
 
   v-card-title {{$t('common.past_events')}}
   v-data-table(

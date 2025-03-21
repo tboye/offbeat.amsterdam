@@ -73,7 +73,7 @@ const Helpers = {
   HttpError,
   BadRequestError,
   NotFoundError,
-  UnauthorizedError,  
+  UnauthorizedError,
 
   randomString(length = 12) {
     const wishlist = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -150,10 +150,10 @@ const Helpers = {
   serveStatic() {
     const router = express.Router()
     // serve images/thumb
-    router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }), 
+    router.use('/media/', express.static(config.upload_path, { immutable: true, maxAge: '1y' }),
       (_req, res) => res.redirect('/fallbackimage.png')
     )
-    
+
     router.use('/download/:filename', (req, res) => {
       res.download(req.params.filename, undefined, { root: config.upload_path }, err => {
         if (err) {
@@ -326,7 +326,7 @@ const Helpers = {
         collectionController._getEvents({ name: collection_in_home, start: DateTime.local().startOf('month').toUnixInteger(), show_recurrent }) :
         eventController._select({ start: DateTime.local().startOf('month').toUnixInteger(), show_multidate, show_recurrent, show_federated })
     ])
-    
+
     res.locals.announcements = ret[0]?.value
     res.locals.collections = ret[1]?.value
     res.locals.events = ret[2]?.value

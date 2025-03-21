@@ -112,7 +112,7 @@ const eventController = {
 
   /**
    * /event/detail/:event_slug.:format?
-   * get event details 
+   * get event details
    * this is also used to get next/prev event
    */
   async get(req, res) {
@@ -277,7 +277,7 @@ const eventController = {
 
     if (event.userId === req.user.id) {
       const messages = await Message.findAll({ where: { eventId, is_author_visible: true }, order: [['createdAt', 'DESC']]})
-      return res.json(messages)      
+      return res.json(messages)
     }
 
     return res.sendStatus(400)
@@ -487,7 +487,7 @@ const eventController = {
           log.debug('[EVENT] end_datetime is too much in the future')
           return res.status(400).send('are you sure?')
         }
-  
+
       }
 
       if (!start_datetime) {
@@ -762,7 +762,7 @@ const eventController = {
         // remove related resources
         await Resource.destroy({ where: { eventId: event.id }})
         await EventNotification.destroy({ where: { eventId: event.id }})
-        
+
       } catch (e) {
         console.error(e)
       }
@@ -944,7 +944,7 @@ const eventController = {
         recurrent: { [Op.not]: null }
       }
     }
-    
+
     const events = await Event.findAll({
       where,
       attributes: {
