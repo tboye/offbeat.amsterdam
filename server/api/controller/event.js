@@ -159,6 +159,13 @@ const eventController = {
       return res.sendStatus(404)
     }
 
+    // admin, editors and event's owner gets the number of messages (could open moderation)
+    let n_messages = 0
+    if (isAdminOrEditor || event.userId !== req.user?.id) {
+      n_messages = await Message.count({ where: { eventId: event.id, ...(!isAdminOrEditor && { is_author_visible: true }) }})
+    }
+
+    // TODO: does next and prev make any sense in case of collection in home or home with federated events? should we remove this?
     // get prev and next event
     const next = await Event.findOne({
       attributes: ['id', 'slug'],
@@ -200,6 +207,7 @@ const eventController = {
       event = event.get()
       event.isMine = event.userId === req.user?.id
       event.isAnon = event.userId === null || !event?.user?.is_active
+      event.n_messages = n_messages
       event.original_url = event?.ap_object?.url || event?.ap_object?.id
       delete event.ap_object
       delete event.user
@@ -393,8 +401,17 @@ const eventController = {
           parentId: null,
           is_visible: false,
         },
+        attributes: {
+          include: [
+            [ Sequelize.cast( Sequelize.fn('COUNT', Sequelize.col('messages.id')), 'INTEGER' ), 'n_messages' ]
+          ],
+        },
         order: [['start_datetime', 'ASC']],
-        include: [{ model: Tag, required: false }, Place]
+        include: [
+          { model: Tag, required: false },
+          Place,
+          { model: Message, required: false, attributes: [] }],
+        group: ['event.id'],
       })
       const now = DateTime.local().toUnixInteger()
       res.json({ events: events.filter(e => e.start_datetime >= now) , oldEvents: events.filter(e => e.start_datetime < now) })
