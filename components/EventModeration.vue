@@ -17,7 +17,7 @@
                 </v-list-item>
             </v-list>
         </v-card-text>
-    </v-card>    
+    </v-card>
 </template>
 <script>
 import { mdiMessageTextOutline, mdiSend, mdiChevronRight } from '@mdi/js'
@@ -31,7 +31,7 @@ export default {
             type: Object,
             default: () => ({})
         },
-    },    
+    },
     data () {
         return {
             mdiMessageTextOutline, mdiSend, mdiChevronRight,
@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         isAdmin () {
-            return this.$auth.user.is_admin || this.$auth.user.is_editor
+            return this.$auth.user?.is_admin || this.$auth.user?.is_editor
         }
     },
     methods: {
