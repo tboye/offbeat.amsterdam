@@ -1,3 +1,6 @@
+# 0.3.1 (22-03-2025)
+- Show link to source in footer as `vX.X.X`
+
 # 0.3.0 (22-03-2025)
 - Align with Gancio `1.25.0`
 [1.24.4](https://framagit.org/les/gancio/compare/v1.24.3...v1.24.4)
