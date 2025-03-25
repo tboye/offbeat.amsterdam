@@ -54,6 +54,7 @@ nav_order: 7
 - [berlin.askapunk.de](https://berlin.askapunk.de) (diy shows and similar events in berlin)
 - [do.basspistol.org](https://do.basspistol.org) (Music and activism, Stockholm, Berlin, Geneva)
 - [offbeat.amsterdam](https://offbeat.amsterdam) (Amsterdam)
+- [koledar.kompot.si](https://koledar.kompot.si) (Ljubljana, Slovenia)
 
 
 You can also check federated instances on [fedidb.org](https://fedidb.org/software/gancio) or on [fediverse.observer](https://gancio.fediverse.observer/list)
