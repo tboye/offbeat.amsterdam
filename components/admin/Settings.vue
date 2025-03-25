@@ -98,7 +98,7 @@ v-container
     SMTP(@close='showSMTP = false')
 
   v-card-actions
-    v-btn(text @click='showSMTP=true')
+    v-btn(outlined @click='showSMTP=true' color='primary')
       <v-icon v-if='!settings.admin_email' color='error' class="mr-2" v-text='mdiAlert'></v-icon> {{$t('admin.show_smtp_setup')}}
 
   v-btn(text @click='$emit("complete")' color='primary' v-if='setup') {{$t('common.next')}}
