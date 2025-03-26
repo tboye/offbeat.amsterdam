@@ -10,13 +10,13 @@ v-container
       @blur='save("title", title)'
       persistent-hint)
 
-    v-text-field.mt-5(v-model='instance_name' 
+    v-text-field.mt-5(v-model='instance_name'
       v-if='setup'
       :label="$t('admin.instance_name')"
       :rules="$validators.ap_handler"
       :hint="$t('admin.instance_name_help', { ap_handler })"
       @blur='save("instance_name", instance_name)'
-      persistent-hint)      
+      persistent-hint)
 
     v-text-field.mt-5(v-model='description'
       :label="$t('common.description')"
@@ -92,7 +92,7 @@ v-container
       inset
       persistent-hint
       :hint="$t('admin.enable_report_hint')"
-      :label="$t('admin.enable_report')")      
+      :label="$t('admin.enable_report')")
 
   v-dialog(v-model='showSMTP' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
     SMTP(@close='showSMTP = false')
@@ -175,7 +175,7 @@ export default {
     show_download_media: {
       get () { return this.settings.show_download_media },
       set (value) { this.setSetting({ key: 'show_download_media', value }) }
-    },    
+    },
     allow_online_event: {
       get () { return this.settings.allow_online_event },
       set (value) { this.setSetting({ key: 'allow_online_event', value }) }

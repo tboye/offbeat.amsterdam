@@ -86,7 +86,7 @@ import { mdiAlert, mdiChevronRight, mdiChevronLeft } from '@mdi/js'
 
 export default {
   name: 'Admin',
-  components: { 
+  components: {
     Settings: () => import(/* webpackChunkName: "admin" */'../components/admin/Settings.vue'),
     Users:  () => import(/* webpackChunkName: "admin" */'../components/admin/Users'),
     Events: () => import(/* webpackChunkName: "admin" */'../components/admin/Events'),
@@ -142,7 +142,7 @@ export default {
       get () {
         return this.$route.query.tab
       }
-    }    
+    }
   },
   methods: {
     async updateUsers () {

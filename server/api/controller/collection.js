@@ -137,7 +137,7 @@ const collectionController = {
     const replacements = []
     const conditions = []
     const negatedConditions = []
-    
+
     // collections are a set of filters to match
     filters.forEach(f => {
 
@@ -152,7 +152,7 @@ const collectionController = {
       if (f.places && f.places.length) {
           tmpConditions.push({ placeId: f.places.map(p => p.id) })
       }
-      
+
       if (f.actors && f.actors.length) {
         // search for local instance
         if (f.actors.find(a => a.ap_id === null)) {
@@ -288,7 +288,7 @@ const collectionController = {
     } catch (e) {
       log.error(String(e))
       return res.sendStatus(400)
-    }    
+    }
   },
 
   async removeFilter (req, res) {
