@@ -60,12 +60,12 @@ const notifier = {
   },
 
   /**
-   * Send admins an email notification
+   * Send an email notification to admins and editors with the `to_notify` flag
    * @param {String} template The template to use to build the email (./server/emails/)
    * @param {Object} locals   Locals key/value object used in templates
    */
   async notifyAdmins (template, locals) {
-    const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true }, attributes: ['email'], raw: true })
+    const admins = await User.findAll({ where: { role: ['admin', 'editor'], is_active: true, to_notify: true }, attributes: ['email'], raw: true })
     let emails = [settingsController.settings.admin_email]
     emails = emails.concat(admins?.map(a => a.email))
     return mail.send(emails, template, locals)

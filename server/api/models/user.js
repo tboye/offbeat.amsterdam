@@ -34,9 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get () {
         return this.role === 'editor'
-      }      
+      }
     },
-    is_active: DataTypes.BOOLEAN
+    is_active: DataTypes.BOOLEAN,
+    to_notify: DataTypes.BOOLEAN,
   }, {
     scopes: {
       withoutPassword: {

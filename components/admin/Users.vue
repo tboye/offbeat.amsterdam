@@ -42,6 +42,8 @@ v-container
       :search='search')
       template(v-slot:item.is_active='{item}')
         v-switch(:input-value='item.is_active' readonly @click.native.prevent="toggle(item)" inset hide-details)
+      template(v-slot:item.to_notify='{item}')
+        v-switch(:input-value='item.to_notify' v-if='item.role!=="user"' readonly @click.native.prevent="toggle_to_notify(item)" inset hide-details)
       template(v-slot:item.role='{item}')
         v-menu(offset-y)
           template(v-slot:activator="{ on, attrs }")
@@ -84,6 +86,7 @@ export default {
         { value: 'email', text: this.$t('common.email'), width: 150 },
         { value: 'description', text: this.$t('common.description') },
         { value: 'is_active', text: this.$t('common.enabled'), width: 50 },
+        { value: 'to_notify', text: this.$t('admin.receive_confirm_notification'), width: 50 },
         { value: 'role', text: this.$t('common.role'), width: 150 },
         // { value: 'is_editor', text: this.$t('common.editor') },
         { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100, sortable: false }
@@ -114,6 +117,10 @@ export default {
         if (!ret) { return }
       }
       user.is_active = !user.is_active
+      this.$axios.$put('/user', user)
+    },
+    async toggle_to_notify (user) {
+      user.to_notify = !user.to_notify
       this.$axios.$put('/user', user)
     },
     async changeRole (user, role) {

@@ -360,7 +360,8 @@
         "past_unconfirmed_events": "Past unconfirmed events",
         "page_description": "In this section you can manage custom pages (e.g. policies, howtos)",
         "new_page": "Add a new custom page",
-        "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?"
+        "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?",
+        "receive_confirm_notification": "Get user/event confirmation e-mail"
     },
     "auth": {
         "not_confirmed": "Not confirmed yet…",
