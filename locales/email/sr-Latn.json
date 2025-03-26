@@ -1,1 +1,35 @@
-{}
+{
+    "register": {
+        "content": "Primili smo zahtev za registraciju. Potvrdićemo ga što je pre moguće.",
+        "subject": "Zahtev za registraciju primljen"
+    },
+    "confirm": {
+        "subject": "Sada možete početi sa objavljivanjem događaja",
+        "content": "Zdravo, vaš nalog na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je potvrđen. Pišite nam na {{config.admin_email}} za sve informacije."
+    },
+    "user_confirm": {
+        "subject": "Sada možete da počnete sa objavljivanjem događaja",
+        "content": "Zdravo, vaš nalog na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je kreiran. <a href='{{{config.baseurl}}}/user_confirm/{{user.recover_code}}'>Potvrdite ga i izaberite lozinku.</a>."
+    },
+    "recover": {
+        "subject": "Oporavak lozinke",
+        "content": "Zdravo, zatražili ste oporavak lozinke na sajtu {{config.title}}. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Kliknite ovde</a> da potvrdite."
+    },
+    "test": {
+        "subject": "Vaša SMTP konfiguracija radi ispravno",
+        "content": "Ovo je test imejl. Ako čitate ovo, vaša konfiguracija radi ispravno."
+    },
+    "report": {
+        "subject": "Moderacija događaja [{{event.title}}]",
+        "content_AUTHOR": "Autor događaja <strong>{{event.title}}</strong> je napisao:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_ADMIN": "Admin je komentarisao događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_ANON": "Posetilac je prijavio događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>"
+    },
+    "event_confirm": {
+        "content": "Ovaj događaj možete potvrditi na <a href='{{{url}}}'>ovoj stranici</a>"
+    },
+    "admin_register": {
+        "subject": "Nova registracija",
+        "content": "{{user.email}} je zatražio registraciju na {{config.title}}: <br/><pre>{{user.description}}</pre><br/> Potvrdite je <a href='{{{config.baseurl}}}/admin'>ovde</a>."
+    }
+}
