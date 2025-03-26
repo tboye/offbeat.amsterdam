@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.25.1](https://framagit.org/les/gancio/compare/v1.25.0...v1.25.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* minor /ap_actors/trusted in the footer is requested twice ([63761f6](https://framagit.org/les/gancio/commit/63761f6714304cc82ca41d45232b2f57195d0916))
+* sequelize issue in getUnconfirmed with postgresql, fix [#556](https://framagit.org/les/gancio/issues/556) ([9c90802](https://framagit.org/les/gancio/commit/9c90802b947ce378fdb106fc2c6f8ba20e2c9e19))
+
 ## [1.25.0](https://framagit.org/les/gancio/compare/v1.24.4...v1.25.0) (2025-03-21)
 
 ⚠️ Warning.
