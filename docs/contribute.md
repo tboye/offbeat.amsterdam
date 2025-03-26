@@ -6,7 +6,9 @@ nav_order: 6
 ---
 # Contribute
 {: .no_toc }
-If you want to contribute, take a look at the [issues](https://framagit.net/les/gancio/issues)
+
+1. TOC
+{:toc}
 
 Thank you for considering contributing to Gancio!
 
@@ -49,7 +51,3 @@ Please use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/
 
 ## Documentation
 As you can see there is a big space for improvements here :smile:
-
-
-1. TOC
-{:toc}
