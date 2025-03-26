@@ -41,11 +41,9 @@ Once followed, new events from that specific Gancio instance will appear in your
 
 Gancio supports federated interaction with events.
 
-Anyone could respond to events with comments, images, or audio. These will appear on the event page (if the option is enabled).
+Anyone could respond to events with comments, images, or audio. These will appear on the event page (if the option is enabled in **Admin > Federation > Turn on resources**).
 
-Likes and Boosts: You can send "Likes" and "Boosts" to events.
-
-
+Anyone from the fediverse could "Likes" and "Boosts" events, the admin could decide to show them or not in **Admin > Federation > Hide boost/bookmarks**
 
 
 ## Moderation in federation
