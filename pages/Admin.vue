@@ -86,7 +86,7 @@ import { mdiAlert, mdiChevronRight, mdiChevronLeft } from '@mdi/js'
 
 export default {
   name: 'Admin',
-  components: { 
+  components: {
     Settings: () => import(/* webpackChunkName: "admin" */'../components/admin/Settings.vue'),
     Users:  () => import(/* webpackChunkName: "admin" */'../components/admin/Users'),
     Events: () => import(/* webpackChunkName: "admin" */'../components/admin/Events'),
@@ -109,10 +109,12 @@ export default {
     } else {
       url = req.protocol + '://' + req.headers.host
     }
+    // @todo this is weak and needed only to show the badge number...
     try {
-      const users = await $axios.$get('/users')
+      const users = await $axios.$get('/users').catch( () => [])
       const { events: unconfirmedEvents, oldEvents: unconfirmedOldEvents } = await $axios.$get('/event/unconfirmed')
-      const selfReachable = await $axios.$get('/reachable')
+          .catch( () => ({ events: [], oldEvents: [] }))
+      const selfReachable = await $axios.$get('/reachable').catch(() => false)
       return { users, unconfirmedEvents, unconfirmedOldEvents, url, selfReachable }
     } catch (e) {
       return { users: [], unconfirmedEvents: [], url, selfReachable: false }
@@ -142,7 +144,7 @@ export default {
       get () {
         return this.$route.query.tab
       }
-    }    
+    }
   },
   methods: {
     async updateUsers () {

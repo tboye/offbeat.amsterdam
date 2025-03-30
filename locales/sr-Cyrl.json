@@ -60,10 +60,10 @@
         "announcement_description": "У овом одељку можеш унети обавештења која ће остати на почетној страници",
         "instance_locale": "Подразумевани језик",
         "instance_timezone_description": "Ганцио је дизајниран за прикупљање догађаја на одређеном месту, попут града. Сви догађаји на том месту биће приказани у временској зони одабраној за њега.",
-        "description_description": "Појављује се у заглављу поред наслова",
+        "description_description": "Појављује се у заглављу поред наслова (HTML је подржан)",
         "instance_place": "Индикативно место ове инстанце",
         "trusted_sources_label_default": "Остале локације",
-        "instance_name_help": "АцтивитyПуб налог за праћење",
+        "instance_name_help": "ActivityPub налог за праћење: {ap_handler} (молимо вас да ово пажљиво проверите!)",
         "trusted_sources_label": "Ознака навигације за поуздане федерисане изворе",
         "trusted_sources_label_help": "Подразумевана ознака је 'Остале локације'",
         "add_trusted_source": "Додај поуздан федерисани извор",
@@ -134,7 +134,12 @@
         "add_trusted_source_help": "Користи једну од следећих синтакси: <br/><ul><li>web адресу другог Ганциа или софтвера који подржава Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (нпр. <u>https://demo.gancio.org</u>)</li><li>ActivityPub налог као <u>@gancio@mastodon.cisti.org</u></li><li>URL налога као <u>https://instance.tld/actor</u>.</li></ul><br/>Догађаји објављени или боост-ани са ових извора биће увезени.",
         "plugins_description": "Додаци су мали делови кода који пружају додатне функционалности главној апликацији. Обично их пишу програмери који нису део пројекта, а који користе <a href=\"https://gancio.org/dev/plugins\">систем додатака</a>, углавном за слање догађаја на друге платформе и канале.",
         "geolocation_description": "<b>1. Дефинишите провајдера за геокодирање услуге</b>.<br>Тренутно, међу онима наведеним у <a href=\"https://wiki.openstreetmap.org/wiki/Nominatim#Alternatives_.2F_Third-party_providers\">wiki страници OpenStreetMap-а</a>, постоји подршка за софтвер <a href=\"https://github.com/osm-search/Nominatim\">Nominatim</a> и <a href=\"https://github.com/komoot/photon\">Photon</a>.<br>Можете користити један од званичних демо линкова копирањем линка у поље 'Геоцодинг провидер':<ul><li>https://nominatim.openstreetmap.org/search (<a href=\"https://operations.osmfoundation.org/policies/nominatim/\">Услови коришћења</a>)</li><li>https://photon.komoot.io/api/ (<a href=\"https://photon.komoot.io/\">Услови коришћења</a>)</li></ul><br><b>2. Дефинишите провајдера за слојеве мапа.</b><br>Листу њих можете пронаћи овде: <a href=\"https://leaflet-extras.github.io/leaflet-providers/preview/\">https://leaflet-extras.github.io/leaflet-providers/preview/</a>",
-        "custom_js_help": "Можете интегрисати неки Javascript код који ће бити учитан за сваког корисника писањем у овај текстуални оквир испод. Вероватно желите прво да прочитате <a href='https://gancio.org/usage/custom_js'>документацију</a>."
+        "custom_js_help": "Можете интегрисати неки Javascript код који ће бити учитан за сваког корисника писањем у овај текстуални оквир испод. Вероватно желите прво да прочитате <a href='https://gancio.org/usage/custom_js'>документацију</a>.",
+        "past_unconfirmed_events": "Прошли непотврђени догађаји",
+        "unconfirmed_events": "Непотврђени догађаји",
+        "new_page": "Додајте нову прилагођену страницу",
+        "delete_page_confirm": "Да ли сте сигурни да желите да уклоните страницу „<strong>{title}</strong>“?",
+        "page_description": "У овом одељку можете управљати прилагођеним страницама (нпр. правилима, упутствима)"
     },
     "confirm": {
         "not_valid": "Нешто је пошло наопако.",
@@ -273,7 +278,9 @@
         "url": "URL",
         "n_resources": "нема ресурса|ресурс|{n} ресурса",
         "email": "Имејл",
-        "feed_url_copied": "Отворите копирани RSS канал у вашем RSS читачу"
+        "feed_url_copied": "Отворите копирани RSS канал у вашем RSS читачу",
+        "pages": "Странице",
+        "enabled": "Омогућено"
     },
     "login": {
         "not_registered": "Нисте регистровани?",
@@ -298,7 +305,7 @@
         "what_description": "Наслов",
         "description_description": "Опис",
         "where_description": "Где је догађај? Ако место није присутно, можете га креирати.",
-        "remove_confirmation": "Да ли сте сигурни да желите да уклоните овај догађај?",
+        "remove_confirmation": "Да ли сте сигурни да желите да уклоните догађај?",
         "recurrent": "Понављајући",
         "show_past": "такође, претходни догађаји",
         "only_future": "само предстојећи догађаји",
@@ -335,7 +342,7 @@
         "show_multidate": "догађаји са више датума",
         "recurrent_description": "Изаберите учесталост и одаберите дане",
         "multidate_description": "Да ли је у питању фестивал? Изаберите када почиње и када се завршава",
-        "normal": "Нормално",
+        "normal": "Нормалан",
         "normal_description": "Изаберите дан.",
         "recurrent_1m_days": "{days}. сваког месеца",
         "recurrent_1m_ordinal": "Свака/и {n}. {days} у месецу",
@@ -367,7 +374,10 @@
         "intro": "За разлику од антисоцијалних платформи које раде све како би задржале кориснике и податке о њима, ми верујемо да информације, као и људи, морају бити слободне. Због тога можете бити у току са догађајима који вас интересују, без нужности да стално посећујете овај сајт.",
         "list_description": "Ако имате сајт и желите да прикажете листу догађаја, користите следећи код",
         "filter_description": "Можете филтрирати свој извоз овде по таговима и месту или по унапред дефинисаној колекцији",
-        "feed_description": "Да бисте пратили ажурирања са рачунара или паметног телефона без потребе да периодично отварате овај сајт, користите RSS канале.\n\nУз RSS канале користите посебну апликацију за примање ажурирања са сајтова који вас интересују. То је добар начин да брзо пратите многе сајтове, без потребе за креирањем налога или других компликација.\n\n<li> Ако имате Андроид, препоручујемо <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> или Feeder </li>\n<li> За iPhone / iPad можете користити <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> </li>\n<li> За десктоп / лаптоп препоручујемо Feedbro, који се инсталира на <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> или <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a>. </li>\n<br/>\nДодавање овог линка у ваш RSS читач одржаће вас у току."
+        "feed_description": "Да бисте пратили ажурирања са рачунара или паметног телефона без потребе да периодично отварате овај сајт, користите RSS канале.\n\nУз RSS канале користите посебну апликацију за примање ажурирања са сајтова који вас интересују. То је добар начин да брзо пратите многе сајтове, без потребе за креирањем налога или других компликација.\n\n<li> Ако имате Андроид, препоручујемо <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> или Feeder </li>\n<li> За iPhone / iPad можете користити <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\"> Feed4U </a> </li>\n<li> За десктоп / лаптоп препоручујемо Feedbro, који се инсталира на <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\"> Firefox </a> или <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\"> Chrome </a>. </li>\n<br/>\nДодавање овог линка у ваш RSS читач одржаће вас у току.",
+        "list_title": "Листа",
+        "filter_title": "Филтер",
+        "ical_title": "ics/ical"
     },
     "recover": {
         "not_valid_code": "Нешто је пошло наопако."

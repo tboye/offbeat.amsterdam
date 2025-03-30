@@ -7,6 +7,104 @@ nav_order: 10
 
 All notable changes to this project will be documented in this file.
 
+
+### [1.25.1](https://framagit.org/les/gancio/compare/v1.25.0...v1.25.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* minor /ap_actors/trusted in the footer is requested twice ([63761f6](https://framagit.org/les/gancio/commit/63761f6714304cc82ca41d45232b2f57195d0916))
+* sequelize issue in getUnconfirmed with postgresql, fix [#556](https://framagit.org/les/gancio/issues/556) ([9c90802](https://framagit.org/les/gancio/commit/9c90802b947ce378fdb106fc2c6f8ba20e2c9e19))
+
+
+## [1.25.0](https://framagit.org/les/gancio/compare/v1.24.4...v1.25.0) (2025-03-21)
+
+⚠️ Warning.
+This release includes important security fixes.
+
+### Features
+
+* add moderation panel for events in administration panel and number of messages in event's page ([6cbdc2a](https://framagit.org/les/gancio/commit/6cbdc2a93025aae5eee8dc974a6454df88acda84))
+* **CLI:** allow to enable/disable users from CLI, [doc](https://gancio.org/usage/cli) ([477b811](https://framagit.org/les/gancio/commit/477b81112dec4da2cdeb50b08481d33cb5c70050))
+* copy activitypub handler from "Follow Me" dialog ([f73ccfb](https://framagit.org/les/gancio/commit/f73ccfb51eed51036903b6a06cb246ddd1b5fba5))
+
+
+### Bug Fixes
+
+* preload events from start of month, fix [#549](https://framagit.org/les/gancio/issues/549) ([e3c8643](https://framagit.org/les/gancio/commit/e3c864332ccca0f64315c64abc3e5bd368185c53))
+* set sameSite: Strict as cookie option policy, fix [#545](https://framagit.org/les/gancio/issues/545) ([4f4bc91](https://framagit.org/les/gancio/commit/4f4bc91486bd78130ef995e4a620f30f5e0d4a62))
+
+
+### [1.24.4](https://framagit.org/les/gancio/compare/v1.24.3...v1.24.4) (2025-03-14)
+
+
+### Bug Fixes
+
+* allow `page` preview to admin and editor and fix [#544](https://framagit.org/les/gancio/issues/544) ([e7bfc5b](https://framagit.org/les/gancio/commit/e7bfc5b81c150cd8494ed80591e725852184e5f0))
+* page content could contain any text, fix [#543](https://framagit.org/les/gancio/issues/543) ([f93c759](https://framagit.org/les/gancio/commit/f93c759421e7ff0c16b2a20ccd618ad1f298ef9a))
+
+### [1.24.3](https://framagit.org/les/gancio/compare/v1.24.2...v1.24.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* use the correct language code to send email, fix [#539](https://framagit.org/les/gancio/issues/539) ([89baa98](https://framagit.org/les/gancio/commit/89baa98527202a85ce69eba1b7d70d6c7a803b30))
+
+### [1.24.2](https://framagit.org/les/gancio/compare/v1.24.1...v1.24.2) (2025-03-07)
+
+
+### Bug Fixes
+
+* add Serbian Cyrilic ([fd77203](https://framagit.org/les/gancio/commit/fd772030d745f2a3a8c2fa9b8391cad5069a0857))
+
+### [1.24.1](https://framagit.org/les/gancio/compare/v1.24.0...v1.24.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* ap handler validator ([3fcccf7](https://framagit.org/les/gancio/commit/3fcccf72b38a6a4d359bacf114c649490b90416d))
+* **AP:** cannot destroy actor on trust removal ([efa7023](https://framagit.org/les/gancio/commit/efa7023ac9239cf43b33ffb3e21bafd18f8ba6e2))
+
+
+## [1.24.0](https://framagit.org/les/gancio/compare/v1.23.1...v1.24.0) (2025-03-06)
+
+### Features
+
+* **Admin:** show unapproved past events in admin, fix [#516](https://framagit.org/les/gancio/issues/516) ([739bd49](https://framagit.org/les/gancio/commit/739bd49ec58185d941dbca65da0c9644ba4dda0e))
+* **Admin** Custom Pages, fix [#520](https://framagit.org/les/gancio/issues/520) ([3be4db5](https://framagit.org/les/gancio/commit/3be4db5f202b63beffd8007b8774afd0c443d05a))
+* add `settings` CLI sub-commands, fix [#365](https://framagit.org/les/gancio/issues/365) ([9ddc056](https://framagit.org/les/gancio/commit/9ddc0567eaa42016a85ece8bbc2c37e33fac24a5))
+* add Croatian and Serbian translations ([053a0c1](https://framagit.org/les/gancio/commit/053a0c1180d18f9eb0343bb94c0442856eae4da6))
+* show instance description header in html ([df9156d](https://framagit.org/les/gancio/commit/df9156d89d42592c2c4c4a828d39b5728bfa8b0d))
+
+
+### Bug Fixes
+
+* **UI:** use icon, tooltip in admin announcement ([5edb10b](https://framagit.org/les/gancio/commit/5edb10b9b1e035c91b45908d6277609b83439e95))
+* **AP:** redirect / to AP actor when ld+json is preferred ([5e0bfcb](https://framagit.org/les/gancio/commit/5e0bfcbd110ad4a1103fac613650d8aa48d6ad32)), ([e85fd33](https://framagit.org/les/gancio/commit/e85fd33d99f8979caeca013c29a8abfc3769dffe))
+* **AP** add url to place AP representation, fix [#507](https://framagit.org/les/gancio/issues/507) ([4f55ee8](https://framagit.org/les/gancio/commit/4f55ee8f0a50b7514dc6c0eac9a9b029459b50dc))
+* **AP:** better logs ([62f7c43](https://framagit.org/les/gancio/commit/62f7c436a7f664a0324bce7efced2052ca9ce798))
+* **AP:** get incoming Note for remote event too ([5320fcd](https://framagit.org/les/gancio/commit/5320fcde124fbc0ee0b11996267ba2f32d051309))
+* **AP:** improve error handling in /federation ([ce9af7e](https://framagit.org/les/gancio/commit/ce9af7eb93616eeb82da6487870f24bd917e63dc))
+* **AP:** improve Update handling ([7302bc7](https://framagit.org/les/gancio/commit/7302bc73d088ed4e26db863c930f9332cd99da58))
+* **AP:** improve virtual location parsing ([b1a05eb](https://framagit.org/les/gancio/commit/b1a05eb613d7827ed0e23c0ddadec9e5bf4458f4))
+* **AP:** refactor parseAPMessage, Announce ([918ce54](https://framagit.org/les/gancio/commit/918ce545231b5dbb31d1a2fbbe12a053992ad978))
+* **AP:** refactoring HTTP Error, Error middleware, preferHTML/JSON ([70dc86b](https://framagit.org/les/gancio/commit/70dc86bbda9b12629ace8605854a0d5691b91c22))
+* **AP:** refactoring parse AP location ([d737a99](https://framagit.org/les/gancio/commit/d737a99338710a24a86892d2945f02a588c2416f))
+* **AP:** try actor as url ([fcaf129](https://framagit.org/les/gancio/commit/fcaf12911cbface2e4473ace55708693d2069410))
+* **UI:** increase min Editor heigth (page, announcement, about, event) ([8540f4a](https://framagit.org/les/gancio/commit/8540f4a525554483cf21f0b8373bd40912092e17))
+* **doc:** add suggested gancio.sqlite db in backup docs, fix [#518](https://framagit.org/les/gancio/issues/518) ([a0b8ae1](https://framagit.org/les/gancio/commit/a0b8ae1922408e4a9470ca2a565d3b043e3145da))
+* allow page preview, hide page if not visible ([4c0076c](https://framagit.org/les/gancio/commit/4c0076c084b43e5e56843745f01c544d6c048c31))
+* also show past events in tag page ([b1ef628](https://framagit.org/les/gancio/commit/b1ef62879d9b13e73042e54390e758164cd4447c))
+* better date time representation on different year ([628c387](https://framagit.org/les/gancio/commit/628c387ca1d2c22ba770d4c26a6cdba981f9d53c))
+* cannot reset trusted nodes label on old installation, fix [#528](https://framagit.org/les/gancio/issues/528) ([9da1766](https://framagit.org/les/gancio/commit/9da1766a1b7f348627a7e1a0fb1584608a6d4df0))
+* change default instance_name to `events`, fix [#532](https://framagit.org/les/gancio/issues/532) ([1d4d03e](https://framagit.org/les/gancio/commit/1d4d03e3fb0101caa33387b6873a9de046607360))
+* force trust removal on unfollowing issue ([0fddfa0](https://framagit.org/les/gancio/commit/0fddfa0a32aa09c1e00e6270fe47ba15e4b3a762))
+* minor on map component styles ([835b926](https://framagit.org/les/gancio/commit/835b926d8dc776861f0e9ecf8204d731fc4bb137))
+* minor refactor add SearchAddress component ([7676d90](https://framagit.org/les/gancio/commit/7676d90fb5abd5d1fea63a4854c426c31cd94c2e))
+* redirect fedi endpoint to html version if preferred, fix [#507](https://framagit.org/les/gancio/issues/507) ([92a99ba](https://framagit.org/les/gancio/commit/92a99ba0fb1b42ed5b131bd796fb8d53736d6898))
+* redirect to actor if prefer json ([4497eb4](https://framagit.org/les/gancio/commit/4497eb42ecfe308a586fe17f91d689ef996c0b36))
+* update webcomponent deps, use umd and fix conflict with other libs, fix [#513](https://framagit.org/les/gancio/issues/513) ([0451b72](https://framagit.org/les/gancio/commit/0451b7290e2a8e518b9baccccbf0a5621eef41be))
+
 ### [1.23.1](https://framagit.org/les/gancio/compare/v1.23.0...v1.23.1) (2025-01-28)
 
 ### Bug Fixes

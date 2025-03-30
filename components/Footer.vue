@@ -41,7 +41,7 @@ export default {
       trusted_sources: []
     }
   },
-  async created () {
+  async mounted () {
     this.$root.$on('update_trusted_sources', async () => {
       this.trusted_sources = await this.$axios.$get('ap_actors/trusted').catch()
     })

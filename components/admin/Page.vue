@@ -10,8 +10,8 @@
             v-text-field.col-12(v-model='page.title'
               :rules="[$validators.required('common.title')]"
               :label='$t("common.title")')
-            Editor.col-12(v-model='page.content'
-              border no-save max-height='400px' :placeholder="$t('common.description')")
+            Editor.col-12(v-model='page.content' label='Content' height='250px'
+              border no-save :placeholder="$t('common.description')")
         v-card-actions
           v-spacer
           v-btn(@click='dialog = false' color='error' outlined) {{ $t('common.cancel') }}
@@ -37,7 +37,6 @@
   </template>
 
 <script>
-import { mapActions } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import Editor from '../Editor'
 import Announcement from '../Announcement'
@@ -87,7 +86,7 @@ export default {
       } catch (e) { }
     },
     async remove(page) {
-      const ret = await this.$root.$confirm('admin.delete_page_confirm')
+      const ret = await this.$root.$confirm('admin.delete_page_confirm', { title: page.title })
       if (!ret) { return }
       this.$axios.delete(`/pages/${page.id}`)
         .then(() => {

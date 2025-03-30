@@ -102,7 +102,7 @@
         "admin_actions": "Radnje administratora",
         "recurring_event_actions": "Radnje za ponavljajući događaj",
         "longitude": "Longtituda",
-        "online": "Online",
+        "online": "On-line",
         "test": "Test",
         "show_preview": "Prikaži pregled",
         "clone": "Kloniraj",
@@ -116,7 +116,9 @@
         "contact_user": "Kontaktirajte korisnika",
         "report": "Prijavi događaj",
         "role": "Uloga",
-        "past_events": "Prošli događaji"
+        "past_events": "Prošli događaji",
+        "enabled": "Omogućeno",
+        "pages": "Stranice"
     },
     "login": {
         "ok": "Prijavljeni ste",
@@ -134,7 +136,10 @@
         "email_description": "Možete dobiti događaje koji vas interesuju putem e-maila.",
         "insert_your_address": "Unesite svoju e-mail adresu",
         "filter_description": "Možete filtrirati svoj izvoz ovde po tagovima i mestu ili po unapred definisanoj kolekciji",
-        "feed_description": "Da biste pratili ažuriranja sa računara ili pametnog telefona bez potrebe da periodično otvarate ovaj sajt, koristite RSS kanale. </p>\n\n<p> Uz RSS kanale koristite posebnu aplikaciju za primanje ažuriranja sa sajtova koji vas interesuju. To je dobar način da brzo pratite mnoge sajtove, bez potrebe za kreiranjem naloga ili drugih komplikacija. </p>\n\n<li> Ako imate Android, preporučujemo <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ili Feeder </li>\n<li> Za iPhone / iPad možete koristiti <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a> </li>\n<li> Za desktop / laptop preporučujemo Feedbro, koji se instalira na <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefox</a> ili <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome</a>. </li>\n<br/>\nDodavanje ovog linka u vaš RSS čitač održaće vas u toku."
+        "feed_description": "Da biste pratili ažuriranja sa računara ili pametnog telefona bez potrebe da periodično otvarate ovaj sajt, koristite RSS kanale. </p>\n\n<p> Uz RSS kanale koristite posebnu aplikaciju za primanje ažuriranja sa sajtova koji vas interesuju. To je dobar način da brzo pratite mnoge sajtove, bez potrebe za kreiranjem naloga ili drugih komplikacija. </p>\n\n<li> Ako imate Android, preporučujemo <a href=\"https://f-droid.org/en/packages/net.frju.flym/\">Flym</a> ili Feeder </li>\n<li> Za iPhone / iPad možete koristiti <a href=\"https://itunes.apple.com/ua/app/feeds4u/id1038456442?mt=8\">Feed4U</a> </li>\n<li> Za desktop / laptop preporučujemo Feedbro, koji se instalira na <a href=\"https://addons.mozilla.org/en-GB/firefox/addon/feedbroreader/\">Firefox</a> ili <a href=\"https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa\">Chrome</a>. </li>\n<br/>\nDodavanje ovog linka u vaš RSS čitač održaće vas u toku.",
+        "filter_title": "Filter",
+        "ical_title": "ics/ical",
+        "list_title": "Lista"
     },
     "register": {
         "complete": "Registracija mora biti potvrđena.",
@@ -197,7 +202,7 @@
         "address_description_osm": "Pretražite koordinate unosom adrese. (<a href='http://osm.org/copyright'>OpenStreetMap</a> doprinositelji)",
         "confirmed": "Događaj je potvrđen",
         "not_found": "Nije moguće pronaći događaj",
-        "remove_confirmation": "Jeste li sigurni da želite ukloniti ovaj događaj?",
+        "remove_confirmation": "Jeste li sigurni da želite ukloniti događaj?",
         "recurrent": "Ponavljajući",
         "edit_recurrent": "Uredi ponavljajući događaj:",
         "show_recurrent": "ponavljajući događaji",
@@ -278,12 +283,12 @@
         "instance_locale": "Zadani jezik",
         "instance_timezone_description": "Gancio je dizajniran za prikupljanje događaja na određenom mjestu, poput grada. Svi događaji na tom mjestu bit će prikazani u vremenskoj zoni odabranoj za njega.",
         "title_description": "Koristi se u naslovu stranice, u predmetu e-maila za izvoz RSS i ICS feedova.",
-        "description_description": "Pojavljuje se u zaglavlju pored naslova",
+        "description_description": "Pojavljuje se u zaglavlju pored naslova (HTML je podržan)",
         "instance_locale_description": "Preferirani jezik korisnika za stranice. Ponekad poruke moraju biti prikazane na istom jeziku za sve (npr. prilikom objavljivanja putem ActivityPub-a ili slanja nekih e-mailova). U tim slučajevima koristit će se gore odabrani jezik.",
         "instance_place": "Indikativno mjesto ove instance",
         "trusted_sources_label_help": "Zadana oznaka je 'Ostale lokacije'",
         "add_trusted_source": "Dodaj pouzdani federirani izvor",
-        "instance_name_help": "ActivityPub račun za praćenje",
+        "instance_name_help": "ActivityPub račun za praćenje: {ap_handler} (molimo vas da ovo pažljivo provjerite!)",
         "trusted_sources_label": "Oznaka navigacije za pouzdane federirane izvore",
         "trusted_sources_label_default": "Ostale lokacije",
         "allow_event_without_end_time": "Dopustiti događaje bez vremena završetka",
@@ -347,7 +352,12 @@
         "custom_css_help": "Također možete prilagoditi neke stilove, pogledajte primjer <a href='https://gancio.org/usage/custom_css'>ovdje</a>.",
         "default_fedi_hashtags": "Zadani Fediverse hashtagovi",
         "default_fedi_hashtags_help": "Navedeni tagovi bit će dodani događajima koji se šalju na Fediverse",
-        "federated_events_in_home": "Prikaži federirane događaje na početnoj stranici"
+        "federated_events_in_home": "Prikaži federirane događaje na početnoj stranici",
+        "unconfirmed_events": "Nepotvrđeni događaji",
+        "past_unconfirmed_events": "Prošli nepotvrđeni događaji",
+        "page_description": "U ovom odjeljku možete upravljati prilagođenim stranicama (npr. pravilima, uputama)",
+        "new_page": "Dodajte novu prilagođenu stranicu",
+        "delete_page_confirm": "Jeste li sigurni da želite ukloniti stranicu „<strong>{title}</strong>“?"
     },
     "auth": {
         "not_confirmed": "Još nije potvrđeno…",

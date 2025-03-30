@@ -41,7 +41,8 @@ To list all users use
 `gancio users create <username|email> [password] [role]`
 
 `role` value could be `user` (default), `admin` or `editor`, you can also specify it using `--role` flag.  
-To create an user with administrator privileges use the `--role` flag, e.g. `gancio users create admin@example.com --role admin`
+To create an user with administrator privileges use the `--role` flag, e.g.  
+`gancio users create admin@example.com --role admin`
 
 
 ### Remove a user
@@ -60,6 +61,11 @@ To add administrator privileges to an user:
 To remove administrator privileges from an user:
 `gancio users set_role <username|email> user`
 
+### Enable / disable users
+
+To enable an user: `gancio users enable <email>`
+
+To disable an user: `gancio users disable <email>`
 
 ## Settings <span class='label label-yellow'>since 1.24.0</span>
 All settings related sub-commands starts with `gancio settings`.
@@ -96,11 +102,10 @@ Note that a restart is needed to get the new setting
 
 
 > warning "JSON"
-> Note that settings are store in JSON, so your value will be parsed.
+> Note that settings are stored in JSON, so your value will be parsed.
 
 > warning "Restart needed"
 > A restart is needed after a setting is changed
 
 > info "References"
 > [#365](https://framagit.org/les/gancio/-/issues/365)
-

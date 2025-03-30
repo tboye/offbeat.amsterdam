@@ -24,7 +24,7 @@
 
             .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
               v-icon(v-text='mdiMapMarker' small)
-              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`') 
+              nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
                 span(itemprop='name') {{event?.place?.name}}
               .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
 
@@ -190,7 +190,7 @@ export default {
       title: `${this.settings.title} - ${this.event.title}`,
       htmlAttrs: {
         lang: this.settings.instance_locale
-      },      
+      },
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
@@ -276,7 +276,7 @@ export default {
     showResources () {
       return this.settings.enable_federation &&
       ( (!this.settings.hide_boosts && (this.event.boost?.length || this.event?.likes?.length)) ||
-      ( this.settings.enable_resources && this.event?.resources?.length))      
+      ( this.settings.enable_resources && this.event?.resources?.length))
     },
     isPast() {
       const now = new Date()
@@ -336,5 +336,3 @@ export default {
   }
 }
 </script>
-
-

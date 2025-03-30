@@ -28,7 +28,7 @@ beforeAll(async () => {
     // sequelize.sync({ force: true })
     // await sequelize.query('PRAGMA foreign_keys = OFF')
     await sequelize.query('DELETE FROM settings')
-    await sequelize.query(`DELETE FROM ${col('user_followers')}`)
+    // await sequelize.query(`DELETE FROM ${col('user_followers')}`)
     await sequelize.query(`DELETE FROM ${col('events')} where ${col('parentId')} IS NOT NULL`)
     await sequelize.query('DELETE FROM ap_users')
     await sequelize.query('DELETE FROM events')

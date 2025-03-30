@@ -16,6 +16,7 @@ v-card
       p(slot='append') <img class='instance_thumb' :src="instance.thumbnail"/> {{instance.title}}
 
   v-card-actions(v-if='isDialog')
+    v-btn(outlined color='info' @click='clipboard(`@${settings.instance_name}@${settings.hostname}`)') {{$t("common.copy")}}  @{{settings.instance_name}}@{{settings.hostname}}
     v-spacer
     v-btn(v-if='isDialog' outlined color='warning' @click="$emit('close')") {{$t("common.cancel")}}
     v-btn(:disabled='(!couldGo || !proceed)' outlined :href='link' target='_blank'
@@ -25,11 +26,12 @@ v-card
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 import { mdiInformation } from '@mdi/js'
+import clipboard from '../assets/clipboard'
 
 export default {
   name: 'FollowMe',
-  props:
-    { isDialog: { type: Boolean, default: false } },
+  props: { isDialog: { type: Boolean, default: false } },
+  mixins: [clipboard],
   data () {
     return {
       mdiInformation,

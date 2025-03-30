@@ -45,7 +45,7 @@ v-container
       template(v-slot:item.role='{item}')
         v-menu(offset-y)
           template(v-slot:activator="{ on, attrs }")
-            v-btn(:color='role_colors[item.role ]' v-bind='attrs' v-on="on" small label) {{ item.role }}
+            v-btn(:color='role_colors[item.role ]' outlined v-bind='attrs' v-on="on" small label) {{ item.role }} <v-icon v-text='mdiChevronDown' />
           v-list(width=100 nav)
             v-list-item(v-for="role in ['admin', 'editor', 'user'].filter(r => r !== item.role)" :key='role' link @click='changeRole(item, role)')
               v-list-item-content
@@ -53,8 +53,7 @@ v-container
 
       template(v-slot:item.actions='{item}')
         t-btn(@click='deleteUser(item)' color='error' :tooltip="$t('admin.delete_user')")
-          v-icon(v-text='mdiDeleteForever') 
-          
+          v-icon(v-text='mdiDeleteForever')
 
 </template>
 <script>

@@ -104,7 +104,7 @@
         "latitude": "Latitude",
         "longitude": "Longitude",
         "search_coordinates": "Search coordinates",
-        "online": "On-line",
+        "online": "Online",
         "test": "Test",
         "show_preview": "Show preview",
         "clone": "Clone",
@@ -281,7 +281,7 @@
         "title_description": "It is used in the title of the page, in the subject of the e-mail to export RSS and ICS feeds.",
         "description_description": "Appears in the header next to the title (HTML is supported)",
         "instance_place": "Indicative place of this instance",
-        "instance_name_help": "ActivityPub's account to follow",
+        "instance_name_help": "ActivityPub's account to follow: {ap_handler} (please check this very carefully!)",
         "trusted_sources_label": "Navigation label for trusted federated sources",
         "trusted_sources_label_default": "Other locations",
         "trusted_sources_label_help": "The default label is 'Other locations'",
@@ -357,7 +357,10 @@
         "federated_events_in_home": "Show federated events on the home page",
         "federated_events_in_home_help": "Incoming events from trusted federated sources will be shown by default on the home page. To only show some events you can use collections",
         "unconfirmed_events": "Unconfirmed events",
-        "past_unconfirmed_events": "Past unconfirmed events"
+        "past_unconfirmed_events": "Past unconfirmed events",
+        "page_description": "In this section you can manage custom pages (e.g. policies, howtos)",
+        "new_page": "Add a new custom page",
+        "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?"
     },
     "auth": {
         "not_confirmed": "Not confirmed yet…",

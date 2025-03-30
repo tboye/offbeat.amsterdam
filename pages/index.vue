@@ -5,7 +5,7 @@
     <section id='announcements' class='mt-2 mt-sm-4' v-if='announcements?.length'>
       <Announcement v-for='announcement in announcements' :key='`a_${announcement.id}`' :announcement='announcement' />
     </section>
-    
+
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2' v-if='!$fetchState.pending'>
       <v-lazy class='event v-card' :value='idx<9'

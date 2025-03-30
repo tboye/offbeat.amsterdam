@@ -1,0 +1,35 @@
+{
+    "user_confirm": {
+        "content": "Zdravo, vaš nalog na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je kreiran. <a href='{{{config.baseurl}}}/user_confirm/{{user.recover_code}}'>Potvrdite ga i izaberite lozinku.</a>.",
+        "subject": "Sada možete objavljivati događaje"
+    },
+    "report": {
+        "subject": "Moderacija događaja [{{event.title}}]",
+        "content_ADMIN": "Administrator je komentarisao događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_ANON": "Posetilac je prijavio događaj <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>",
+        "content_AUTHOR": "Autor događaja <strong>{{event.title}}</strong> je napisao:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Otvori moderaciju</a>"
+    },
+    "recover": {
+        "subject": "Oporavak lozinke",
+        "content": "Zdravo, zatražili ste oporavak lozinke na {{config.title}}. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Kliknite ovde</a> da potvrdite."
+    },
+    "event_confirm": {
+        "content": "Možete potvrditi ovaj događaj na <a href='{{{url}}}'>ovoj stranici</a>"
+    },
+    "confirm": {
+        "subject": "Sada možete objavljivati događaje",
+        "content": "Zdravo, vaš nalog na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je potvrđen. Pišite nam na {{config.admin_email}} za bilo kakve informacije."
+    },
+    "register": {
+        "subject": "Zahtev za registraciju primljen",
+        "content": "Primili smo vaš zahtev za registraciju. Potvrdićemo ga što je pre moguće."
+    },
+    "admin_register": {
+        "subject": "Nova registracija",
+        "content": "{{user.email}} je zatražio registraciju na {{config.title}}: <br/><pre>{{user.description}}</pre><br/> Potvrdite je <a href='{{{config.baseurl}}}/admin'>ovde</a>."
+    },
+    "test": {
+        "subject": "Vaša SMTP konfiguracija funkcioniše",
+        "content": "Ovo je testni e-mail. Ako ovo čitate, vaša konfiguracija funkcioniše."
+    }
+}

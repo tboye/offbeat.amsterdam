@@ -40,6 +40,8 @@ span
           v-icon(v-text='mdiMessageTextOutline')
         v-list-item-content
           v-list-item-title(v-text="$t('common.moderation')")
+        v-list-item-icon(v-if='event?.n_messages')
+          v-chip(small label class='primary') {{event?.n_messages}}
 
       //- Disable author
       v-list-item(v-if='settings.enable_moderation && !event.isAnon && $auth.user.is_admin' @click='disableAuthor')
@@ -112,7 +114,7 @@ export default {
       } catch (e) {
           this.$root.$message(e, { color: 'warning' })
       }
-    },    
+    },
     async remove (parent = false) {
       const ret = await this.$root.$confirm(`event.remove_${parent ? 'recurrent_' : ''}confirmation`)
       if (!ret) { return }

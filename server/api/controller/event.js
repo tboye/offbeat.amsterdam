@@ -112,7 +112,7 @@ const eventController = {
 
   /**
    * /event/detail/:event_slug.:format?
-   * get event details 
+   * get event details
    * this is also used to get next/prev event
    */
   async get(req, res) {
@@ -159,6 +159,13 @@ const eventController = {
       return res.sendStatus(404)
     }
 
+    // admin, editors and event's owner gets the number of messages (could open moderation)
+    let n_messages = 0
+    if (isAdminOrEditor || event.userId !== req.user?.id) {
+      n_messages = await Message.count({ where: { eventId: event.id, ...(!isAdminOrEditor && { is_author_visible: true }) }}).catch(() => 0)
+    }
+
+    // TODO: does next and prev make any sense in case of collection in home or home with federated events? should we remove this?
     // get prev and next event
     const next = await Event.findOne({
       attributes: ['id', 'slug'],
@@ -200,6 +207,7 @@ const eventController = {
       event = event.get()
       event.isMine = event.userId === req.user?.id
       event.isAnon = event.userId === null || !event?.user?.is_active
+      event.n_messages = n_messages
       event.original_url = event?.ap_object?.url || event?.ap_object?.id
       delete event.ap_object
       delete event.user
@@ -277,7 +285,7 @@ const eventController = {
 
     if (event.userId === req.user.id) {
       const messages = await Message.findAll({ where: { eventId, is_author_visible: true }, order: [['createdAt', 'DESC']]})
-      return res.json(messages)      
+      return res.json(messages)
     }
 
     return res.sendStatus(400)
@@ -393,13 +401,21 @@ const eventController = {
           parentId: null,
           is_visible: false,
         },
+        attributes: {
+          include: [
+            [ Sequelize.cast( Sequelize.fn('COUNT', Sequelize.col('messages.id')), 'INTEGER' ), 'n_messages' ]
+          ],
+        },
         order: [['start_datetime', 'ASC']],
-        include: [{ model: Tag, required: false }, Place]
+        include: [
+          Place,
+          { model: Message, required: false, attributes: [] }],
+        group: ['event.id', 'place.id'],
       })
       const now = DateTime.local().toUnixInteger()
       res.json({ events: events.filter(e => e.start_datetime >= now) , oldEvents: events.filter(e => e.start_datetime < now) })
     } catch (e) {
-      log.info(e)
+      log.info(String(e))
       res.sendStatus(400)
     }
   },
@@ -487,7 +503,7 @@ const eventController = {
           log.debug('[EVENT] end_datetime is too much in the future')
           return res.status(400).send('are you sure?')
         }
-  
+
       }
 
       if (!start_datetime) {
@@ -762,7 +778,7 @@ const eventController = {
         // remove related resources
         await Resource.destroy({ where: { eventId: event.id }})
         await EventNotification.destroy({ where: { eventId: event.id }})
-        
+
       } catch (e) {
         console.error(e)
       }
@@ -882,7 +898,7 @@ const eventController = {
       where,
       attributes: {
         exclude: [
-        'likes', 'boost', 'userId', 'createdAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
+        'likes', 'boost', 'userId', 'createdAt', 'updatedAt', 'resources', 'placeId', 'image_path', 'ap_object', 'ap_id',
           ...(!include_parent ? ['recurrent']: []),
           ...(!include_unconfirmed ? ['is_visible']: []),
           ...(!include_description ? ['description']: [])
@@ -924,7 +940,10 @@ const eventController = {
       }
       if (e.ap_user) {
         e.ap_user = { image: e.ap_user?.object?.icon?.url ?? `${e.ap_user?.url}/favicon.ico` }
-      }      
+      } else {
+        delete e.ap_user
+        delete e.apUserApId
+      }
       return e
     })
   },
@@ -944,7 +963,7 @@ const eventController = {
         recurrent: { [Op.not]: null }
       }
     }
-    
+
     const events = await Event.findAll({
       where,
       attributes: {

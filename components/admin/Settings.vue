@@ -6,14 +6,17 @@ v-container
     v-text-field(v-model='title'
       :label="$t('common.title')"
       :hint="$t('admin.title_description')"
+      :rules="[$validators.required('common.title')]"
       @blur='save("title", title)'
       persistent-hint)
 
-    v-text-field.mt-5(v-model='instance_name' v-if='setup'
+    v-text-field.mt-5(v-model='instance_name'
+      v-if='setup'
       :label="$t('admin.instance_name')"
-      :hint="$t('admin.instance_name_help')"
+      :rules="$validators.ap_handler"
+      :hint="$t('admin.instance_name_help', { ap_handler })"
       @blur='save("instance_name", instance_name)'
-      persistent-hint)      
+      persistent-hint)
 
     v-text-field.mt-5(v-model='description'
       :label="$t('common.description')"
@@ -89,13 +92,13 @@ v-container
       inset
       persistent-hint
       :hint="$t('admin.enable_report_hint')"
-      :label="$t('admin.enable_report')")      
+      :label="$t('admin.enable_report')")
 
   v-dialog(v-model='showSMTP' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
     SMTP(@close='showSMTP = false')
 
   v-card-actions
-    v-btn(text @click='showSMTP=true')
+    v-btn(outlined @click='showSMTP=true' color='primary')
       <v-icon v-if='!settings.admin_email' color='error' class="mr-2" v-text='mdiAlert'></v-icon> {{$t('admin.show_smtp_setup')}}
 
   v-btn(text @click='$emit("complete")' color='primary' v-if='setup') {{$t('common.next')}}
@@ -122,6 +125,7 @@ export default {
       mdiAlert, mdiArrowRight, mdiMap,
       title: $store.state.settings.title,
       description: $store.state.settings.description,
+      instance_name: 'events',
       locales: Object.keys(locales).map(locale => ({ value: locale, text: locales[locale] })),
       showSMTP: false,
       showGeolocationConfigs: false,
@@ -129,6 +133,9 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    ap_handler () {
+      return `@${this.instance_name}@${this.settings.hostname}`
+    },
     instance_locale: {
       get () { return this.settings.instance_locale },
       set (value) { this.setSetting({ key: 'instance_locale', value }) }
@@ -136,10 +143,6 @@ export default {
     instance_timezone: {
       get () { return this.settings.instance_timezone },
       set (value) { this.setSetting({ key: 'instance_timezone', value }) }
-    },
-    instance_name: {
-      get () { return this.settings.instance_name },
-      set (value) { this.setSetting({ key: 'instance_name', value }) }
     },
     allow_registration: {
       get () { return this.settings.allow_registration },
@@ -172,7 +175,7 @@ export default {
     show_download_media: {
       get () { return this.settings.show_download_media },
       set (value) { this.setSetting({ key: 'show_download_media', value }) }
-    },    
+    },
     allow_online_event: {
       get () { return this.settings.allow_online_event },
       set (value) { this.setSetting({ key: 'allow_online_event', value }) }
