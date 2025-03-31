@@ -17,7 +17,8 @@ GET
 
 **`/api/events`**
 
-
+> info "info"
+> If showing a particular collection in home, the events returned will be those part of said collection.
 
 **Params**
 
