@@ -63,7 +63,8 @@ Following a fediverse actor lets you receive events from that source, which will
 
 
 To show only some events incoming from the fediverse you can organize them into collections (**Admin > Collections**) based on tags, federated nodes or specific locations.
-As you can also add the local instance (relay) into one of these collections (and filter its events by Tag or Place), you could, for example, build a Collection which is a compilation that consists of some (or all) Local Events, plus some (or all) events from other (federated) instances.
+
+As you can also add the local instance into one of these collections (and filter its events by Tag or Place), you could, for example, build a collection that consists of some (or all) local events, plus some (or all) events from other (federated) instances.
 Collections can be displayed directly on the homepage or on dedicated pages.
 
 ## Disable federation

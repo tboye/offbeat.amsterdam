@@ -18,6 +18,7 @@ You can contribute in the following ways:
 - Finding and reporting bugs (please use the confidential flag for security related issues)
 - Translating the plugin into various languages
 - Contributing code by fixing bugs or implementing features
+- Writing unit tests
 - Improving the documentation
 - Proposing ideas for new features
 
