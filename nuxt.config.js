@@ -124,8 +124,8 @@ module.exports = {
     cookie: {
       prefix: 'auth.',
       options: {
-        sameSite: 'Lax',
-        secure: true,
+        sameSite: !isDev && 'Lax',
+        secure: !isDev && true,
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },
