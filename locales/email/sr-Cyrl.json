@@ -1,1 +1,35 @@
-{}
+{
+    "confirm": {
+        "subject": "Сада можете почети са објављивањем догађаја",
+        "content": "Здраво, ваш налог на <a href='{{{config.baseurl}}}'>{{config.title}}</a> је потврђен. Пишите нам на {{config.admin_email}} за све информације."
+    },
+    "admin_register": {
+        "subject": "Нова регистрација",
+        "content": "{{user.email}} је затражио регистрацију на {{config.title}}: <br/><pre>{{user.description}}</pre><br/> Потврдите је <a href='{{{config.baseurl}}}/admin'>овде</a>."
+    },
+    "report": {
+        "content_ANON": "Посетилац је пријавио догађај <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Отвори модерацију</a>",
+        "content_AUTHOR": "Аутор догађаја <strong>{{event.title}}</strong> је написао:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Отвори модерацију</a>",
+        "content_ADMIN": "Админ је коментарисао догађај <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Отвори модерацију</a>",
+        "subject": "Модерација догађаја [{{event.title}}]"
+    },
+    "register": {
+        "subject": "Захтев за регистрацију примљен",
+        "content": "Примили смо захтев за регистрацију. Потврдићемо га што је пре могуће."
+    },
+    "test": {
+        "content": "Ово је тест имејл. Ако читате ово, ваша конфигурација ради исправно.",
+        "subject": "Ваша SMTP конфигурација ради исправно"
+    },
+    "user_confirm": {
+        "content": "Здраво, ваш налог на <a href='{{{config.baseurl}}}'>{{config.title}}</a> је креиран. <a href='{{{config.baseurl}}}/user_confirm/{{user.recover_code}}'>Потврдите га и изаберите лозинку.</a>.",
+        "subject": "Сада можете да почнете са објављивањем догађаја"
+    },
+    "recover": {
+        "subject": "Опоравак лозинке",
+        "content": "Здраво, затражили сте опоравак лозинке на сајту {{config.title}}. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Кликните овде</a> да потврдите."
+    },
+    "event_confirm": {
+        "content": "Овај догађај можете потврдити на <a href='{{{url}}}'>овој страници</a>"
+    }
+}
