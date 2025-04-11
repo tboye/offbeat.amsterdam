@@ -18,6 +18,7 @@ module.exports = {
   'pt-BR': 'Português (Brasil)',
   ro: 'Românesc',
   ru: 'Russian, Русский',
+  sl: 'Slovenski',
   sk: 'Slovak',
   sq: 'Albanian, Shqiptare',
   'sr-Latn': 'Serbian, Srpski',
