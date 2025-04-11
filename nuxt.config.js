@@ -102,7 +102,6 @@ module.exports = {
     skipSettingLocaleOnNavigate: true,
     defaultLocale: 'en',
   },
-
   render: {
     static: {
       maxAge: "6000000"
@@ -151,7 +150,7 @@ module.exports = {
   buildModules: ['@nuxtjs/vuetify'],
   vuetify: {
     treeShake: true,
-    defaultAssets: false,    
+    defaultAssets: false,
     optionsPath: './vuetify.options.js'
   },
   hooks: {
@@ -159,7 +158,7 @@ module.exports = {
       server.keepAliveTimeout = 35000;
       server.headersTimeout = 36000;
     }
-  },  
+  },
   build: {
     extend(config, { isDev, isClient }) {
       // ..
