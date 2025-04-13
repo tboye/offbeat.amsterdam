@@ -316,7 +316,7 @@ const Helpers = {
     const { DateTime } = require('luxon')
     const show_federated = res.locals.settings.federated_events_in_home
     const show_multidate = res.locals.settings.allow_multidate_event
-    const show_recurrent = res.locals.settings.allow_recurrent_event
+    const show_recurrent = res.locals.settings.allow_recurrent_event && res.locals.settings.recurrent_event_visible
     const collection_in_home = res.locals.settings.collection_in_home
 
     const ret = await Promise.allSettled([
