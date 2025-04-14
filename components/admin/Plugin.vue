@@ -28,16 +28,17 @@ v-container
         v-btn(@click='saveSettings' outlined color='primary' :loading='loading'
           :disable='!valid || loading') {{ $t('common.save') }}
 
-  v-card-text(class='d-flex')
-    v-card(v-for='plugin in plugins' :key='plugin.name' max-width="400" outlined class='mr-2')
+  v-card-text(class='d-flex flex-wrap')
+    v-card(v-for='plugin in plugins' :key='plugin.name' outlined width='400' class='mr-2 mb-2 flex-1-1 d-flex flex-column')
       v-card-title {{ plugin.name }}
       v-card-text
         p {{ plugin.description }}
         blockquote author: {{ plugin.author }}
         a(:href='plugin.url' v-text='plugin.url')
-        v-row
-          v-spacer
-          v-btn(text color='primary' @click='setOptions(plugin)') {{ $t('common.settings') }}
+      v-spacer
+      v-card-actions
+        v-spacer
+        v-btn(text color='primary' @click='setOptions(plugin)') {{ $t('common.settings') }}
 
 </template>
 <script>
