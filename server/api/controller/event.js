@@ -1098,10 +1098,13 @@ const eventController = {
     try {
       const newEvent = await Event.create(event)
       if (e.tags) {
-        return newEvent.addTags(e.tags)
-      } else {
-        return newEvent
+        newEvent.addTags(e.tags)
       }
+
+      // send notifications
+      notifier.notifyEvent('Create', newEvent.id)
+
+      return newEvent
     } catch (e) {
       console.error(event)
       log.error('[RECURRENT EVENT]', e)
