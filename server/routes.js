@@ -75,7 +75,7 @@ async function main () {
       log.warn(err.message)
       res.status(err.status).send(err.message)
     } else {
-      log.error(err)
+      log.error(err?.stack ?? String(err))
       res.status(501).send('Internal Server Error')
     }
   })
