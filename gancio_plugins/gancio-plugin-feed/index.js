@@ -52,6 +52,11 @@ const plugin = {
     this._tick()
   },
 
+  unload () {
+    plugin.log.debug('[FEED Plugin] Clear interval an unload plugin')
+    clearInterval(plugin.interval)
+  },
+
   onTest () {
     plugin._tick()
   },
@@ -108,11 +113,11 @@ const plugin = {
         }
 
         // Create a new event
-        // TODO [image]: ics could not embed images (ok you can use ATTACH but it is not supported by the used library, seehttps://github.com/adamgibbons/ics/issues/194,
+        // TODO [image]: ics could not embed images (ok you can use ATTACH but it is not supported by the used library, see https://github.com/adamgibbons/ics/issues/194,
         // we could visit the original event's url and get the image from there via opengraph with some fallback
         try {
           // TODO [place]: how we should create a place? in ics the location field is just a string, should we query nominatim?
-          let place = await plugin.db.models.place.findOne({ where: [ {address}, { name: address }] })
+          let place = await plugin.db.models.place.findOne({ where: { address }})
           if (!place) {
             plugin.log.info(`[FEED Plugin] Create a new place: ${address}`)
             place = await plugin.db.models.place.create({ name: address, address })
