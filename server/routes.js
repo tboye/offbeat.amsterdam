@@ -9,13 +9,13 @@ const api = require('./api')
 
 async function main () {
   const log = require('./log')
-  
+
   try {
     await initialize.start()
   } catch (e) {
     log.error('[ERROR]' + e)
   }
-  
+
   app.use([
     helpers.initSettings,
     helpers.logRequest,
@@ -45,7 +45,7 @@ async function main () {
     app.get('/feed/:format/place/:placeNameOrId', cors(), placeController.getEvents)
     app.get('/feed/:format/collection/:name', cors(), collectionController.getEvents)
     app.get('/feed/:format', cors(), exportController.export)
-    
+
     // federation api / activitypub / webfinger / nodeinfo
     app.use('/federation', federation)
     app.use('/.well-known', webfinger)
@@ -56,7 +56,7 @@ async function main () {
     app.use(authController.authenticate)
     app.post('/oauth/token', authController.token)
     app.post('/oauth/login', authController.login)
-    app.get('/oauth/authorize', authController.authorization)    
+    app.get('/oauth/authorize', authController.authorization)
     app.post('/oauth/authorize', authController.decision)
   }
 

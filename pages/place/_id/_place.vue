@@ -40,8 +40,8 @@ import HowToArriveNav from '@/components/HowToArriveNav.vue'
 
 export default {
   name: 'Place',
-  components: { 
-    Event, 
+  components: {
+    Event,
     HowToArriveNav,
     [process.client && 'Map']: () => import('@/components/Map.vue')
   },

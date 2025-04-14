@@ -174,7 +174,7 @@ module.exports = () => {
     // moderation
     api.post('/event/messages/:event_id', SPAMProtectionApiRateLimiter, eventController.report)
     api.get('/event/messages/:event_id', isAuth, eventController.getMessages)
-    
+
     // get unconfirmed events
     api.get('/event/unconfirmed', isAdminOrEditor, eventController.getUnconfirmed)
 
