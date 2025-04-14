@@ -23,4 +23,5 @@ Once the plugin is installed, navigate to your instance plugins tab of the admin
 
 ref:
 
-https://framagit.org/les/gancio/-/tree/master/gancio_plugins/gancio-plugin-feed?ref_type=heads
+- #493
+- #546
