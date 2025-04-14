@@ -6,10 +6,10 @@ This is a plugin for gancio that get events from a specified ics feed, this is a
 - [ ] parse GEO => latitude/longiture field?
 - [ ] parse CATEGORY => tags field?
 - [ ] add a default custom tag to imported events
-- [ ] support for image (ATTACH, fix => https://github.com/adamgibbons/ics/issues/194)
+- [ ] support for image (ics could not embed images, ok you can use ATTACH but it is not supported by the used library, see https://github.com/adamgibbons/ics/issues/194, we could visit the original event's url and get the image from there via opengraph with some fallback)
 - [ ] improve location handling (query nominatim?)
 - [ ] implement a createEvent helper for plugins?
-- [ ] implement a `multiple` settings support in plugin system
+- [ ] implement a `multiple` settings support in plugin system to include multiple feeds
 
 ## Configuration
 
@@ -19,3 +19,8 @@ Once the plugin is installed, navigate to your instance plugins tab of the admin
 ## Try it
 
 1. Restart your gancio instance and look at the logs for any message saying that this plugin has been loaded.
+
+
+ref:
+
+https://framagit.org/les/gancio/-/tree/master/gancio_plugins/gancio-plugin-feed?ref_type=heads
