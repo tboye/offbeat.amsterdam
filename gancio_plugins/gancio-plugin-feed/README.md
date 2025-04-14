@@ -3,12 +3,13 @@
 This is a plugin for gancio that get events from a specified ics feed, this is a beta release: you can specify only a single feed, images are not imported from ics, event location are taken as is as are not structured in ics.
 
 #### TODO
-- [ ] implement a createEvent helper for plugins?
 - [ ] parse GEO => latitude/longiture field?
 - [ ] parse CATEGORY => tags field?
 - [ ] add a default custom tag to imported events
 - [ ] support for image (ATTACH, fix => https://github.com/adamgibbons/ics/issues/194)
 - [ ] improve location handling (query nominatim?)
+- [ ] implement a createEvent helper for plugins?
+- [ ] implement a `multiple` settings support in plugin system
 
 ## Configuration
 
