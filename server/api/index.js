@@ -142,6 +142,8 @@ module.exports = () => {
      * @param {string} [recurrent.frequency] - could be `1w` or `2w`
      * @param {array} [recurrent.days] - array of days
      * @param {image} [image] - Image
+     * @param {string} [image_url] - Image URL
+     * @todo Multiple images upload
      */
 
     // allow anyone to add an event (anon event has to be confirmed, flood protection)
