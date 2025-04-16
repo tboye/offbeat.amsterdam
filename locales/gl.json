@@ -371,7 +371,8 @@
         "past_unconfirmed_events": "Eventos pasados non confirmados",
         "delete_page_confirm": "Tes certeza de querer retirar a páxina «<strong>{title}</strong>»?",
         "new_page": "Engadir nova páxina persoal",
-        "page_description": "Nesta sección podes xestionar as páxinas personalizadas (ex. titoriais, termos)"
+        "page_description": "Nesta sección podes xestionar as páxinas personalizadas (ex. titoriais, termos). Estas páxinas non están accesibles por defecto pero podes referirte a elas no pé das páxinas, na páxina Sobre a instancia ou en calquera lugar usando a ligazón.",
+        "receive_confirm_notification": "Obter por correo a confirmación de persoa/evento"
     },
     "auth": {
         "not_confirmed": "Aínda non foi confirmado…",
