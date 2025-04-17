@@ -104,7 +104,21 @@
         "share": "Del",
         "users": "Brugere",
         "recover_password": "Nulstil adgangskode",
-        "actions": "Handlinger"
+        "actions": "Handlinger",
+        "follow": "Følg",
+        "user": "Bruger",
+        "event": "Begivenhed",
+        "pause": "Pausér",
+        "start": "Start",
+        "fediverse": "Fødiverset",
+        "skip": "Spring over",
+        "delete": "Fjern",
+        "announcements": "Bekendtgørelser",
+        "url": "URL",
+        "authorize": "Autoriser",
+        "moderation": "Moderation",
+        "filter": "Filter",
+        "title": "Titel"
     },
     "login": {
         "description": "Når du logger ind, kan du publicere nye begivenheder.",
