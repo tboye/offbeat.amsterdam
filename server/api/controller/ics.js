@@ -5,10 +5,10 @@ const log = require('../../log')
 
 const icsController = {
   async importICSURL (req, res) {
-    log.debug('[ICS-IMPORT] ICS-URL importieren')
+    log.debug('[ICS-IMPORT] Start ICS URL import')
     const { url } = req.body
     if (!url) {
-      return res.status(400).json({ success: false, error: 'Keine URL angegeben' })
+      return res.status(400).json({ success: false, error: 'No URL provided' })
     }
 
     try {
@@ -17,8 +17,8 @@ const icsController = {
       const events = parseIcsData(icsText, includePastEvents)
       res.json({ success: true, events })
     } catch (err) {
-      console.error('ICS-Fehler:', err)
-      res.status(500).json({ success: false, error: 'Fehler beim Abrufen oder Parsen der ICS-URL' })
+      console.error('ICS URL error:', err)
+      res.status(500).json({ success: false, error: 'Error while fetching or parsing ICS data' })
     }
   },
 
