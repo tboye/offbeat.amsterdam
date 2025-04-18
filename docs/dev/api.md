@@ -63,6 +63,7 @@ POST
 | recurrent.frequency | `string` | could be `1w` or `2w` |
 | recurrent.days | `array` | array of days |
 | image | `image` | Image |
+| image_url | `string` | URL of an image |
 
 
 ---
