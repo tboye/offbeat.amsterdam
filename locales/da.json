@@ -280,6 +280,14 @@
         "favicon": "Logo",
         "instance_block_confirm": "Er du sikker på at du ønsker at blokere instansen {instance}?",
         "user_block_confirm": "Er du sikker på at du ønsker at blokere brugeren {user}?",
-        "user_add_help": "En e-mail med instruktioner til hvordan man bekræfter sit abonnement og vælger et password vil blive sendt til den nye bruger"
+        "user_add_help": "En e-mail med instruktioner til hvordan man bekræfter sit abonnement og vælger et password vil blive sendt til den nye bruger",
+        "admin_email": "Admin e-mail",
+        "widget": "Widget",
+        "wrong_domain_warning": "Den \"baseurl\" der er konfigureret i config.json <b>({baseurl})</b> afviger fra den du besøger <b>({url})</b>",
+        "new_collection": "Ny samling",
+        "collections_description": "Samlinger er grupper af begivenheder efter tags og steder. De vil blive vist på forsiden",
+        "edit_collection": "Rediger samling",
+        "admin_email_help": "Den adresse vi bruger som afsender på e-mails. Det er også den adresse admin emails bliver sendt til",
+        "not_reachable_warning": "Kan ikke nå mig selv ({baseurl}) fra serveren! Tjek venligst at proxy, firewall og netværk er konfigureret korrekt."
     }
 }
