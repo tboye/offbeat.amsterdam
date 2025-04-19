@@ -93,7 +93,13 @@ export default {
       if (!this.value.url && !this.value.image) {
         return false
       }
-      const url = this.value.image ? URL.createObjectURL(this.value.image) : /^https?:\/\//.test(this.value.url) ? this.value.url : `/media/thumb/${this.value.url}`
+
+      const url = this.value.image
+        ? URL.createObjectURL(this.value.image)
+        : this.isValidUrl(this.value.url)
+          ? this.value.url
+          : `/media/thumb/${this.value.url}`
+
       return url
     },
     top () {
@@ -166,10 +172,13 @@ export default {
       this.focalpoint = [posX, posY]
       return false
     },
+    isValidUrl (url) {
+      return /^https?:\/\/.+/i.test(url)
+    },
+
     validateUrl (value) {
-      if (!value) return true  // Falls nichts eingegeben wurde, kein Fehler
-      const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i
-      return urlPattern.test(value) || "Bitte eine gültige Bild-URL eingeben (png, jpg, jpeg, gif, webp, svg)"
+      if (!value) return true // empty value is valid, since image is optional
+      return this.isValidUrl(value) || this.$t('validators.url')
     }
   }
 }
