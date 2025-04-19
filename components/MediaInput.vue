@@ -39,18 +39,37 @@ span
     img.col-12.pa-0(:src='mediaPreview' v-if='!showPreview')
     img.col-12.mediaPreview.pa-0(:src='mediaPreview' v-else :style="{ 'object-position': savedPosition }")
     span.text-center {{event.media[0].name}}
-  v-file-input(
-    v-else
-    :label="$t('common.media')"
-    :hint="$t('event.media_description')"
-    :prepend-icon="mdiCamera"
-    :value='value.image'
-    @change="selectMedia"
-    persistent-hint
-    accept='image/*')
+
+  div(v-else)
+    v-text-field(
+      v-if="useUrl"
+      :label="'Image URL'"
+      :hint="'https://example.com/image.jpg'"
+      :prepend-icon="mdiCamera"
+      persistent-hint
+      type="url"
+      v-model="imgUrlInput"
+      @change="selectUrl"
+      placeholder="https://example.com/image.jpg"
+      :rules="[validateUrl]"
+    )
+
+    v-file-input(
+      v-else
+      :label="$t('common.media')"
+      :hint="$t('event.media_description')"
+      :prepend-icon="mdiCamera"
+      @change="selectMedia"
+      persistent-hint
+      accept="image/*"
+    )
+
+    v-switch(v-model="useUrl" label="Stattdessen URL verwenden")
+
 </template>
 <script>
 import { mdiCamera } from '@mdi/js'
+
 export default {
   name: 'MediaInput',
   props: {
@@ -60,6 +79,8 @@ export default {
   data () {
     return {
       mdiCamera,
+      useUrl: false,
+      imgUrlInput: this.value.url || '',
       showPreview: false,
       openMediaDetails: false,
       name: this.value.name || '',
@@ -101,7 +122,15 @@ export default {
       this.$emit('remove')
     },
     selectMedia (v) {
-      this.$emit('input', { image: v, name: this.event.title, focalpoint: [0, 0] })      
+      this.$emit('input', { image: v, name: this.event.title, focalpoint: [0, 0] })
+    },
+    selectUrl () {
+      if (this.validateUrl(this.imgUrlInput) === true) {
+        this.$emit('input', {
+          ...this.value,
+          url: this.imgUrlInput
+        })
+      }
     },
     handleStart (ev) {
       ev.preventDefault()
@@ -136,6 +165,11 @@ export default {
 
       this.focalpoint = [posX, posY]
       return false
+    },
+    validateUrl (value) {
+      if (!value) return true  // Falls nichts eingegeben wurde, kein Fehler
+      const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i
+      return urlPattern.test(value) || "Bitte eine gültige Bild-URL eingeben (png, jpg, jpeg, gif, webp, svg)"
     }
   }
 }
