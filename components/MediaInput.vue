@@ -43,7 +43,7 @@ span
   div(v-else)
     v-text-field(
       v-if="useUrl"
-      :label="'Image URL'"
+      :label="$t('common.url')"
       :hint="'https://example.com/image.jpg'"
       :prepend-icon="mdiCamera"
       persistent-hint
@@ -64,7 +64,7 @@ span
       accept="image/*"
     )
 
-    v-switch(v-model="useUrl" label="Stattdessen URL verwenden")
+    v-switch(v-model="useUrl" :label="$t('event.import_URL')")
 
 </template>
 <script>
