@@ -2,6 +2,7 @@ module.exports = {
   be: 'Belarus, Беларуская',
   ca: 'Català',
   cs: 'Czech',
+  da: 'Dansk',
   de: 'Deutsch',
   en: 'English',
   es: 'Español',
