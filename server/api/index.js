@@ -30,6 +30,8 @@ const localeController = require('./controller/locale')
 const { DDOSProtectionApiRateLimiter, SPAMProtectionApiRateLimiter } = require('./limiter')
 const helpers = require('../helpers')
 const storage = require('./storage')
+const icsController = require('./controller/ics')
+
 
 module.exports = () => {
 
@@ -148,6 +150,9 @@ module.exports = () => {
 
     // allow anyone to add an event (anon event has to be confirmed, flood protection)
     api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.single('image'), eventController.add)
+
+    api.post('/ics-import', icsController.importICSFile)
+    api.post('/ics-import/url', icsController.importICSURL)
 
     // api.get('/event/search', eventController.search)
 
