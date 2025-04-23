@@ -1,4 +1,9 @@
+# 0.3.2 (23-04-2025)
+## Fix
+- Style title via CSS rather than text to prevent SEO issues
+
 # 0.3.1 (22-03-2025)
+## Changes
 - Show link to source in footer as `vX.X.X`
 
 # 0.3.0 (22-03-2025)

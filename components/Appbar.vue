@@ -57,4 +57,12 @@ export default {
   text-decoration: none;
   font-family: 'VT323', monospace !important;
 }
+
+#title::before {
+  content: "[";
+}
+
+#title::after {
+  content: "]";
+}
 </style>
