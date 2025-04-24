@@ -314,6 +314,9 @@
         "delete_footer_link_confirm": "Er du sikker på, at du ønsker at fjerne dette link?",
         "add_trusted_source_help": "Brug en af de følgende: <br/><ul><li>web adressen på en anden Gancio-instans eller software der understøtter en Application Actor / <a href='https://codeberg.org/fediverse/fep/src/branch/main/fep/2677/fep-2677.md'>FEP-2677</a> (f.eks. <u>https://demo.gancio.org</u>)</li><li>et ActivityPub handle som <u>@gancio@mastodon.cisti.org</u></li><li>URL'en på en konto som <u>https://instance.tld/actor</u>.</li></ul><br/>Begivenheder der er udgivet eller boostet fra disse kilder vil blive importeret.",
         "is_dark": "Mørkt tema",
-        "add_link": "Tilføj link"
+        "add_link": "Tilføj link",
+        "smtp_description": "<ul><li>Admin bør modtage en e-mail når en begivenhed tilføjes anonymt (hvis det er slået til).</li><li>Admin bør modtage en e-mail om registreringsanmodning (hvis det er slået til</li><li>Bruger bør modtage en e-mail om registreringsanmodning.</li><li>Bruger bør modtage en e-mail om bekræftet registrering</li><li>Bruger bør modtage en bekræftelses e-mail når de er blevet registreret direkte af admin.</li><li>Brugere bør modtage e-mail om at genoprette password hvis de har glemt det</li></ul>",
+        "smtp_test_success": "En test e-mail er blevet sendt til {admin_email}, tjek venligst din indbakke",
+        "smtp_test_button": "Send en test e-mail"
     }
 }
