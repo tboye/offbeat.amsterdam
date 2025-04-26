@@ -76,6 +76,10 @@ const pluginController = {
       log.warn(`Plugin ${pluginName} not found`)
       return
     }
+    if (!plugin?.settings?.enable) {
+      log.warn(`Plugin ${pluginName} not loaded`)
+      return
+    }
     const notifier = require('../../notifier')
     log.info('Unload plugin ' + plugin.configuration.name)
     if (typeof plugin.onEventCreate === 'function') {
@@ -89,7 +93,11 @@ const pluginController = {
     }
 
     if (plugin.unload && typeof plugin.unload === 'function') {
-      plugin.unload()
+      try {
+        plugin.unload()
+      } catch (e) {
+        log.error(e)
+      }
     }
 
   },
