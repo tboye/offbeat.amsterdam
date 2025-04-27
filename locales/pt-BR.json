@@ -102,7 +102,7 @@
         "latitude": "Latitude",
         "longitude": "Longitude",
         "search_coordinates": "Procurar coordenadas",
-        "online": "On-line",
+        "online": "Online",
         "test": "Teste",
         "show_preview": "Mostrar pré-visualização",
         "clone": "Clonar",
@@ -117,7 +117,9 @@
         "role": "Papel",
         "pin": "Pinado",
         "trusted_sources": "Fontes federadas confiáveis",
-        "past_events": "Eventos Passados"
+        "past_events": "Eventos Passados",
+        "enabled": "Habilitado",
+        "pages": "Páginas"
     },
     "admin": {
         "user_block_confirm": "Tem certeza que quer bloquear o utilizador {user}?",
@@ -153,7 +155,7 @@
         "instance_timezone_description": "Gancio é desenvolvido para coletar os eventos de um local específico, como uma cidade. Todos os eventos nesse local serão exibidos no fuso-horário escolhido para ele.",
         "instance_locale_description": "Idioma de preferência para as páginas. Algumas vezes as mensagens precisam ser exibidas em um mesmo idioma para todos (por exemplo, quando publicando através do ActivityPub ou quando enviar alguns e-mails). Nestes casos o idioma seleciona abaixo será o utilizado.",
         "title_description": "É utilizado no título da página, no assunto do e-mail para exportar feeds RSS e ICS.",
-        "instance_name_help": "Conta ActivityPub para seguir",
+        "instance_name_help": "Conta ActivityPub para seguir: {ap_handler} (verifique isto com muito cuidado!)",
         "enable_trusted_instances": "Habilitar domínios confiáveis",
         "trusted_instances_help": "A lista de domínios confiáveis será exibida no cabeçalho",
         "trusted_instances_label": "Etiqueta de navegação para domínios confiáveis",
@@ -266,7 +268,13 @@
         "add_source": "Adicionar fonte federada confiável",
         "trusted_sources_label": "Marcador de navegação para fontes federadas confiáveis",
         "trusted_sources_label_default": "Outros locais",
-        "federated_events_in_home": "Exibir eventos federados na página principal"
+        "federated_events_in_home": "Exibir eventos federados na página principal",
+        "unconfirmed_events": "Eventos não confirmados",
+        "past_unconfirmed_events": "Eventos não confirmados no passado",
+        "new_page": "Adicionar uma nova página customizada",
+        "delete_page_confirm": "Tem certeza de que quer remover a página \"<strong>{title}</strong>\"?",
+        "receive_confirm_notification": "Obter e-mail de confirmação para evento/usuária",
+        "page_description": "Nesta seção, você poderá gerenciar páginas customizadas (e.g. termos de uso, howtos). Estas páginas não irão aparecer automaticamente em nenhum lugar, mas você pode referenciá-las no rodapé, a partir da página sobre ou de qualquer outro lugar através do link de pré-visualização."
     },
     "event": {
         "follow_me_description": "Uma das maneiras de se manter atualizado com os eventos publicados aqui em {title},\né seguir a conta <u>{account}</u> no Fediverso, por exemplo, via Mastodon, e possivelmente adicionar recursos para um evento a partir de lá.<br/><br/>\nSe nunca ouviu falar sobre Mastodon ou no Fediverso nós recomendamos ler <a href='https://www.savjee.be/videos/simply-explained/mastodon-and-fediverse-explained/'>este artigo</a>.<br/><br/>Entre com o seu domínio abaixo (e.g. mastodon.social)",
@@ -289,7 +297,7 @@
         "where_description": "Onde está o evento? Se não está presente, então pode criá-lo.",
         "confirmed": "Evento confirmado",
         "not_found": "Não foi possível encontrar o evento",
-        "remove_confirmation": "Têm a certeza que quer remover este evento?",
+        "remove_confirmation": "Tem certeza de que quer excluir o evento \"<strong>{event}</strong>\"?",
         "edit_recurrent": "Editar evento recorrente:",
         "only_future": "apenas eventos futuros",
         "recurrent_description": "Escolha a frequência e selecione os dias",
@@ -350,7 +358,10 @@
         "ical_description": "Computadores e smartphones normalmente possuem aplicações de calendário capazes de importar um calendário remoto.",
         "list_description": "Se têm uma página e quer exibir uma lista de eventos, use o seguinte código",
         "email_description": "Você pode receber eventos de seu interesse enviados por e-mail.",
-        "filter_description": "Você pode filtrar sua exportação aqui por tags e local ou por uma coleção predefinida"
+        "filter_description": "Você pode filtrar sua exportação aqui por tags e local ou por uma coleção predefinida",
+        "filter_title": "Filtrar",
+        "ical_title": "ics/ical",
+        "list_title": "Lista"
     },
     "oauth": {
         "authorization_request": "A aplicação <code>{app}</code> solicita autorização em <code>{instance_name}</code>:",
