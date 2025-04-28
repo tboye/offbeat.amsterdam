@@ -125,7 +125,7 @@ module.exports = {
       prefix: 'auth.',
       options: {
         sameSite: !isDev && 'Lax',
-        secure: !isDev && true,
+        secure: !isDev && /^https:/.test(config.baseurl) && true,
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },
