@@ -300,6 +300,7 @@
     "validators": {
         "required": "{fieldName} ist erforderlich",
         "email": "Füge eine gültige E-Mail ein",
+        "url": "Füge eine gültige URL ein (http:// oder https://)",
         "latitude": "Gib einen gültigen Breitengrad ein (-90 < Breitengrad < 90)",
         "longitude": "Gib einen gültigen Längengrad ein (-180 < Längengrad < 180)"
     },

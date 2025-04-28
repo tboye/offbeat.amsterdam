@@ -395,6 +395,7 @@
     "validators": {
         "required": "{fieldName} is required",
         "email": "Insert a valid email",
+        "url": "Provide a valid URL (http:// or https://)",
         "latitude": "Insert a valid latitude (-90 < latitude < 90)",
         "longitude": "Insert a valid longitude (-180 < longitude < 180)"
     },
