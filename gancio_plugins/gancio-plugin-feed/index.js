@@ -51,7 +51,7 @@ const plugin = {
 
     // TODO: could use the TaskManager?
     plugin.interval = setInterval(this._tick, settings.refresh_minutes*1000*60)
-    this._tick()
+    // this._tick()
   },
 
   unload () {
