@@ -224,7 +224,7 @@ const Helpers = {
       sharpStream.clone().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
     ]
 
-    const response = await axios({ method: 'GET', url: encodeURI(url), responseType: 'stream' })
+    const response = await axios({ method: 'GET', url, responseType: 'stream' })
 
     response.data.pipe(sharpStream)
     return Promise.all(promises)
