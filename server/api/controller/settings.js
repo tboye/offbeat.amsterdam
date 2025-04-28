@@ -110,7 +110,7 @@ const settingsController = {
     }
 
     const pluginController = require('./plugins')
-    pluginController._load()
+    await pluginController._load()
   },
 
   async set (key, value, is_secret = false) {
