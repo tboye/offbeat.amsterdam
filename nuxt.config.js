@@ -125,7 +125,8 @@ module.exports = {
       prefix: 'auth.',
       options: {
         sameSite: !isDev && 'Lax',
-        secure: !isDev && /^https:/.test(config.baseurl) && true,
+        // enable secure cookie only for https baseurl, ref #572
+        secure: !isDev && /^https:/.test(config.baseurl),
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },
