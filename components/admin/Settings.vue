@@ -40,6 +40,14 @@ v-container
       :items='locales'
     )
 
+    v-select.mt-5(
+      v-model='calendar_first_day_of_week'
+      :label="$t('admin.calendar_first_day_of_week')"
+      :hint="$t('admin.calendar_first_day_of_week_description')"
+      persistent-hint
+      :items='calendar_week_days'
+    )
+
     v-switch.mt-4(v-model='allow_registration'
       inset
       :label="$t('admin.allow_registration_description')")
@@ -133,6 +141,15 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    calendar_week_days () {
+      return [
+        { value: null, text: this.$i18n.t('admin.calendar_first_day_of_week_default') },
+        // TODO: could be refactored with luxon Info utils: Info.weekdays('long', {  locale: this.$i18n.locale } )[6] }
+        { value: 1, text: DateTime.fromISO('1970-01-04T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+        { value: 2, text: DateTime.fromISO('1970-01-05T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+        { value: 7, text: DateTime.fromISO('1970-01-03T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+      ]
+    },
     ap_handler () {
       return `@${this.instance_name}@${this.settings.hostname}`
     },
@@ -171,6 +188,10 @@ export default {
     allow_geolocation: {
       get () { return this.settings.allow_geolocation },
       set (value) { this.setSetting({ key: 'allow_geolocation', value }) }
+    },
+    calendar_first_day_of_week: {
+      get () { return this.settings.calendar_first_day_of_week },
+      set (value) { this.setSetting({ key: 'calendar_first_day_of_week', value }) }
     },
     show_download_media: {
       get () { return this.settings.show_download_media },

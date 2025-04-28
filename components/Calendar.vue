@@ -10,14 +10,13 @@
       @update:from-page='updatePage'
       :locale='$i18n.locale'
       :attributes='attributes'
+      :first-day-of-week='settings.calendar_first_day_of_week'
       transition='fade'
       aria-label='Calendar'
       is-expanded
       is-inline)
     .calh.text-center(slot='placeholder')
       v-progress-circular.mt-5(indeterminate color='primary')
-
-  </template>
 
 </template>
 <script>
