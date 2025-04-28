@@ -130,7 +130,7 @@ const Helpers = {
       hide_thumbs: settings.hide_thumbs,
       hide_calendar: settings.hide_calendar,
       allow_geolocation: settings.allow_geolocation,
-      calendar_first_day_of_week: settings.calendar_first_day_of_week,
+      calendar_first_day_of_week: settings.calendar_first_day_of_week || undefined,
       geocoding_provider_type: settings.geocoding_provider_type,
       geocoding_provider: settings.geocoding_provider,
       geocoding_countrycodes: settings.geocoding_countrycodes,

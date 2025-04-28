@@ -33,7 +33,6 @@ const defaultSettings = {
   enable_report: false,
   recurrent_event_visible: false,
   allow_geolocation: false,
-  calendar_first_day_of_week: null,
   geocoding_provider_type: 'Nominatim',
   geocoding_provider: 'https://nominatim.openstreetmap.org/search',
   geocoding_countrycodes: [],

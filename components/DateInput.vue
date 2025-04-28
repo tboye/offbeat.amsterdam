@@ -19,7 +19,7 @@ v-col(cols=12)
             @input="date => change('date', date)"
             :locale='$i18n.locale'
             :attributes='attributes'
-            :first-day-of-week='settings.calendar_first_day_of_week'
+            :first-day-of-week='settings.calendar_first_day_of_week ?? undefined'
             :is-dark="is_dark"
             is-inline
             is-expanded
