@@ -33,6 +33,7 @@ const defaultSettings = {
   enable_report: false,
   recurrent_event_visible: false,
   allow_geolocation: false,
+  calendar_first_day_of_week: null,
   geocoding_provider_type: 'Nominatim',
   geocoding_provider: 'https://nominatim.openstreetmap.org/search',
   geocoding_countrycodes: [],
@@ -55,6 +56,7 @@ const defaultSettings = {
   admin_email: config.admin_email || '',
   smtp: config.smtp || {},
   collection_in_home: null,
+  calendar_first_day_of_week: null,
   default_fedi_hashtags: [],
   custom_js: '',
   custom_css: ''

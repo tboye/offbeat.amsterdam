@@ -17,6 +17,7 @@ export const state = () => ({
     show_download_media: true,
     allow_geolocation: false,
     recurrent_event_visible: false,
+    calendar_first_day_of_week: null,
     geocoding_provider_type: '',
     geocoding_provider: '',
     geocoding_countrycodes: [],
@@ -65,7 +66,7 @@ export const mutations = {
   },
   setCollections (state, collections) {
     state.collections = collections
-  },  
+  },
   setEvents (state, events) {
     state.events = Object.freeze(events)
   },

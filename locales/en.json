@@ -361,7 +361,10 @@
         "page_description": "In this section you can manage custom pages (e.g. policies, howtos). These pages will not automatically appear anywhere but you can refer to them in the footer, from the about page or from anywhere via the preview link.",
         "new_page": "Add a new custom page",
         "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?",
-        "receive_confirm_notification": "Get user/event confirmation e-mail"
+        "receive_confirm_notification": "Get user/event confirmation e-mail",
+        "calendar_first_day_of_week": "First day of calendar week",
+        "calendar_first_day_of_week_description": "Select the week day calendars should display as the first day of the week. Default selects according to the client's locale.",
+        "calendar_first_day_of_week_default": "Default (client locale)"
     },
     "auth": {
         "not_confirmed": "Not confirmed yet…",
