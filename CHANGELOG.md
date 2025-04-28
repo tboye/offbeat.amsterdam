@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.26.1](https://framagit.org/les/gancio/compare/v1.26.0...v1.26.1) (2025-04-28)
+
+
+### Bug Fixes
+
+* error when getting image from url ([9cd862d](https://framagit.org/les/gancio/commit/9cd862da66c6fd7473a48d5084023b7a0304d241))
+
 ## [1.26.0](https://framagit.org/les/gancio/compare/v1.25.1...v1.26.0) (2025-04-28)
 
 ### Notes
