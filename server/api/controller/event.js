@@ -1102,7 +1102,7 @@ const eventController = {
       }
 
       // send notifications
-      notifier.notifyEvent('Create', newEvent.id)
+      await notifier.notifyEvent('Create', newEvent.id)
 
       return newEvent
     } catch (e) {
