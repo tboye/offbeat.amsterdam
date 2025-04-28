@@ -75,7 +75,7 @@ export default {
       mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever,
       newUserDialog: false,
       changeRoleDialog: false,
-      role_colors: { admin: 'error', editor: 'secondary', user: 'success' },
+      role_colors: { admin: 'error', editor: 'warning', user: 'success' },
       valid: false,
       new_user: {
         email: '',
