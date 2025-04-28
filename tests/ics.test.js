@@ -1,3 +1,17 @@
+const path = require('path')
+
+switch (process.env.DB) {
+  case 'mariadb':
+    process.env.config_path = path.resolve(__dirname, './seeds/config.mariadb.json')
+    break
+  case 'postgresql':
+    process.env.config_path = path.resolve(__dirname, './seeds/config.postgres.json')
+    break
+  case 'sqlite':
+  default:
+    process.env.config_path = path.resolve(__dirname, './seeds/config.sqlite.json')
+}
+
 const { parseIcsData } = require('../server/helpers/icsparser.js')
 const request = require('supertest')
 const express = require('express')
