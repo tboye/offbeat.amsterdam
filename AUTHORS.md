@@ -22,9 +22,11 @@ marcin mikołajczak <me@mkljczk.pl>
 Eryk Michalak <gnu.ewm@protonmail.com>
 J. Lavoie <j.lavoie@net-c.ca>
 La Kelo Gaztetxea <itzulpenak@lakelogaztetxea.net>
+Marek Bachmann <post@mbbit.de>
 Weblate Admin <admin@example.com>
 joenepraat <joenepraat@posteo.org>
 ssantos <ssantos@web.de>
+Øjvind Fritjof Arnfred <fritjof@mencagli-arnfred.dk>
 Nacho <nacho@nucleartesuji.com>
 Stephan Schildberg <schildberg@scoid.de>
 ivysaur <hexthebinary@disroot.org>
@@ -32,10 +34,8 @@ Alexandru-Ionut Chiuta <chiuta@gmail.com>
 Artur Mancha <joker@nadaradical.com>
 Ivan M <ivan.meishutovich@gmail.com>
 Marcel Waldvogel <marcel@waldvogel.family>
-Øjvind Fritjof Arnfred <fritjof@mencagli-arnfred.dk>
 Aeron R <99763-bigugly@users.noreply.framagit.org>
 Maite Guix <maite.guix@gmail.com>
-Marek Bachmann <post@mbbit.de>
 Norbert Szulc <norbert@not7cd.net>
 Stefan Wimmer <sutech@sutech.sk>
 Uwe Schraepler <uwe@schraepler.de>
@@ -52,6 +52,7 @@ j <ich_geh_kaputt@mac.com>
 தமிழ்நேரம் <anishprabu.t@gmail.com>
 Fredrik Falk <fredrik@falk-net.se>
 Gennaro Morbidoni <pongrebio@insicuri.net>
+Ian Knight <ian@knightly.xyz>
 Jesper <jesper.berg@mailbox.org>
 Joseba <jansajansa45@gmail.com>
 Kasilda <kasilda@sindominio.net>
@@ -84,7 +85,6 @@ André Menrath <andre.menrath@posteo.de>
 Anonymous <noreply@weblate.org>
 Gaetano <rodia@autistici.org>
 Grimstack <gabry.grillo@alice.it>
-Ian Knight <ian@knightly.xyz>
 Irdi <irdiismaili11@protonmail.com>
 João Palmeiro <joaommpalmeiro@gmail.com>
 Lapineige <lp.compte++weblate@lavache.com>
