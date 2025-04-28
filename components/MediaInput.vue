@@ -35,6 +35,7 @@ span
     v-spacer
     v-btn(text color='primary' @click='openMediaDetails = true') {{$t('common.edit')}}
     v-btn(text color='error' @click='remove') {{$t('common.remove')}}
+
   div.col-12.pt-0(v-if='mediaPreview')
     img.col-12.pa-0(:src='mediaPreview' v-if='!showPreview')
     img.col-12.mediaPreview.pa-0(:src='mediaPreview' v-else :style="{ 'object-position': savedPosition }")
@@ -64,7 +65,7 @@ span
       accept="image/*"
     )
 
-    v-switch(v-model="useUrl" :label="$t('event.import_URL')")
+    v-switch(v-model="useUrl" inset :label="$t('event.import_URL')")
 
 </template>
 <script>
@@ -125,6 +126,8 @@ export default {
     async remove () {
       const ret = await this.$root.$confirm('event.remove_media_confirmation')
       if (!ret) { return }
+      this.imgUrlInput = ''
+      this.useUrl = false
       this.$emit('remove')
     },
     selectMedia (v) {
