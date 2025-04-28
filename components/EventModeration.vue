@@ -4,8 +4,8 @@
         <v-card-text class="d-flex flex-column flex-grow-1 overflow-auto">
             <v-textarea :label="$t('event.message')" :hint="$t(isAdmin ? 'event.message_hint' : 'event.message_author_hint')" persistent-hint v-model='message' rows="2" class="mb-2"/>
             <template v-if="isAdmin">
-                <v-btn class='mb-1' small outlined :disabled='!message || loading' :loading='loading' @click="sendMessage(false)" color="primary">{{$t('event.send_to_admins')}}</v-btn>
-                <v-btn v-if='!event.isAnon' class='mb-1' small outlined :disabled='!message || loading' :loading='loading' @click="sendMessage(true)" color="primary">{{$t('event.send_to_author_too')}}</v-btn>
+                <v-btn class='mb-1' outlined :disabled='!message || loading' :loading='loading' @click="sendMessage(false)" color="primary">{{$t('event.send_to_admins')}}</v-btn>
+                <v-btn v-if='!event.isAnon' class='mb-1' outlined :disabled='!message || loading' :loading='loading' @click="sendMessage(true)" color="primary">{{$t('event.send_to_author_too')}}</v-btn>
             </template>
             <v-btn v-else small outlined :disabled='!message || loading' :loading='loading' @click="sendMessage(true)" color="primary">send</v-btn><br/>
             <v-list dense class='messageList'>

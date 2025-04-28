@@ -209,3 +209,9 @@ pre {
   white-space: break-spaces;
   font-size: 13px;
 }
+
+/* this is needed because label in buttons does not wrap and overflow in some language */
+.v-btn__content {
+  max-width: 100%;
+  white-space: normal;
+}
