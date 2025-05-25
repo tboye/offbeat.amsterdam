@@ -1,4 +1,8 @@
-# 0.4.0
+# 0.4.0 (25-05-2025)
+## Fix
+- Fix word break style in title
+
+## Changes
 - Align with Gancio `1.26.1`
 [1.25.1](https://framagit.org/les/gancio/compare/v1.25.0...v1.25.1)
 [1.26.0](https://framagit.org/les/gancio/compare/v1.25.1...v1.26.0)

@@ -51,7 +51,7 @@ export default {
 }
 
 #title {
-  word-break: break-all;
+  word-break: break-word;
   font-size: 3.5rem;
   font-weight: 600;
   text-decoration: none;
