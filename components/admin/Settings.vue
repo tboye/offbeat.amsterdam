@@ -10,13 +10,13 @@ v-container
       @blur='save("title", title)'
       persistent-hint)
 
-    v-text-field.mt-5(v-model='instance_name' 
+    v-text-field.mt-5(v-model='instance_name'
       v-if='setup'
       :label="$t('admin.instance_name')"
       :rules="$validators.ap_handler"
       :hint="$t('admin.instance_name_help', { ap_handler })"
       @blur='save("instance_name", instance_name)'
-      persistent-hint)      
+      persistent-hint)
 
     v-text-field.mt-5(v-model='description'
       :label="$t('common.description')"
@@ -38,6 +38,14 @@ v-container
       :hint="$t('admin.instance_locale_description')"
       persistent-hint
       :items='locales'
+    )
+
+    v-select.mt-5(
+      v-model='calendar_first_day_of_week'
+      :label="$t('admin.calendar_first_day_of_week')"
+      :hint="$t('admin.calendar_first_day_of_week_description')"
+      persistent-hint
+      :items='calendar_week_days'
     )
 
     v-switch.mt-4(v-model='allow_registration'
@@ -92,13 +100,13 @@ v-container
       inset
       persistent-hint
       :hint="$t('admin.enable_report_hint')"
-      :label="$t('admin.enable_report')")      
+      :label="$t('admin.enable_report')")
 
   v-dialog(v-model='showSMTP' destroy-on-close max-width='700px' :fullscreen='$vuetify.breakpoint.xsOnly')
     SMTP(@close='showSMTP = false')
 
   v-card-actions
-    v-btn(text @click='showSMTP=true')
+    v-btn(outlined @click='showSMTP=true' color='primary')
       <v-icon v-if='!settings.admin_email' color='error' class="mr-2" v-text='mdiAlert'></v-icon> {{$t('admin.show_smtp_setup')}}
 
   v-btn(text @click='$emit("complete")' color='primary' v-if='setup') {{$t('common.next')}}
@@ -133,6 +141,15 @@ export default {
   },
   computed: {
     ...mapState(['settings']),
+    calendar_week_days () {
+      return [
+        { value: null, text: this.$i18n.t('admin.calendar_first_day_of_week_default') },
+        // TODO: could be refactored with luxon Info utils: Info.weekdays('long', {  locale: this.$i18n.locale } )[6] }
+        { value: 1, text: DateTime.fromISO('1970-01-04T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+        { value: 2, text: DateTime.fromISO('1970-01-05T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+        { value: 7, text: DateTime.fromISO('1970-01-03T00:00:00.000Z').toFormat('EEEE', { locale: this.$i18n.locale })},
+      ]
+    },
     ap_handler () {
       return `@${this.instance_name}@${this.settings.hostname}`
     },
@@ -172,10 +189,14 @@ export default {
       get () { return this.settings.allow_geolocation },
       set (value) { this.setSetting({ key: 'allow_geolocation', value }) }
     },
+    calendar_first_day_of_week: {
+      get () { return this.settings.calendar_first_day_of_week },
+      set (value) { this.setSetting({ key: 'calendar_first_day_of_week', value }) }
+    },
     show_download_media: {
       get () { return this.settings.show_download_media },
       set (value) { this.setSetting({ key: 'show_download_media', value }) }
-    },    
+    },
     allow_online_event: {
       get () { return this.settings.allow_online_event },
       set (value) { this.setSetting({ key: 'allow_online_event', value }) }

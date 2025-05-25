@@ -358,9 +358,13 @@
         "federated_events_in_home_help": "Incoming events from trusted federated sources will be shown by default on the home page. To only show some events you can use collections",
         "unconfirmed_events": "Unconfirmed events",
         "past_unconfirmed_events": "Past unconfirmed events",
-        "page_description": "In this section you can manage custom pages (e.g. policies, howtos)",
+        "page_description": "In this section you can manage custom pages (e.g. policies, howtos). These pages will not automatically appear anywhere but you can refer to them in the footer, from the about page or from anywhere via the preview link.",
         "new_page": "Add a new custom page",
-        "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?"
+        "delete_page_confirm": "Are you sure you want to remove the page \"<strong>{title}</strong>\"?",
+        "receive_confirm_notification": "Get user/event confirmation e-mail",
+        "calendar_first_day_of_week": "First day of calendar week",
+        "calendar_first_day_of_week_description": "Select the week day calendars should display as the first day of the week. Default selects according to the client's locale.",
+        "calendar_first_day_of_week_default": "Default (client locale)"
     },
     "auth": {
         "not_confirmed": "Not confirmed yet…",
@@ -394,6 +398,7 @@
     "validators": {
         "required": "{fieldName} is required",
         "email": "Insert a valid email",
+        "url": "Provide a valid URL (http:// or https://)",
         "latitude": "Insert a valid latitude (-90 < latitude < 90)",
         "longitude": "Insert a valid longitude (-180 < longitude < 180)"
     },

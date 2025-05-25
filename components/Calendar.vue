@@ -6,19 +6,17 @@
       title-position='left'
       :is-dark="is_dark"
       :columns="!$vuetify.breakpoint.smAndDown ? 2 : 1"
-      :first-day-of-week='2'
       @input='click'
       @update:from-page='updatePage'
       :locale='$i18n.locale'
       :attributes='attributes'
+      :first-day-of-week='settings.calendar_first_day_of_week ?? undefined'
       transition='fade'
       aria-label='Calendar'
       is-expanded
       is-inline)
     .calh.text-center(slot='placeholder')
       v-progress-circular.mt-5(indeterminate color='primary')
-
-  </template>
 
 </template>
 <script>

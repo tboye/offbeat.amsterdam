@@ -9,7 +9,7 @@
         <Event :event='event' :lazy='idx>9' />
       </v-lazy>
     </div>
-  
+
     <!-- Past Events -->
     <h2 class='mt-14 mb-3' v-if="pastEvents.length">{{$t('common.past_events')}}</h2>
     <div v-if="pastEvents.length" id="events">
@@ -17,7 +17,7 @@
         <Event :event='event' :lazy='idx > 9' />
       </v-lazy>
     </div>
-    
+
   </v-container>
 </template>
 <script>
@@ -35,7 +35,7 @@ export default {
       title,
       htmlAttrs: {
         lang: this.settings.instance_locale
-      },      
+      },
       link: [
         { rel: 'alternate', type: 'application/rss+xml', title, href: this.settings.baseurl + `/feed/rss/tag/${tag}` },
         { rel: 'alternate', type: 'text/calendar', title, href: this.settings.baseurl + `/feed/ics/tag/${tag}` }

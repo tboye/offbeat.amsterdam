@@ -162,7 +162,7 @@ const eventController = {
     // admin, editors and event's owner gets the number of messages (could open moderation)
     let n_messages = 0
     if (isAdminOrEditor || event.userId !== req.user?.id) {
-      n_messages = await Message.count({ where: { eventId: event.id, ...(!isAdminOrEditor && { is_author_visible: true }) }})
+      n_messages = await Message.count({ where: { eventId: event.id, ...(!isAdminOrEditor && { is_author_visible: true }) }}).catch(() => 0)
     }
 
     // TODO: does next and prev make any sense in case of collection in home or home with federated events? should we remove this?
@@ -408,15 +408,14 @@ const eventController = {
         },
         order: [['start_datetime', 'ASC']],
         include: [
-          { model: Tag, required: false },
           Place,
           { model: Message, required: false, attributes: [] }],
-        group: ['event.id'],
+        group: ['event.id', 'place.id'],
       })
       const now = DateTime.local().toUnixInteger()
       res.json({ events: events.filter(e => e.start_datetime >= now) , oldEvents: events.filter(e => e.start_datetime < now) })
     } catch (e) {
-      log.info(e)
+      log.info(String(e))
       res.sendStatus(400)
     }
   },
@@ -1012,13 +1011,16 @@ const eventController = {
     const show_recurrent = settings.allow_recurrent_event && helpers.queryParamToBool(req.query.show_recurrent, settings.recurrent_event_visible)
 
     let events = []
+
     if (settings.collection_in_home && !(tags || places || query)) {
       events = await collectionController._getEvents({
         name: settings.collection_in_home,
         start,
         end,
         show_recurrent,
-        limit
+        limit,
+        page,
+        older
       })
     } else {
       events = await eventController._select({
@@ -1096,10 +1098,13 @@ const eventController = {
     try {
       const newEvent = await Event.create(event)
       if (e.tags) {
-        return newEvent.addTags(e.tags)
-      } else {
-        return newEvent
+        newEvent.addTags(e.tags)
       }
+
+      // send notifications
+      await notifier.notifyEvent('Create', newEvent.id)
+
+      return newEvent
     } catch (e) {
       console.error(event)
       log.error('[RECURRENT EVENT]', e)

@@ -1,3 +1,9 @@
+# 0.4.0
+- Align with Gancio `1.26.1`
+[1.25.1](https://framagit.org/les/gancio/compare/v1.25.0...v1.25.1)
+[1.26.0](https://framagit.org/les/gancio/compare/v1.25.1...v1.26.0)
+[1.26.1](https://framagit.org/les/gancio/compare/v1.26.0...v1.26.1)
+
 # 0.3.2 (23-04-2025)
 ## Fix
 - Style title via CSS rather than text to prevent SEO issues

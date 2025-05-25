@@ -55,6 +55,7 @@ const defaultSettings = {
   admin_email: config.admin_email || '',
   smtp: config.smtp || {},
   collection_in_home: null,
+  calendar_first_day_of_week: null,
   default_fedi_hashtags: [],
   custom_js: '',
   custom_css: ''
@@ -109,7 +110,7 @@ const settingsController = {
     }
 
     const pluginController = require('./plugins')
-    pluginController._load()
+    await pluginController._load()
   },
 
   async set (key, value, is_secret = false) {
@@ -138,7 +139,7 @@ const settingsController = {
       try {
         const pluginController = require('./plugins')
         pluginController.unloadPlugin(pluginName)
-        // Do not reload the plugin if the change in its settings was to disable it
+        // Do not reload the plugin if plugin is disabled
         if (value.enable) {
           pluginController.loadPlugin(pluginName)
         }

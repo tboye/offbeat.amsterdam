@@ -114,7 +114,7 @@ export default {
       } catch (e) {
           this.$root.$message(e, { color: 'warning' })
       }
-    },    
+    },
     async remove (parent = false) {
       const ret = await this.$root.$confirm(`event.remove_${parent ? 'recurrent_' : ''}confirmation`)
       if (!ret) { return }

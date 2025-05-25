@@ -34,9 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get () {
         return this.role === 'editor'
-      }      
+      }
     },
-    is_active: DataTypes.BOOLEAN
+    is_active: DataTypes.BOOLEAN,
+    to_notify: DataTypes.BOOLEAN,
   }, {
     scopes: {
       withoutPassword: {
@@ -47,12 +48,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   })
-  
+
   User.prototype.comparePassword = async function (pwd) {
     if (!this.password) { return false }
     return bcrypt.compare(pwd, this.password)
   }
-  
+
   User.beforeSave(async (user, _options) => {
     if (user.changed('password')) {
       const salt = await bcrypt.genSalt(10)

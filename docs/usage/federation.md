@@ -14,10 +14,10 @@ Each platform instance (server) can interact with others, enabling users to foll
 
 This interaction is possible thanks to the [ActivityPub](https://www.w3.org/TR/activitypub/) protocol.
 
-Each user, page, or website in the Fediverse has a unique ActivityPub handler, which is similar to an email address. This handler usually looks like @user@website.com. For example, an event website running Gancio might have an ActivityPub handler like @gancio@gancio.cisti.org. This identifier lets people from other Fediverse platforms follow it.
+Each user, page, or website in the Fediverse has a unique ActivityPub handler, which is similar to an email address. This handler usually looks like @user@website.com. For example, an event website running Gancio might have an ActivityPub handler like @events@gancio.cisti.org. This identifier lets people from other Fediverse platforms follow it.
 
 > info "Note"
-> This document will describe the operations you are able to do interacting with a gancio instance in the federation, if you are searching for technical details there is a [specific section](/federation)
+> This document describes the operations you are able to do interacting with a gancio instance in the federation, if you are looking for technical details there is a [specific section](/federation)
 
 
 ## Following a Gancio website from the Fediverse
@@ -41,11 +41,9 @@ Once followed, new events from that specific Gancio instance will appear in your
 
 Gancio supports federated interaction with events.
 
-Anyone could respond to events with comments, images, or audio. These will appear on the event page (if the option is enabled).
+Anyone could respond to events with comments, images, or audio. These will appear on the event page (if the option is enabled in **Admin > Federation > Turn on resources**).
 
-Likes and Boosts: You can send "Likes" and "Boosts" to events.
-
-
+Anyone from the fediverse could "Likes" and "Boosts" events, the admin could decide to show them or not in **Admin > Federation > Hide boost/bookmarks**
 
 
 ## Moderation in federation
@@ -66,8 +64,8 @@ Following a fediverse actor lets you receive events from that source, which will
 
 To show only some events incoming from the fediverse you can organize them into collections (**Admin > Collections**) based on tags, federated nodes or specific locations.
 
-Collections can be displayed on your homepage or dedicated pages.
-
+As you can also add the local instance into one of these collections (and filter its events by Tag or Place), you could, for example, build a collection that consists of some (or all) local events, plus some (or all) events from other (federated) instances.
+Collections can be displayed directly on the homepage or on dedicated pages.
 
 ## Disable federation
 Federation is enabled by default but you can disable it in **Admin > Federation > Turn on federation**.

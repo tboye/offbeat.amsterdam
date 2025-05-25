@@ -118,7 +118,6 @@ module.exports = {
     skipSettingLocaleOnNavigate: true,
     defaultLocale: 'en',
   },
-
   render: {
     static: {
       maxAge: "6000000"
@@ -141,8 +140,9 @@ module.exports = {
     cookie: {
       prefix: 'auth.',
       options: {
-        sameSite: 'Strict',
-        secure: true,
+        sameSite: !isDev && 'Lax',
+        // enable secure cookie only for https baseurl, ref #572
+        secure: !isDev && /^https:/.test(config.baseurl),
         maxAge: 60 * 60 * 24 * 30 * 12 * 5
       }
     },

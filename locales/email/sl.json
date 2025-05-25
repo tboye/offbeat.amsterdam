@@ -1,0 +1,35 @@
+{
+    "register": {
+        "content": "Prejeli smo zahtevo za registracijo. Potrdili jo bomo čim prej.",
+        "subject": "Zahtevo za registracijo smo prejeli"
+    },
+    "confirm": {
+        "subject": "Zdaj lahko začnete objavljati dogodke",
+        "content": "Pozdravljeni, vaš račun na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je potrjen. Pišite nam na {{config.admin_email}} za kakršne koli informacije."
+    },
+    "user_confirm": {
+        "content": "Pozdravljeni, vaš račun na <a href='{{{config.baseurl}}}'>{{config.title}}</a> je bil ustvarjen. <a href='{{{config.baseurl}}}/user_confirm/{{user.recover_code}}'>Potrdite ga in izberite geslo</a>.",
+        "subject": "Zdaj lahko začnete objavljati dogodke"
+    },
+    "admin_register": {
+        "subject": "Nova registracija",
+        "content": "{{user.email}} je zahteval_a registracijo na {{config.title}}: <br/><pre>{{user.description}}</pre><br/> Potrdite jo <a href='{{{config.baseurl}}}/admin'>tukaj</a>."
+    },
+    "recover": {
+        "subject": "Obnovitev gesla",
+        "content": "Pozdravljeni, na {{config.title}} ste zahtevali obnovitev gesla. <a href='{{{config.baseurl}}}/recover/{{user.recover_code}}'>Pritisnite tukaj</a>, da to potrdite."
+    },
+    "event_confirm": {
+        "content": "Ta dogodek lahko potrdite na <a href='{{{url}}}'>tej strani</a>"
+    },
+    "test": {
+        "subject": "Vaša nastavitev SMTP deluje",
+        "content": "To je preizkusno sporočilo, če ga prebirate, vaše nastavitve delujejo."
+    },
+    "report": {
+        "subject": "Moderacija dogodka {{event.title}}",
+        "content_ANON": "Obiskovalka_ec je prijavil dogodek <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Odpri moderacijo</a>",
+        "content_AUTHOR": "Avtor_ica dogodka <strong>{{event.title}}</strong> je napisal_a:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Odpri moderacijo</a>",
+        "content_ADMIN": "Administrator je komentiral dogodek <strong>{{event.title}}</strong>:<br/><blockquote>{{message}}</blockquote><br/><br/><a href='{{{url}}}'>Odpri moderacijo</a>"
+    }
+}

@@ -76,6 +76,10 @@ const pluginController = {
       log.warn(`Plugin ${pluginName} not found`)
       return
     }
+    if (!plugin?.settings?.enable) {
+      log.warn(`Plugin ${pluginName} not loaded`)
+      return
+    }
     const notifier = require('../../notifier')
     log.info('Unload plugin ' + plugin.configuration.name)
     if (typeof plugin.onEventCreate === 'function') {
@@ -89,7 +93,11 @@ const pluginController = {
     }
 
     if (plugin.unload && typeof plugin.unload === 'function') {
-      plugin.unload()
+      try {
+        plugin.unload()
+      } catch (e) {
+        log.error(e)
+      }
     }
 
   },
@@ -123,7 +131,7 @@ const pluginController = {
     }
   },
 
-  _loadPlugin (pluginFile) {
+  async _loadPlugin (pluginFile) {
     try {
       const plugin = require(pluginFile)
       const name = plugin.configuration.name
@@ -141,14 +149,14 @@ const pluginController = {
           log.info(`Do not load plugin ${name} (${pluginFile}) as it is not enabled!`)
         }
       } else {
-        settingsController.set('plugin_' + name, { enable: false })
+        await settingsController.set('plugin_' + name, { enable: false })
       }
     } catch (e) {
       log.warn(`Unable to load plugin ${pluginFile}: ${String(e)}`)
     }
   },
 
-  _load() {
+  async _load() {
     // load custom plugins
     const system_plugins_path = path.resolve(__dirname || '', '../../../gancio_plugins')
     const custom_plugins_path = config.plugins_path || path.resolve(process.env.cwd || '', 'plugins')
@@ -157,10 +165,12 @@ const pluginController = {
     log.info(`Loading plugins from ${plugins_paths.join(' and ')}`)
     for (const plugins_path of plugins_paths) {
       if (fs.existsSync(plugins_path)) {
-        fs.readdirSync(plugins_path)
+        const plugins_file = fs.readdirSync(plugins_path)
           .map(e => path.resolve(plugins_path, e, 'index.js'))
           .filter(index => fs.existsSync(index))
-          .forEach(pluginController._loadPlugin)
+        for(const p of plugins_file) {
+          await pluginController._loadPlugin(p)
+        }
       }
     }
   }

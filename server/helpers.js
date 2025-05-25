@@ -130,6 +130,7 @@ const Helpers = {
       hide_thumbs: settings.hide_thumbs,
       hide_calendar: settings.hide_calendar,
       allow_geolocation: settings.allow_geolocation,
+      calendar_first_day_of_week: settings.calendar_first_day_of_week || undefined,
       geocoding_provider_type: settings.geocoding_provider_type,
       geocoding_provider: settings.geocoding_provider,
       geocoding_countrycodes: settings.geocoding_countrycodes,
@@ -223,7 +224,7 @@ const Helpers = {
       sharpStream.clone().resize(1200, null, { withoutEnlargement: true }).jpeg({ quality: 95, effort: 6, mozjpeg: true }).toFile(path.resolve(config.upload_path, filename + '.jpg')),
     ]
 
-    const response = await axios({ method: 'GET', url: encodeURI(url), responseType: 'stream' })
+    const response = await axios({ method: 'GET', url, responseType: 'stream' })
 
     response.data.pipe(sharpStream)
     return Promise.all(promises)
@@ -316,7 +317,7 @@ const Helpers = {
     const { DateTime } = require('luxon')
     const show_federated = res.locals.settings.federated_events_in_home
     const show_multidate = res.locals.settings.allow_multidate_event
-    const show_recurrent = res.locals.settings.allow_recurrent_event
+    const show_recurrent = res.locals.settings.allow_recurrent_event && res.locals.settings.recurrent_event_visible
     const collection_in_home = res.locals.settings.collection_in_home
 
     const ret = await Promise.allSettled([

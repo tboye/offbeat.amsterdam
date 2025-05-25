@@ -57,12 +57,29 @@ const collectionController = {
     }
   },
 
+  /**
+   * Get events from the specified collection
+   * @category Collection
+   * @name /api/collections/:name
+   * @type GET
+   * @param {string}  name - the collection name
+   * @param {integer} [start] - start timestamp (default: now)
+   * @param {integer} [end] - end timestamp (optional)
+   * @param {string} [format] - rss, ics or json (default: json)
+   * @param {array} [places] - List of places id
+   * @param {boolean} [show_recurrent] - Show also recurrent events (default: as choosen in admin settings)
+   * @param {integer} [per_page] - Limit events (alias `max`)
+   * @param {integer} [page] - Pagination
+   * @param {boolean} [older] - select <= start instead of >=
+   * @param {boolean} [reverse] - reverse order
+   */
   async getEvents (req, res) {
     const settings = res.locals.settings
     const exportController = require('./export')
     const format = req.params?.format ?? 'json'
     const name = req.params.name
-    const limit = req.query?.max
+    const limit = req.query?.per_page ?? req.query?.max
+    const page = req.query?.page
     const start = req.query?.start_at ?? DateTime.local().toUnixInteger()
     const reverse = queryParamToBool(req.query.reverse)
     const older = queryParamToBool(req.query.older)
@@ -70,7 +87,7 @@ const collectionController = {
 
 
     try {
-      const events = await collectionController._getEvents({ name, start, reverse, older, limit, show_recurrent })
+      const events = await collectionController._getEvents({ name, start, reverse, older, limit, page, show_recurrent })
       log.debug(`[COLLECTION] (${name}) events: ${events?.length}`)
 
       switch (format) {
@@ -89,12 +106,11 @@ const collectionController = {
     }
   },
 
-  // return events from collection
   async _getEvents ({
     name, start=DateTime.local().toUnixInteger(), end,
     show_recurrent=false,
     limit, include_description=false,
-    older, reverse }) {
+    older, reverse, page }) {
 
     // get the collection from specified name
     const collection = await Collection.findOne({ where: { name } })
@@ -128,7 +144,7 @@ const collectionController = {
     // include recurrent events?
     if (!show_recurrent) {
       where.parentId = null
-    }    
+    }
 
     if (end) {
       where.start_datetime = { [older ? Op.gte : Op.lte]: end }
@@ -137,7 +153,7 @@ const collectionController = {
     const replacements = []
     const conditions = []
     const negatedConditions = []
-    
+
     // collections are a set of filters to match
     filters.forEach(f => {
 
@@ -152,7 +168,7 @@ const collectionController = {
       if (f.places && f.places.length) {
           tmpConditions.push({ placeId: f.places.map(p => p.id) })
       }
-      
+
       if (f.actors && f.actors.length) {
         // search for local instance
         if (f.actors.find(a => a.ap_id === null)) {
@@ -193,6 +209,7 @@ const collectionController = {
         { model: APUser, required: false, attributes: ['object'] }
       ],
       ...( limit > 0 && { limit }),
+      ...( page > 0 && { offset: page * limit }),
       replacements
     }).catch(e => {
       log.error('[EVENT]', e)
@@ -288,7 +305,7 @@ const collectionController = {
     } catch (e) {
       log.error(String(e))
       return res.sendStatus(400)
-    }    
+    }
   },
 
   async removeFilter (req, res) {

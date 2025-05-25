@@ -30,8 +30,8 @@ v-card
 </template>
 <script>
 import { mdiAttachment } from '@mdi/js'
-import ical from 'ical.js/dist/ical.es5.cjs'
 import get from 'lodash/get'
+
 
 export default {
   name: 'ImportDialog',
@@ -58,22 +58,34 @@ export default {
     importICS () {
       const reader = new FileReader()
       reader.readAsText(this.file)
-      reader.onload = () => {
-        const ret = ical.parse(reader.result)
-        const component = new ical.Component(ret)
-        const events = component.getAllSubcomponents('vevent')
-        const event = new ical.Event(events[0])
-        this.event = {
-          title: get(event, 'summary', ''),
-          description: get(event, 'description', ''),
-          place: { name: get(event, 'location', '') },
-          start_datetime: get(event, 'startDate', '').toUnixTime(),
-          end_datetime: get(event, 'endDate', '').toUnixTime()
-        }
+      reader.onload = async () => {
+        try {
+          const response = await this.$axios.post('/ics-import', {
+            icsText: reader.result
+          })
 
-        this.$emit('imported', this.event)
+          const events = response.data.events || []
+
+          if (!events.length) {
+            this.error = true
+            this.errorMessage = this.$t('event.import_error')
+            return
+          }
+          // TODO: Inform the user if there are multiple events rather than just taking the first one
+          this.event = events[0]
+          // No Place object yet, so create a guess draft for the ui
+          this.event.place = {
+            name: this.event.location || 'Unknown Location'
+  }
+
+          this.$emit('imported', this.event)
+        } catch (e) {
+          this.error = true
+          this.errorMessage = this.$t('event.import_error') + ': ' + (e.message || e)
+        }
       }
-    },
+    }
+,
     async importURL () {
       if (!this.URL) {
         this.errorMessage = this.$validators.required('common.url')('')

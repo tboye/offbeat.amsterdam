@@ -17,7 +17,8 @@ GET
 
 **`/api/events`**
 
-
+> info "info"
+> If showing a particular collection in home, the events returned will be those part of said collection.
 
 **Params**
 
@@ -62,6 +63,7 @@ POST
 | recurrent.frequency | `string` | could be `1w` or `2w` |
 | recurrent.days | `array` | array of days |
 | image | `image` | Image |
+| image_url | `string` | URL of an image |
 
 
 ---

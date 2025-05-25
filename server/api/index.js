@@ -30,6 +30,8 @@ const localeController = require('./controller/locale')
 const { DDOSProtectionApiRateLimiter, SPAMProtectionApiRateLimiter } = require('./limiter')
 const helpers = require('../helpers')
 const storage = require('./storage')
+const icsController = require('./controller/ics')
+
 
 module.exports = () => {
 
@@ -142,10 +144,15 @@ module.exports = () => {
      * @param {string} [recurrent.frequency] - could be `1w` or `2w`
      * @param {array} [recurrent.days] - array of days
      * @param {image} [image] - Image
+     * @param {string} [image_url] - Image URL
+     * @todo Multiple images upload
      */
 
     // allow anyone to add an event (anon event has to be confirmed, flood protection)
     api.post('/event', eventController.isAnonEventAllowed, SPAMProtectionApiRateLimiter, upload.single('image'), eventController.add)
+
+    api.post('/ics-import', icsController.importICSFile)
+    api.post('/ics-import/url', icsController.importICSURL)
 
     // api.get('/event/search', eventController.search)
 
@@ -174,7 +181,7 @@ module.exports = () => {
     // moderation
     api.post('/event/messages/:event_id', SPAMProtectionApiRateLimiter, eventController.report)
     api.get('/event/messages/:event_id', isAuth, eventController.getMessages)
-    
+
     // get unconfirmed events
     api.get('/event/unconfirmed', isAdminOrEditor, eventController.getUnconfirmed)
 

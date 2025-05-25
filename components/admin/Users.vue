@@ -42,10 +42,12 @@ v-container
       :search='search')
       template(v-slot:item.is_active='{item}')
         v-switch(:input-value='item.is_active' readonly @click.native.prevent="toggle(item)" inset hide-details)
+      template(v-slot:item.to_notify='{item}')
+        v-switch(:input-value='item.to_notify' v-if='item.role!=="user"' readonly @click.native.prevent="toggle_to_notify(item)" inset hide-details)
       template(v-slot:item.role='{item}')
         v-menu(offset-y)
           template(v-slot:activator="{ on, attrs }")
-            v-btn(:color='role_colors[item.role ]' v-bind='attrs' v-on="on" small label) {{ item.role }}
+            v-btn(:color='role_colors[item.role ]' outlined v-bind='attrs' v-on="on" small label) {{ item.role }} <v-icon v-text='mdiChevronDown' />
           v-list(width=100 nav)
             v-list-item(v-for="role in ['admin', 'editor', 'user'].filter(r => r !== item.role)" :key='role' link @click='changeRole(item, role)')
               v-list-item-content
@@ -53,8 +55,7 @@ v-container
 
       template(v-slot:item.actions='{item}')
         t-btn(@click='deleteUser(item)' color='error' :tooltip="$t('admin.delete_user')")
-          v-icon(v-text='mdiDeleteForever') 
-          
+          v-icon(v-text='mdiDeleteForever')
 
 </template>
 <script>
@@ -74,7 +75,7 @@ export default {
       mdiClose, mdiMagnify, mdiCheck, mdiPlus, mdiInformation, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiDeleteForever,
       newUserDialog: false,
       changeRoleDialog: false,
-      role_colors: { admin: 'error', editor: 'secondary', user: 'success' },
+      role_colors: { admin: 'error', editor: 'warning', user: 'success' },
       valid: false,
       new_user: {
         email: '',
@@ -85,6 +86,7 @@ export default {
         { value: 'email', text: this.$t('common.email'), width: 150 },
         { value: 'description', text: this.$t('common.description') },
         { value: 'is_active', text: this.$t('common.enabled'), width: 50 },
+        { value: 'to_notify', text: this.$t('admin.receive_confirm_notification'), width: 50 },
         { value: 'role', text: this.$t('common.role'), width: 150 },
         // { value: 'is_editor', text: this.$t('common.editor') },
         { value: 'actions', text: this.$t('common.actions'), align: 'right', width: 100, sortable: false }
@@ -115,6 +117,10 @@ export default {
         if (!ret) { return }
       }
       user.is_active = !user.is_active
+      this.$axios.$put('/user', user)
+    },
+    async toggle_to_notify (user) {
+      user.to_notify = !user.to_notify
       this.$axios.$put('/user', user)
     },
     async changeRole (user, role) {

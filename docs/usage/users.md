@@ -7,7 +7,7 @@ parent: Usage
 has_toc: true
 ---
 
-Login is available by clicking oan the top right icon of the header.  
+Login is available by clicking on the top right icon of the header.  
 
 After loggin-in, an user can access the backoffice, consisting in:
 - **Admin**: a section where to find the website's configuration (only available to admins)  
@@ -27,5 +27,5 @@ Gancio allows the following types of users:
 <br>
 
 > info "Changelog"  
-> [#1.15.1](https://gancio.org/changelog#1151-2024-04-01)
+> [#1.15.1](https://gancio.org/changelog#1151-2024-04-01)  
 > [#1.17.1](https://gancio.org/changelog#1172-2024-06-14)
