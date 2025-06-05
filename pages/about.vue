@@ -28,7 +28,7 @@ export default {
       htmlAttrs: {
         lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} - ${this.$t('common.info')}`
+      title: `${this.$t('common.about')} | ${this.settings.title}`
     }
   },
   computed: mapState(['settings']),

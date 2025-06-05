@@ -110,7 +110,7 @@ export default {
 
       const data = { event: { place: {}, media: [] } }
       data.id = params.edit
-      data.edit = query.clone ? false : true 
+      data.edit = query.clone ? false : true
       let event
       try {
         event = await $axios.$get('/event/detail/' + data.id)
@@ -182,7 +182,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.settings.title} - ${this.$t('common.add_event')}`
+      title: `${this.$t('common.add_event')} | ${this.settings.title}`
     }
   },
   computed: mapState(['settings']),

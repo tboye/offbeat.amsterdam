@@ -40,7 +40,7 @@ import { mapState } from 'vuex'
         htmlAttrs: {
           lang: this.settings.instance_locale
         },
-        title: `${this.settings.title} - ${this.page.title}`
+        title: `${this.page.title} | ${this.settings.title}`
       }
     },
     computed: mapState(['settings'])

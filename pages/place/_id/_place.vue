@@ -46,7 +46,7 @@ export default {
     [process.client && 'Map']: () => import('@/components/Map.vue')
   },
   head() {
-    const title = `${this.settings.title} - ${this.place.name}`
+    const title = `Events at ${this.place.name} | ${this.settings.title}`
     return {
       title,
       link: [

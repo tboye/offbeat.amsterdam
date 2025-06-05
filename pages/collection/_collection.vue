@@ -20,7 +20,7 @@ export default {
   name: 'Collection',
   components: { Event },
   head () {
-    const title = `${this.settings.title} - ${this.collection}`
+    const title = `${this.collection} events | ${this.settings.title}`
     return {
       title,
       htmlAttrs: {

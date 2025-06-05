@@ -6,14 +6,14 @@
     <h1 v-if="$route.name === 'index'" class="text-center">
       <nuxt-link id="title" v-text="settings.title" to="/" />
       <div
-        class="text-body-1 font-weight-light pb-3"
+        class="text-body-1 font-weight-light pb-3 ml-5 mr-5"
         v-html="settings?.description"
       />
     </h1>
     <div v-else class="text-center">
       <nuxt-link id="title" v-text="settings.title" to="/" />
       <div
-        class="text-body-1 font-weight-light pb-3"
+        class="text-body-1 font-weight-light pb-3 ml-5 mr-5"
         v-html="settings?.description"
       />
     </div>

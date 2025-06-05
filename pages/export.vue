@@ -125,7 +125,7 @@ export default {
       htmlAttrs: {
         lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} - ${this.$t('common.export')}`,
+      title: `${this.$t('common.export')} | ${this.settings.title}`,
     }
   },
   computed: {
@@ -164,7 +164,7 @@ export default {
 
       return `<script src="${this.settings.baseurl}\/gancio-events.es.js"><\/script>\n<gancio-events ${params.join(' ')}></gancio-events>\n\n`
 
-      
+
     },
     link () {
       const typeMap = ['rss', 'ics']

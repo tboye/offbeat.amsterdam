@@ -56,7 +56,7 @@ export default {
         { value: 'place.name', text: this.$t('common.place') },
         { value: 'start_datetime', text: this.$t('common.when') },
         { value: 'actions', text: this.$t('common.actions'), align: 'right', sortable: false }
-      ]      
+      ]
     }
   },
   computed: mapState(['settings']),
@@ -81,11 +81,11 @@ export default {
       await this.$axios.delete(`/event/${event.id}`)
       this.$fetch()
       this.$root.$message('admin.event_remove_ok')
-    }    
+    }
   },
   head () {
     return {
-      title: `${this.settings.title} - ${this.$t('common.my_events')}`
+      title: `${this.$t('common.my_events')} | ${this.settings.title}`
     }
   }
 }
