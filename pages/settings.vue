@@ -38,7 +38,7 @@ export default {
       await this.$axios.$post('/user/recover', { email: this.$auth.user.email })
       this.loading = false
       this.$root.$message('login.check_email', { color: 'success' })
-    },    
+    },
     async remove_account () {
       const ret = await this.$root.$confirm('settings.remove_account_confirm', { color: 'error' })
       if (!ret) return
@@ -49,7 +49,7 @@ export default {
   },
   head () {
     return {
-      title: `${this.settings.title} - ${this.$t('common.settings')}`
+      title: `${this.settings.title} | ${this.$t('common.settings')}`
     }
   }
 }

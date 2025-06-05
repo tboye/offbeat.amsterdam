@@ -189,7 +189,7 @@ export default {
     }
 
     return {
-      title: `${this.settings.title} - ${this.event.title}`,
+      title: `${this.settings.title} | ${this.event.title}`,
       htmlAttrs: {
         lang: this.settings.instance_locale
       },

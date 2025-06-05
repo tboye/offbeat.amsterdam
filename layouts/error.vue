@@ -15,7 +15,7 @@ export default {
     return { mdiAlert }
   },
   head () {
-    return { title: `${this.settings.title} - Error` }
+    return { title: `${this.settings.title} | Error` }
   },
   computed: mapState(['settings'])
 }

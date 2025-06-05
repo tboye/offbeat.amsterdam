@@ -47,7 +47,7 @@ v-container.container.pa-0.pa-md-3
       v-tab(href='#places' v-if='$auth.user.is_admin') {{$t('common.places')}}
       v-tab-item(value='places')
         Places
-      
+
       //- TAGS
       v-tab(href='#tags' v-if='$auth.user.is_admin') {{$t('common.tags')}}
       v-tab-item(value='tags')
@@ -130,7 +130,7 @@ export default {
     }
   },
   head () {
-    return { title: `${this.settings.title} - ${this.$t('common.admin')}` }
+    return { title: `${this.settings.title} | ${this.$t('common.admin')}` }
   },
   computed: {
     ...mapState(['settings']),

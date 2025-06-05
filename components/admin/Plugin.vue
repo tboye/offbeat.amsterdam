@@ -5,7 +5,7 @@ v-container
   v-card-subtitle(v-html="$t('admin.plugins_description')")
   v-dialog(v-if='selectedPlugin.settingsValue' v-model='dialog' width='600' :fullscreen='$vuetify.breakpoint.xsOnly')
     v-card
-      v-card-title {{ $t('admin.config_plugin') }} - {{ selectedPlugin.name }}
+      v-card-title {{ $t('admin.config_plugin') }} | {{ selectedPlugin.name }}
       v-card-text
         v-form(v-model='valid' ref='form' lazy-validation)
           v-row(v-for='(setting, name) in selectedPlugin.settings' :key='name' mt-2)
