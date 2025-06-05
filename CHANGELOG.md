@@ -1,6 +1,6 @@
 # 0.5.0 (in progress)
 ## Improvement
-- Align look of custom pages and About page [#9](https://github.com/tboye/offbeat.amsterdam/pull/10)
+- Align look of custom pages and About page [#9](https://github.com/tboye/offbeat.amsterdam/pull/9)
 
 # 0.4.0 (25-05-2025)
 ## Fix
