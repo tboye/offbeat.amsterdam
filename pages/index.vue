@@ -62,8 +62,12 @@ export default {
     }
   },
   head () {
+    // FIXME: Temporary solution to include part of the description into index title
+    const desc = this.settings?.description || ''
+    const shortDesc = desc.includes('. ') ? desc.split('. ')[0] : desc
+
     return {
-      title: this.settings.title,
+      title: this.settings.title + ' | ' + shortDesc,
       htmlAttrs: {
         lang: this.settings.instance_locale,
       },
