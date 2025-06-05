@@ -130,7 +130,7 @@ export default {
     }
   },
   head () {
-    return { title: `${this.settings.title} | ${this.$t('common.admin')}` }
+    return { title: `${this.$t('common.admin')} | ${this.settings.title}` }
   },
   computed: {
     ...mapState(['settings']),

@@ -182,7 +182,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.settings.title} | ${this.$t('common.add_event')}`
+      title: `${this.$t('common.add_event')} | ${this.settings.title}`
     }
   },
   computed: mapState(['settings']),

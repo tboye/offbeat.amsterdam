@@ -49,7 +49,7 @@ export default {
   },
   head () {
     return {
-      title: `${this.settings.title} | ${this.$t('common.settings')}`
+      title: `${this.$t('common.settings')} | ${this.settings.title}`
     }
   }
 }

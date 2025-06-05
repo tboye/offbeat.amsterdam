@@ -85,7 +85,7 @@ export default {
   },
   head () {
     return {
-      title: `${this.settings.title} | ${this.$t('common.my_events')}`
+      title: `${this.$t('common.my_events')} | ${this.settings.title}`
     }
   }
 }

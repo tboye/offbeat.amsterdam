@@ -80,7 +80,7 @@ export default {
       htmlAttrs: {
         lang: this.settings.instance_locale
       },
-      title: this.settings.title + ' | ' + this.$t('common.register')
+      title: this.$t('common.register') + ' | ' + this.settings.title
     }
   }
 }

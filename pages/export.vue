@@ -125,7 +125,7 @@ export default {
       htmlAttrs: {
         lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} | ${this.$t('common.export')}`,
+      title: `${this.$t('common.export')} | ${this.settings.title}`,
     }
   },
   computed: {

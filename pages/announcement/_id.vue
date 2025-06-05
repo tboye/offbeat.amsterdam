@@ -33,7 +33,7 @@ export default {
       htmlAttrs: {
         lang: this.settings.instance_locale
       },
-      title: `${this.settings.title} | ${this.announcement.title}`
+      title: `${this.announcement.title} | ${this.settings.title}`
     }
   },
   computed: mapState(['announcements', 'settings'])

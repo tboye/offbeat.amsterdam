@@ -51,7 +51,7 @@ export default {
     }
   },
   head () {
-    return { title: `${this.settings.title} | Authorize` }
+    return { title: `Authorize | ${this.settings.title}` }
   }
 }
 </script>

@@ -30,7 +30,7 @@ export default {
   components: { Event },
   head ({ $route }) {
     const tag = $route.params.tag
-    const title = `${tag} events | ${this.settings.title}`
+    const title = `Events tagged #${tag} | ${this.settings.title}`
     return {
       title,
       htmlAttrs: {
