@@ -1,14 +1,20 @@
 <template>
-  <v-container>
-    <v-card>
-      <v-card-title class='text-h4 font-weight-bold'>{{ page.title }}</v-card-title>
-      <v-card-text v-html='page.content' />
-    </v-card>
-  </v-container>
+  <v-row class="justify-center align-center">
+    <v-col cols="12" sm="10" md="8" lg="6" xl="6">
+      <v-container>
+        <h1 class="title text-center text-uppercase text-h4 mt-10 mx-auto w-100">
+          <strong>{{ page.title }}</strong>
+        </h1>
+        <v-card>
+          <v-card-text v-html='page.content' class="body-1" />
+        </v-card>
+      </v-container>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import { mapState } from 'vuex'
-  
+
   export default {
     name: 'Page',
     async asyncData ({ params, error, $axios }) {
@@ -40,4 +46,3 @@ import { mapState } from 'vuex'
     computed: mapState(['settings'])
   }
   </script>
-  
