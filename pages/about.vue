@@ -2,8 +2,10 @@
 v-row.justify-center.align-center
   v-col(cols="12" sm="10" md="8" lg="6" xl="6")
     v-container
+      h1.title.text-center.text-uppercase.text-h4.mt-10.mx-auto.w-100
+        strong.p-name.text--primary(itemprop="name") {{$t('common.about')}}
       v-card-text(v-if='$auth.user && $auth.user.is_admin')
-        Editor.px-3.ma-0(v-model='about' :label="$t('common.about')" height='500px')
+        Editor.px-3.ma-0(v-model='about' :label="$t('common.edit')" height='500px')
       v-card-text(v-else v-html='about' class="body-1")
       v-card-actions(v-if='$auth.user && $auth.user.is_admin')
         v-spacer
