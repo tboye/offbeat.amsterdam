@@ -1,7 +1,7 @@
 <template lang='pug'>
 v-form.d-flex.justify-space-around(method='post' action='/oauth/authorize')
   v-card.mt-5(max-width='600px')
-    v-card-title {{settings.title}} | {{$t('common.authorize')}}
+    v-card-title {{settings.title}} - {{$t('common.authorize')}}
     v-card-text
       h2 {{$auth.user.email}}
       input(name='transaction_id' :value='transactionID' type='hidden')
