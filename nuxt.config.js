@@ -85,13 +85,27 @@ module.exports = {
       ]
       if (config.status === 'READY') {
         try {
-          const response = await fetch(`${config.baseurl}/api/events`)
-          const events = await response.json()
-          routes.push(...events.map(e => ({
-            url: `/event/${e.slug}`,
-            changefreq: 'weekly',
-            lastmod: e.updatedAt
-          })))
+          // Events
+          const eventsRes = await fetch(`${config.baseurl}/api/events`)
+          const events = await eventsRes.json()
+          routes.push(
+            ...events.map(e => ({
+              url: `/event/${e.slug}`,
+              changefreq: 'weekly'
+            }))
+          )
+
+          // Places
+          const placesRes = await fetch(`${config.baseurl}/api/places`)
+          const places = await placesRes.json()
+          routes.push(
+            ...places.map(p => ({
+              url: `/place/${p.id}/${encodeURIComponent(p.name)}`,
+              changefreq: 'daily',
+              lastmod: p.updatedAt
+            }))
+          )
+
           return routes
         } catch (e) {
           return []

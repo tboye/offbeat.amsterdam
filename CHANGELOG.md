@@ -1,6 +1,8 @@
-# 0.6.0 (in progress)
+# 0.6.0 (06-06-2025)
 ## Changes
-- Remove footer, rearrange navbar, squeeze title on mobile [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
+- Removed footer, rearranged navbar, squeezed title on mobile [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
+- `events` API method doesn't require admin rights anymore [#12](https://github.com/tboye/offbeat.amsterdam/pull/12)
+- Places are included in the sitemap [#12](https://github.com/tboye/offbeat.amsterdam/pull/12)
 
 # 0.5.0 (05-06-2025)
 ## Improvements
