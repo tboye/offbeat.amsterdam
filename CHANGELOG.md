@@ -1,3 +1,7 @@
+# 0.6.0 (in progress)
+## Changes
+- Remove footer, rearrange navbar, squeeze title on mobile [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
+
 # 0.5.0 (05-06-2025)
 ## Improvements
 - Align look of custom pages and About page [#9](https://github.com/tboye/offbeat.amsterdam/pull/9)
