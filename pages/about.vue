@@ -11,6 +11,7 @@ v-row.justify-center.align-center
         v-spacer
         v-btn(color='primary' outlined
           @click='save') {{$t('common.save')}}
+      v-btn(color='secondary' text href='https://github.com/tboye/offbeat.amsterdam' target='_blank' rel="noopener") Website version {{settings.version}}
 </template>
 <script>
 import Editor from '@/components/Editor'
