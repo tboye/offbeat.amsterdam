@@ -4,6 +4,9 @@
 - `events` API method doesn't require admin rights anymore [#12](https://github.com/tboye/offbeat.amsterdam/pull/12)
 - Places are included in the sitemap [#12](https://github.com/tboye/offbeat.amsterdam/pull/12)
 
+## Fix
+- Fix sitemap not generating due to stale status, set sitemap cache time to 10 minutes
+
 # 0.5.0 (05-06-2025)
 ## Improvements
 - Align look of custom pages and About page [#9](https://github.com/tboye/offbeat.amsterdam/pull/9)
