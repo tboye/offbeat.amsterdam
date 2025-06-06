@@ -1,6 +1,6 @@
 # 0.6.0 (in progress)
 ## Changes
-- Remove footer, rearrange navbar [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
+- Remove footer, rearrange navbar, squeeze title on mobile [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
 
 # 0.5.0 (05-06-2025)
 ## Improvements
