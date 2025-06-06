@@ -102,8 +102,7 @@ module.exports = {
             ...places.map(p => ({
               url: `/place/${p.id}/${encodeURIComponent(p.name)}`,
               changefreq: 'daily',
-              lastmod: p.updatedAt,
-              priority: 0.7
+              lastmod: p.updatedAt
             }))
           )
 
