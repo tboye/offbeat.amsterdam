@@ -2,6 +2,15 @@ const config = require('./server/config.js')
 const locales = require('./locales/index')
 const dns = require('node:dns')
 dns.setDefaultResultOrder('ipv4first')
+const settingsController = require('./server/api/controller/settings');
+
+export default {
+  publicRuntimeConfig: {
+    settings: {
+      footerLinks: settingsController.settings.footerLinks
+    },
+  },
+}
 
 const isDev = (process.env.NODE_ENV !== 'production')
 module.exports = {
@@ -103,6 +112,16 @@ module.exports = {
             url: `/place/${p.id}/${encodeURIComponent(p.name)}`,
             changefreq: 'daily',
           }))
+        )
+
+        // 'Footer' links (only internal)
+        routes.push(
+          ...settingsController.settings.footerLinks
+            .filter(l => l.href.startsWith('/'))
+            .map(l => ({
+              url: l.href,
+              changefreq: 'monthly'
+            }))
         )
       } catch (e) {
         console.error('Sitemap generation failed:', e)

@@ -1,3 +1,7 @@
+# 0.6.1 (10-06-2025)
+## New Features
+- Include external footer links into sitemap [#13](https://github.com/tboye/offbeat.amsterdam/pull/13)
+
 # 0.6.0 (06-06-2025)
 ## Changes
 - Removed footer, rearranged navbar, squeezed title on mobile [#11](https://github.com/tboye/offbeat.amsterdam/pull/11)
