@@ -1,3 +1,6 @@
+# 0.6.2 (16-06-2025)
+- Use 'agenda' in place page title
+
 # 0.6.1 (10-06-2025)
 ## New Features
 - Include external footer links into sitemap [#13](https://github.com/tboye/offbeat.amsterdam/pull/13)
