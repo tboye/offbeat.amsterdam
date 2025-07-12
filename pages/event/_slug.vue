@@ -4,29 +4,29 @@
     //- gancio supports microformats (http://microformats.org/wiki/h-event)
     //- and microdata https://schema.org/Event
     h1.title.text-center.text-md-h4.text-h5.pa-6
-      strong.p-name.text--primary(itemprop="name") {{event.title}}
+      strong.p-name.text--primary {{event.title}}
     v-row
       v-col.col-12.col-md-8.pr-sm-2.pr-md-0
         MyPicture(v-if='hasMedia' :event='event')
-        .p-description.text-body-1.pa-3.rounded(v-if='event.description' itemprop='description' v-html='event.description')
+        .p-description.text-body-1.pa-3.rounded(v-if='event.description' v-html='event.description')
 
       v-col.col-12.col-md-4
         v-card(outlined)
           v-container.eventDetails
             v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
             v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
-            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' itemprop="startDate" :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
+            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
               v-icon(v-text='mdiCalendar')
               span.ml-2.text-uppercase {{$time.when(event)}}
-              .d-none.dt-end(v-if='event.end_datetime' itemprop="endDate" :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,"yyyy-MM-dd'T'HH:mm")}}
+              .d-none.dt-end(v-if='event.end_datetime' :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,'yyyy-MM-dd\'T\'HH:mm')}}
             div.font-weight-light.mb-3 {{$time.from(event.start_datetime)}}
               small(v-if='event.parentId')  ({{$time.recurrentDetail(event)}})
 
-            .p-location.h-adr(itemprop="location" itemscope itemtype="https://schema.org/Place")
+            .p-location.h-adr
               v-icon(v-text='mdiMapMarker')
               nuxt-link.vcard.ml-2.p-name.text-decoration-none.text-uppercase(:to='`/place/${event?.place?.id}/${encodeURIComponent(event?.place?.name)}`')
-                span(itemprop='name') {{event?.place?.name}}
-              .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"' itemprop='address') {{event?.place?.address}}
+                span {{event?.place?.name}}
+              .font-weight-light.p-street-address(v-if='event?.place?.name !=="online"') {{event?.place?.address}}
 
             //- a.d-block(v-if='event.ap_object?.url' :href="event.ap_object?.url") {{ event.ap_object?.url }}
             a(v-if='event?.original_url'  :href="event?.original_url") {{event.original_url}}
@@ -247,6 +247,57 @@ export default {
         },
         ...tags_feed,
         place_feed
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          json: {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": this.event.title,
+            "startDate": DateTime.fromSeconds(this.event.start_datetime, {
+              zone: this.settings.instance_timezone
+            }).toISO(),
+            ...(this.event.end_datetime && {
+              "endDate": DateTime.fromSeconds(this.event.end_datetime, {
+                zone: this.settings.instance_timezone
+              }).toISO()
+            }),
+            "eventStatus": "https://schema.org/EventScheduled",
+            ...(this.event.online_locations?.[0] && {
+              "url": this.event.online_locations[0]
+            }),
+            "mainEntityOfPage": `${this.settings.baseurl}/event/${this.event.slug || this.event.id}`,
+            ...(this.event.tags?.length && {
+              "keywords": this.event.tags.join(', ')
+            }),
+            "eventAttendanceMode":
+              this.isOnline
+                ? "https://schema.org/OnlineEventAttendanceMode"
+                : "https://schema.org/OfflineEventAttendanceMode",
+            ...(!this.isOnline && {
+              "location": {
+                "@type": "Place",
+                "name": this.event.place.name,
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": this.event.place.address,
+                }
+              }
+            }),
+            ...(this.hasMedia && {
+              "image": this.$helper.mediaURL(this.event)
+            }),
+            "description": this.plainDescription || "",
+            ...(this.event.online_locations?.[1] && {
+            "offers": {
+              "@type": "Offer",
+              "url": this.event.online_locations[1],
+              "availability": "https://schema.org/InStock"
+            }
+            }),
+          }
+        }
       ]
     }
   },
@@ -296,6 +347,9 @@ export default {
           : index === 1 ? `<a href="${url}" target="_blank">Tickets</a>`
             : `<a href="${url}" target="_blank">${url}</a>`
       }))
+    },
+    isOnline() {
+      return this.event?.place?.name?.toLowerCase() === 'online'
     }
   },
   mounted () {
