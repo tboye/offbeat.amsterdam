@@ -29,7 +29,7 @@
   </v-card-text>
 
   <v-card-actions class='flex-wrap'>
-    <v-chip class='ml-1 mt-1' v-for='tag in event.tags.slice(0, 6)' small label :to='`/tag/${encodeURIComponent(tag)}`' :key='tag' outlined color='primary'>{{ tag }}</v-chip>
+    <v-chip class='ml-1 mt-1' v-for='tag in event.tags.slice(0, 10)' small label :to='`/tag/${encodeURIComponent(tag)}`' :key='tag' outlined color='primary'>{{ tag }}</v-chip>
   </v-card-actions>
 
 </article>
