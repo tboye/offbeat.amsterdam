@@ -1,6 +1,6 @@
 # 0.6.3 (13-07-2025)
 ## Improvements
-- Use JSON+LD for structured event data, extend content [#14](https://github.com/tboye/offbeat.amsterdam/pull/14)
+- Use JSON-LD for structured event data, extend content [#14](https://github.com/tboye/offbeat.amsterdam/pull/14)
 - Bump number of tags displayed on the home page to 10 [#14](https://github.com/tboye/offbeat.amsterdam/pull/14)
 
 # 0.6.2 (16-06-2025)

@@ -289,7 +289,7 @@ export default {
               "image": this.$helper.mediaURL(this.event)
             }),
             "description": this.plainDescription || "",
-            ...(this.event.online_locations.length > 0 && {
+            ...(this.event.online_locations?.length && {
             "offers": {
               "@type": "Offer",
               "url": this.event.online_locations[1] || this.event.online_locations[0],
