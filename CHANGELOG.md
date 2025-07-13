@@ -1,3 +1,7 @@
+# 0.6.4 (13-07-2025)
+## Fix
+- Fix non-JSON-LD event entry is still present
+
 # 0.6.3 (13-07-2025)
 ## Improvements
 - Use JSON-LD for structured event data, increase field coverage [#14](https://github.com/tboye/offbeat.amsterdam/pull/14)
