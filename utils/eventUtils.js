@@ -13,7 +13,10 @@ export function buildEventJsonLd(event, settings, $helper) {
     eventStatus: "https://schema.org/EventScheduled",
     description: event.plain_description || "",
     mainEntityOfPage: `${settings.baseurl}/event/${event.slug || event.id}`,
-    url: event.online_locations[0]
+  }
+
+  if (event.online_locations?.[0]) {
+    schema.url = event.online_locations[0]
   }
 
   if (event.end_datetime) {
@@ -21,10 +24,8 @@ export function buildEventJsonLd(event, settings, $helper) {
   }
 
   const isOnline = event.place?.name?.toLowerCase() === 'online'
-  if (isOnline && event.online_locations?.[0]) {
-    schema.eventAttendanceMode = "https://schema.org/OnlineEventAttendanceMode"
-  } else {
-    schema.eventAttendanceMode = "https://schema.org/OfflineEventAttendanceMode"
+  schema.eventAttendanceMode = isOnline ? "https://schema.org/OnlineEventAttendanceMode" : "https://schema.org/OfflineEventAttendanceMode"
+  if (!isOnline) {
     schema.location = {
       "@type": "Place",
       name: event.place.name,
