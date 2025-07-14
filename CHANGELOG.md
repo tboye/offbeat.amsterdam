@@ -1,3 +1,7 @@
+# 0.6.5 (14-07-2025)
+## Fix
+- Fix structured event data is inconsistent between event page and event cards [#15](https://github.com/tboye/offbeat.amsterdam/pull/15)
+
 # 0.6.4 (13-07-2025)
 ## Fix
 - Fix non-JSON-LD event entry is still present
