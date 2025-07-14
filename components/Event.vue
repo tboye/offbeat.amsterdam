@@ -1,4 +1,5 @@
 <template>
+<div>
 <article class='h-event' :class="{ 'is-past': isPast }">
 
   <nuxt-link :to='`/event/${event.slug || event.id}`'>
@@ -33,12 +34,18 @@
   </v-card-actions>
 
 </article>
-
+<script
+  v-if="jsonLdText"
+  type="application/ld+json"
+  v-html="jsonLdText"
+></script>
+</div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import MyPicture from '~/components/MyPicture'
 import { mdiRepeat, mdiCalendar, mdiMapMarker, mdiTimerSandComplete } from '@mdi/js'
+import { buildEventJsonLd } from '../utils/eventUtils'
 
 export default {
   data() {
@@ -53,6 +60,7 @@ export default {
   },
   computed: {
     ...mapGetters(['hide_thumbs']),
+    ...mapState(['settings']),
     isPast() {
       const now = new Date()
       if (this.event.end_datetime) {
@@ -60,7 +68,10 @@ export default {
       } else {
         return new Date((3*60*60+this.event.start_datetime)*1000) < now
       }
-    }
+    },
+    jsonLdText() {
+      return buildEventJsonLd(this.event, this.settings, this.$helper)
+    },
   }
 }
 </script>

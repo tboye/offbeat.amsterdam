@@ -136,6 +136,7 @@ import { mdiArrowLeft, mdiArrowRight, mdiDotsVertical, mdiCodeTags, mdiClose, md
   mdiEye, mdiEyeOff, mdiDelete, mdiRepeat, mdiLock, mdiFileDownloadOutline, mdiShareAll, mdiTimerSandComplete,
   mdiCalendarImport, mdiCalendar, mdiContentCopy, mdiMapMarker, mdiChevronUp, mdiMonitorAccount, mdiBookmark, mdiStar,
   mdiLinkVariant, mdiInformation, mdiTicketConfirmationOutline} from '@mdi/js'
+import { buildEventJsonLd } from '../../utils/eventUtils'
 
 export default {
   name: 'Event',
@@ -251,52 +252,7 @@ export default {
       script: [
         {
           type: 'application/ld+json',
-          json: {
-            "@context": "https://schema.org",
-            "@type": "Event",
-            "name": this.event.title,
-            "startDate": DateTime.fromSeconds(this.event.start_datetime, {
-              zone: this.settings.instance_timezone
-            }).toISO(),
-            ...(this.event.end_datetime && {
-              "endDate": DateTime.fromSeconds(this.event.end_datetime, {
-                zone: this.settings.instance_timezone
-              }).toISO()
-            }),
-            "eventStatus": "https://schema.org/EventScheduled",
-            ...(this.event.online_locations?.[0] && {
-              "url": this.event.online_locations[0]
-            }),
-            "mainEntityOfPage": `${this.settings.baseurl}/event/${this.event.slug || this.event.id}`,
-            ...(this.event.tags?.length && {
-              "keywords": this.event.tags.join(', ')
-            }),
-            "eventAttendanceMode":
-              this.isOnline
-                ? "https://schema.org/OnlineEventAttendanceMode"
-                : "https://schema.org/OfflineEventAttendanceMode",
-            ...(!this.isOnline && {
-              "location": {
-                "@type": "Place",
-                "name": this.event.place.name,
-                "address": {
-                  "@type": "PostalAddress",
-                  "streetAddress": this.event.place.address,
-                }
-              }
-            }),
-            ...(this.hasMedia && {
-              "image": this.$helper.mediaURL(this.event)
-            }),
-            "description": this.plainDescription || "",
-            ...(this.event.online_locations?.length && {
-            "offers": {
-              "@type": "Offer",
-              "url": this.event.online_locations[1] || this.event.online_locations[0],
-              "availability": "https://schema.org/InStock"
-            }
-            }),
-          }
+          json: buildEventJsonLd(this.event, this.settings, this.$helper)
         }
       ]
     }
