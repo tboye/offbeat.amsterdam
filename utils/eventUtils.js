@@ -52,5 +52,5 @@ export function buildEventJsonLd(event, settings, $helper) {
     }
   }
 
-  return JSON.stringify(schema, null, 2)
+  return schema
 }

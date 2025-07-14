@@ -70,7 +70,7 @@ export default {
       }
     },
     jsonLdText() {
-      return buildEventJsonLd(this.event, this.settings, this.$helper)
+      return JSON.stringify(buildEventJsonLd(this.event, this.settings, this.$helper))
     },
   }
 }
