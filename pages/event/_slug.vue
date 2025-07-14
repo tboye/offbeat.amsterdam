@@ -15,7 +15,7 @@
           v-container.eventDetails
             v-icon.float-right(v-if='event.parentId' color='success' v-text='mdiRepeat')
             v-icon.float-right.mr-1(v-if='isPast' color='warning' v-text='mdiTimerSandComplete')
-            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
+            time.dt-start(:datetime='$time.unixFormat(event.start_datetime, "yyyy-MM-dd HH:mm")' :content='$time.unixFormat(event.start_datetime, "yyyy-MM-dd\'T\'HH:mm")')
               v-icon(v-text='mdiCalendar')
               span.ml-2.text-uppercase {{$time.when(event)}}
               .d-none.dt-end(v-if='event.end_datetime' :content='$time.unixFormat(event.end_datetime,"yyyy-MM-dd\'T\'HH:mm")') {{$time.unixFormat(event.end_datetime,'yyyy-MM-dd\'T\'HH:mm')}}
