@@ -1,3 +1,7 @@
+# 0.6.6 (17-07-2025)
+## Fix
+- Fix hydration issue breaking info/ticket panel [#16](https://github.com/tboye/offbeat.amsterdam/pull/16)
+
 # 0.6.5 (14-07-2025)
 ## Fix
 - Fix structured event data is inconsistent between event page and event cards [#15](https://github.com/tboye/offbeat.amsterdam/pull/15)
