@@ -41,8 +41,8 @@
             v-list-item(v-for="(url, index) in formattedOnlineLocations" :key="index" target="_blank" :href="url.href")
               v-list-item-icon
                 v-icon(v-text="url.icon")
-              v-list-item-content.py-0
-                v-list-item-title.text-caption(v-html="url.label")
+              v-list-item-content.text-uppercase
+                v-list-item-title(v-text="$t(url.label)")
 
           v-divider
           //- info & actions
@@ -299,9 +299,7 @@ export default {
       return this.event.online_locations.map((url, index) => ({
         href: url,
         icon: index === 0 ? mdiInformation : index === 1 ? mdiTicketConfirmationOutline : mdiLinkVariant,
-        label: index === 0 ? `<a href="${url}" target="_blank">Info</a>`
-          : index === 1 ? `<a href="${url}" target="_blank">Tickets</a>`
-            : `<a href="${url}" target="_blank">${url}</a>`
+        label: index === 0 ? "Info" : index === 1 ? "Tickets" : url
       }))
     },
     isOnline() {
