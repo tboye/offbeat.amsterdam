@@ -1,3 +1,7 @@
+# 0.6.7 (19-07-2025)
+## Improvement
+- Restore scroll position when going back to home page [#17](https://github.com/tboye/offbeat.amsterdam/pull/17)
+
 # 0.6.6 (17-07-2025)
 ## Fix
 - Fix hydration issue breaking info/ticket panel [#16](https://github.com/tboye/offbeat.amsterdam/pull/16)

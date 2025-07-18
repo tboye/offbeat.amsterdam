@@ -8,12 +8,14 @@
 
     <!-- Events -->
     <section id='events' class='mt-sm-4 mt-2' v-if='!$fetchState.pending'>
-      <v-lazy class='event v-card' :value='idx<9'
+      <v-lazy class='event v-card' :value='shouldLoadImmediately(idx)'
         v-for='(event, idx) in visibleEvents' :key='event.id'
         :min-height='hide_thumbs ? 105 : undefined'
         :options="{ threshold: .5, rootMargin: '500px' }"
-        :class="{ 'theme--dark': is_dark }">
-        <Event :event='event' :lazy='idx>9' />
+        :class="{ 'theme--dark': is_dark }"
+        :data-event-id="event.id"
+        @click.native="storeEventId(event)">
+        <Event :event='event' :lazy='!shouldLoadImmediately(idx)' />
       </v-lazy>
     </section>
     <section class='text-center' v-else>
@@ -59,6 +61,9 @@ export default {
       tmpEvents: [],
       selectedDay: null,
       storeUnsubscribe: null,
+      isRestoringScroll: false,
+      lastViewedEventId: null,
+      scrollAttempts: 0,
     }
   },
   head () {
@@ -115,6 +120,9 @@ export default {
       }})
     }
   },
+  mounted () {
+    this.initScrollRestoration()
+  },
   destroyed () {
     this.$root.$off('dayclick')
     this.$root.$off('monthchange')
@@ -124,10 +132,105 @@ export default {
   },
   methods: {
     ...mapActions(['getEvents']),
+
+    // Store event ID for scroll restoration
+    storeEventId(event) {
+      this.lastViewedEventId = event.id
+      if (process.client) {
+        sessionStorage.setItem('last_event_id', event.id.toString())
+      }
+    },
+
+    initScrollRestoration() {
+      // Disable browser scroll restoration
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual'
+      }
+
+      // Set up router hooks
+      if (this.$router) {
+        // Handle scroll after navigation
+        this.$router.afterEach((to, from) => {
+          this.$nextTick(() => {
+            if (to.path === '/') {
+              // Restore scroll for home page
+              this.restoreScrollToLastEvent()
+            } else {
+              // Scroll to top for all other pages
+              window.scrollTo(0, 0)
+            }
+          })
+        })
+      }
+    },
+
+    shouldLoadImmediately(idx) {
+      if (idx < 9) return true
+      if (this.isRestoringScroll && this.lastViewedEventId) {
+        // Find the index of the event we're trying to restore to
+        const targetEventIndex = this.visibleEvents.findIndex(e => e.id === this.lastViewedEventId)
+        if (targetEventIndex !== -1) {
+          // Load up to the target event
+          return idx <= targetEventIndex
+        }
+      }
+      return false
+    },
+
+    restoreScrollToLastEvent() {
+      if (!process.client) return
+
+      const lastEventId = sessionStorage.getItem('last_event_id')
+      if (!lastEventId) return
+
+      this.lastViewedEventId = parseInt(lastEventId)
+      this.isRestoringScroll = true
+      this.scrollAttempts = 0
+
+      this.$nextTick(() => {
+        this.scrollToEvent()
+      })
+    },
+
+    scrollToEvent() {
+      if (this.scrollAttempts > 20) {
+        this.resetScrollRestorationState()
+        return
+      }
+
+      const eventElement = document.querySelector(`[data-event-id="${this.lastViewedEventId}"]`)
+
+      if (eventElement) {
+        eventElement.scrollIntoView({
+          behavior: 'instant',
+          block: 'center'
+        })
+
+        this.resetScrollRestorationState()
+      } else {
+        // Event not rendered yet, try again
+        this.scrollAttempts++
+        setTimeout(() => {
+          this.scrollToEvent()
+        }, 300)
+      }
+    },
+
+    resetScrollRestorationState() {
+      this.isRestoringScroll = false
+      this.lastViewedEventId = null
+      this.scrollAttempts = 0
+      if (process.client) {
+        sessionStorage.removeItem('last_event_id')
+      }
+    },
+
     async monthChange ({ year, month }) {
       if (this.filter.query) return
       this.$nuxt.$loading.start()
       let isCurrentMonth
+
+      this.resetScrollRestorationState()
 
       // unselect current selected day
       this.selectedDay = null
@@ -145,13 +248,16 @@ export default {
       await this.$fetch()
       this.$nuxt.$loading.finish()
       this.$nextTick( () => this.isCurrentMonth = isCurrentMonth)
-
     },
+
     dayChange (day) {
       if (!day) {
         this.selectedDay = null
         return
       }
+
+      this.resetScrollRestorationState()
+
       const date = DateTime.fromJSDate(day)
       this.selectedDay = day ? DateTime.local({ zone: this.settings.instance_timezone }).set({ year: date.year, month: date.month, day: date.day}) : null
     }
