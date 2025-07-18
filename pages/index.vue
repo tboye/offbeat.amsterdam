@@ -138,7 +138,6 @@ export default {
       sessionStorage.setItem('last_event_id', event.id.toString())
     },
 
-    // Simplified scroll preservation
     initScrollRestoration() {
       // Disable browser scroll restoration
       if ('scrollRestoration' in history) {
@@ -151,8 +150,8 @@ export default {
         this.$router.afterEach((to, from) => {
           this.$nextTick(() => {
             if (to.path === '/') {
-              // Try to restore scroll for home page
-              this.restoreScrollToEvent()
+              // Restore scroll for home page
+              this.restoreScrollToLastEvent()
             } else {
               // Scroll to top for all other pages
               window.scrollTo(0, 0)
@@ -162,7 +161,6 @@ export default {
       }
     },
 
-    // Determine which events should be loaded immediately
     shouldLoadImmediately(idx) {
       if (idx < 9) return true
       if (this.isRestoringScroll && this.lastViewedEventId) {
@@ -176,8 +174,7 @@ export default {
       return false
     },
 
-    // Restore scroll to the last viewed event
-    restoreScrollToEvent() {
+    restoreScrollToLastEvent() {
       const lastEventId = sessionStorage.getItem('last_event_id')
       if (!lastEventId) return
 
@@ -186,31 +183,26 @@ export default {
 
       // Event should be loaded immediately, so scroll to it
       this.$nextTick(() => {
-        this.scrollToEvent()
+        const eventElement = document.querySelector(`[data-event-id="${this.lastViewedEventId}"]`)
+
+        if (eventElement) {
+          // Get the element's position relative to the document
+          const rect = eventElement.getBoundingClientRect()
+          const elementTop = rect.top + window.scrollY
+
+          // Use responsive offset that scales with viewport size
+          const offset = Math.max(60, window.innerHeight * 0.1)
+
+          window.scrollTo({
+            top: Math.max(0, elementTop - offset),
+            behavior: 'instant'
+          })
+        }
+
+        this.resetScrollRestorationState()
       })
     },
 
-    scrollToEvent() {
-      const eventElement = document.querySelector(`[data-event-id="${this.lastViewedEventId}"]`)
-
-      if (eventElement) {
-        // Get the element's position relative to the document
-        const rect = eventElement.getBoundingClientRect()
-        const elementTop = rect.top + window.scrollY
-
-        // Use responsive offset that scales with viewport size
-        const offset = Math.max(60, window.innerHeight * 0.1)
-
-        window.scrollTo({
-          top: Math.max(0, elementTop - offset),
-          behavior: 'instant'
-        })
-      }
-
-      this.resetScrollRestorationState()
-    },
-
-    // Reset scroll restoration state
     resetScrollRestorationState() {
       this.isRestoringScroll = false
       this.lastViewedEventId = null
@@ -222,7 +214,6 @@ export default {
       this.$nuxt.$loading.start()
       let isCurrentMonth
 
-      // Reset scroll restoration for filtering
       this.resetScrollRestorationState()
 
       // unselect current selected day
@@ -249,7 +240,6 @@ export default {
         return
       }
 
-      // Reset scroll restoration for filtering
       this.resetScrollRestorationState()
 
       const date = DateTime.fromJSDate(day)
