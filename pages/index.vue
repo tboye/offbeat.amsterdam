@@ -207,9 +207,7 @@ export default {
         })
       }
 
-      // Always clean up, regardless of success
-      this.isRestoringScroll = false
-      sessionStorage.removeItem('last_event_id')
+      this.resetScrollRestorationState()
     },
 
     // Reset scroll restoration state
